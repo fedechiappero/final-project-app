@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Convenios list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Idproveedor</th>
+                <th>Descripcion</th>
+                <th>Fecha</th>
+                <th>Vigente</th>
+                <th>Descuentoporcentaje</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for convenio in convenios %}
+            <tr>
+                <td><a href="{{ path('convenio_show', { 'id': convenio.id }) }}">{{ convenio.id }}</a></td>
+                <td>{{ convenio.idProveedor }}</td>
+                <td>{{ convenio.descripcion }}</td>
+                <td>{% if convenio.fecha %}{{ convenio.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if convenio.vigente %}Yes{% else %}No{% endif %}</td>
+                <td>{{ convenio.descuentoPorcentaje }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('convenio_show', { 'id': convenio.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('convenio_edit', { 'id': convenio.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('convenio_new') }}">Create a new convenio</a>
+        </li>
+    </ul>
+{% endblock %}

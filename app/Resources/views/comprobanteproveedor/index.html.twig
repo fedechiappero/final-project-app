@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Comprobanteproveedors list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Idproveedor</th>
+                <th>Idremito</th>
+                <th>Fechaemision</th>
+                <th>Letra</th>
+                <th>Numero</th>
+                <th>Puntoventa</th>
+                <th>Fechavencimiento</th>
+                <th>Cuentacorriente</th>
+                <th>Subtotal</th>
+                <th>Descuentoporcentaje</th>
+                <th>Netogravado</th>
+                <th>Totaliva</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comprobanteProveedor in comprobanteProveedors %}
+            <tr>
+                <td><a href="{{ path('comprobanteproveedor_show', { 'id': comprobanteProveedor.id }) }}">{{ comprobanteProveedor.id }}</a></td>
+                <td>{{ comprobanteProveedor.idProveedor }}</td>
+                <td>{{ comprobanteProveedor.idRemito }}</td>
+                <td>{% if comprobanteProveedor.fechaEmision %}{{ comprobanteProveedor.fechaEmision|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ comprobanteProveedor.letra }}</td>
+                <td>{{ comprobanteProveedor.numero }}</td>
+                <td>{{ comprobanteProveedor.puntoVenta }}</td>
+                <td>{% if comprobanteProveedor.fechaVencimiento %}{{ comprobanteProveedor.fechaVencimiento|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if comprobanteProveedor.cuentaCorriente %}Yes{% else %}No{% endif %}</td>
+                <td>{{ comprobanteProveedor.subtotal }}</td>
+                <td>{{ comprobanteProveedor.descuentoPorcentaje }}</td>
+                <td>{{ comprobanteProveedor.netoGravado }}</td>
+                <td>{{ comprobanteProveedor.totalIva }}</td>
+                <td>{{ comprobanteProveedor.total }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('comprobanteproveedor_show', { 'id': comprobanteProveedor.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('comprobanteproveedor_edit', { 'id': comprobanteProveedor.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('comprobanteproveedor_new') }}">Create a new comprobanteProveedor</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Detalleremitos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Idproducto</th>
+                <th>Idremito</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for detalleRemito in detalleRemitos %}
+            <tr>
+                <td><a href="{{ path('detalleremito_show', { 'id': detalleRemito.id }) }}">{{ detalleRemito.id }}</a></td>
+                <td>{{ detalleRemito.idProducto }}</td>
+                <td>{{ detalleRemito.idRemito }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('detalleremito_show', { 'id': detalleRemito.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('detalleremito_edit', { 'id': detalleRemito.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('detalleremito_new') }}">Create a new detalleRemito</a>
+        </li>
+    </ul>
+{% endblock %}

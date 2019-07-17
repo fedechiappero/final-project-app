@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ordencompra</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ ordenCompra.id }}</td>
+            </tr>
+            <tr>
+                <th>Idusuario</th>
+                <td>{{ ordenCompra.idUsuario }}</td>
+            </tr>
+            <tr>
+                <th>Idobra</th>
+                <td>{{ ordenCompra.idObra }}</td>
+            </tr>
+            <tr>
+                <th>Idproveedor</th>
+                <td>{{ ordenCompra.idProveedor }}</td>
+            </tr>
+            <tr>
+                <th>Numero</th>
+                <td>{{ ordenCompra.numero }}</td>
+            </tr>
+            <tr>
+                <th>Fechaemision</th>
+                <td>{% if ordenCompra.fechaEmision %}{{ ordenCompra.fechaEmision|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ ordenCompra.total }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ordencompra_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('ordencompra_edit', { 'id': ordenCompra.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Remitos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha</th>
+                <th>Numero</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for remito in remitos %}
+            <tr>
+                <td><a href="{{ path('remito_show', { 'id': remito.id }) }}">{{ remito.id }}</a></td>
+                <td>{% if remito.fecha %}{{ remito.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ remito.numero }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('remito_show', { 'id': remito.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('remito_edit', { 'id': remito.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('remito_new') }}">Create a new remito</a>
+        </li>
+    </ul>
+{% endblock %}

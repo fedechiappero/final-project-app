@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Contratistas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Razonsocial</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contratista in contratistas %}
+            <tr>
+                <td><a href="{{ path('contratista_show', { 'id': contratista.id }) }}">{{ contratista.id }}</a></td>
+                <td>{{ contratistum.razonSocial }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('contratista_show', { 'id': contratista.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('contratista_edit', { 'id': contratista.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contratista_new') }}">Create a new contratista</a>
+        </li>
+    </ul>
+{% endblock %}

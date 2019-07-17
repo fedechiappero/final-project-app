@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Detallecomprobantes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Idcomprobante</th>
+                <th>Idproducto</th>
+                <th>Cantidad</th>
+                <th>Preciounitario</th>
+                <th>Cantidadrecibida</th>
+                <th>Iva</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for detalleComprobante in detalleComprobantes %}
+            <tr>
+                <td><a href="{{ path('detallecomprobante_show', { 'id': detalleComprobante.id }) }}">{{ detalleComprobante.id }}</a></td>
+                <td>{{ detalleComprobante.idComprobante }}</td>
+                <td>{{ detalleComprobante.idProducto }}</td>
+                <td>{{ detalleComprobante.cantidad }}</td>
+                <td>{{ detalleComprobante.precioUnitario }}</td>
+                <td>{{ detalleComprobante.cantidadRecibida }}</td>
+                <td>{{ detalleComprobante.iva }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('detallecomprobante_show', { 'id': detalleComprobante.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('detallecomprobante_edit', { 'id': detalleComprobante.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('detallecomprobante_new') }}">Create a new detalleComprobante</a>
+        </li>
+    </ul>
+{% endblock %}

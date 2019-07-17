@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ordencompras list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Idusuario</th>
+                <th>Idobra</th>
+                <th>Idproveedor</th>
+                <th>Numero</th>
+                <th>Fechaemision</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ordenCompra in ordenCompras %}
+            <tr>
+                <td><a href="{{ path('ordencompra_show', { 'id': ordenCompra.id }) }}">{{ ordenCompra.id }}</a></td>
+                <td>{{ ordenCompra.idUsuario }}</td>
+                <td>{{ ordenCompra.idObra }}</td>
+                <td>{{ ordenCompra.idProveedor }}</td>
+                <td>{{ ordenCompra.numero }}</td>
+                <td>{% if ordenCompra.fechaEmision %}{{ ordenCompra.fechaEmision|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ ordenCompra.total }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('ordencompra_show', { 'id': ordenCompra.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ordencompra_edit', { 'id': ordenCompra.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('ordencompra_new') }}">Create a new ordenCompra</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Convenio</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ convenio.id }}</td>
+            </tr>
+            <tr>
+                <th>Idproveedor</th>
+                <td>{{ convenio.idProveedor }}</td>
+            </tr>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ convenio.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{% if convenio.fecha %}{{ convenio.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Vigente</th>
+                <td>{% if convenio.vigente %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Descuentoporcentaje</th>
+                <td>{{ convenio.descuentoPorcentaje }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('convenio_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('convenio_edit', { 'id': convenio.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Caducidads list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Cantidadmeses</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for caducidad in caducidads %}
+            <tr>
+                <td><a href="{{ path('caducidad_show', { 'id': caducidad.id }) }}">{{ caducidad.id }}</a></td>
+                <td>{{ caducidad.cantidadMeses }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('caducidad_show', { 'id': caducidad.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('caducidad_edit', { 'id': caducidad.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('caducidad_new') }}">Create a new caducidad</a>
+        </li>
+    </ul>
+{% endblock %}
