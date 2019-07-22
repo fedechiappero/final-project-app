@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Transferencias list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Titular</th>
+                <th>Cuit</th>
+                <th>Fecha</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for transferencia in transferencias %}
+            <tr>
+                <td><a href="{{ path('transferencia_show', { 'id': transferencia.id }) }}">{{ transferencia.numero }}</a></td>
+                <td>{{ transferencia.titular }}</td>
+                <td>{{ transferencia.cuit }}</td>
+                <td>{% if transferencium.fecha %}{{ transferencia.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ transferencia.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('transferencia_show', { 'id': transferencia.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('transferencia_edit', { 'id': transferencia.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('transferencia_new') }}">Create a new transferencia</a>
+        </li>
+    </ul>
+{% endblock %}

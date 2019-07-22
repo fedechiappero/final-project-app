@@ -6,26 +6,22 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Idcomprobante</th>
-                <th>Idproducto</th>
                 <th>Cantidad</th>
                 <th>Preciounitario</th>
                 <th>Cantidadrecibida</th>
                 <th>Iva</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for detalleComprobante in detalleComprobantes %}
             <tr>
-                <td><a href="{{ path('detallecomprobante_show', { 'id': detalleComprobante.id }) }}">{{ detalleComprobante.id }}</a></td>
-                <td>{{ detalleComprobante.idComprobante }}</td>
-                <td>{{ detalleComprobante.idProducto }}</td>
-                <td>{{ detalleComprobante.cantidad }}</td>
+                <td><a href="{{ path('detallecomprobante_show', { 'id': detalleComprobante.id }) }}">{{ detalleComprobante.cantidad }}</a></td>
                 <td>{{ detalleComprobante.precioUnitario }}</td>
                 <td>{{ detalleComprobante.cantidadRecibida }}</td>
                 <td>{{ detalleComprobante.iva }}</td>
+                <td>{{ detalleComprobante.id }}</td>
                 <td>
                     <ul>
                         <li>

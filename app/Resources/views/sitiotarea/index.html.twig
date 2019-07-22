@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Sitiotareas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Unidad</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sitioTarea in sitioTareas %}
+            <tr>
+                <td><a href="{{ path('sitiotarea_show', { 'id': sitioTarea.id }) }}">{{ sitioTarea.nombre }}</a></td>
+                <td>{{ sitioTarea.unidad }}</td>
+                <td>{{ sitioTarea.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('sitiotarea_show', { 'id': sitioTarea.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('sitiotarea_edit', { 'id': sitioTarea.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('sitiotarea_new') }}">Create a new sitioTarea</a>
+        </li>
+    </ul>
+{% endblock %}

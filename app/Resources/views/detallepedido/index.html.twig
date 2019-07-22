@@ -6,20 +6,16 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Idpedido</th>
-                <th>Idproducto</th>
                 <th>Cantidad</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for detallePedido in detallePedidos %}
             <tr>
-                <td><a href="{{ path('detallepedido_show', { 'id': detallePedido.id }) }}">{{ detallePedido.id }}</a></td>
-                <td>{{ detallePedido.idPedido }}</td>
-                <td>{{ detallePedido.idProducto }}</td>
-                <td>{{ detallePedido.cantidad }}</td>
+                <td><a href="{{ path('detallepedido_show', { 'id': detallePedido.id }) }}">{{ detallePedido.cantidad }}</a></td>
+                <td>{{ detallePedido.id }}</td>
                 <td>
                     <ul>
                         <li>

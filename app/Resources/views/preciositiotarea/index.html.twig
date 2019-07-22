@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Preciositiotareas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>Manoobra</th>
+                <th>Ultimaactualizacion</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for precioSitioTarea in precioSitioTareas %}
+            <tr>
+                <td><a href="{{ path('preciositiotarea_show', { 'id': precioSitioTarea.id }) }}">{{ precioSitioTarea.material }}</a></td>
+                <td>{{ precioSitioTarea.manoObra }}</td>
+                <td>{% if precioSitioTarea.ultimaActualizacion %}{{ precioSitioTarea.ultimaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ precioSitioTarea.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('preciositiotarea_show', { 'id': precioSitioTarea.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('preciositiotarea_edit', { 'id': precioSitioTarea.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('preciositiotarea_new') }}">Create a new precioSitioTarea</a>
+        </li>
+    </ul>
+{% endblock %}

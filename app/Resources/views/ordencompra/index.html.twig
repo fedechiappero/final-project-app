@@ -6,26 +6,22 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Idusuario</th>
-                <th>Idobra</th>
-                <th>Idproveedor</th>
                 <th>Numero</th>
                 <th>Fechaemision</th>
                 <th>Total</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for ordenCompra in ordenCompras %}
             <tr>
-                <td><a href="{{ path('ordencompra_show', { 'id': ordenCompra.id }) }}">{{ ordenCompra.id }}</a></td>
-                <td>{{ ordenCompra.idUsuario }}</td>
-                <td>{{ ordenCompra.idObra }}</td>
-                <td>{{ ordenCompra.idProveedor }}</td>
+                <td><a href="{{ path('ordencompra_show', { 'id': ordenCompra.id }) }}">{{ ordenCompra.idUsuario }}</a></td>
                 <td>{{ ordenCompra.numero }}</td>
                 <td>{% if ordenCompra.fechaEmision %}{{ ordenCompra.fechaEmision|date('Y-m-d') }}{% endif %}</td>
                 <td>{{ ordenCompra.total }}</td>
+                <td>{{ ordenCompra.id }}</td>
                 <td>
                     <ul>
                         <li>

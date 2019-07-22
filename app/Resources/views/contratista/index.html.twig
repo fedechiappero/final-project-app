@@ -6,7 +6,6 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Razonsocial</th>
                 <th>Actions</th>
             </tr>
@@ -14,8 +13,7 @@
         <tbody>
         {% for contratista in contratistas %}
             <tr>
-                <td><a href="{{ path('contratista_show', { 'id': contratista.id }) }}">{{ contratista.id }}</a></td>
-                <td>{{ contratistum.razonSocial }}</td>
+                <td><a href="{{ path('contratista_show', { 'id': contratista.id }) }}">{{ contratista.razonSocial }}</a></td>
                 <td>
                     <ul>
                         <li>

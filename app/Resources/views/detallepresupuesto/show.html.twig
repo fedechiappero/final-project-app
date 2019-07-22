@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Detallepresupuesto</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Cantidad</th>
+                <td>{{ detallePresupuesto.cantidad }}</td>
+            </tr>
+            <tr>
+                <th>Subtotal</th>
+                <td>{{ detallePresupuesto.subtotal }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ detallePresupuesto.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('detallepresupuesto_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('detallepresupuesto_edit', { 'id': detallePresupuesto.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

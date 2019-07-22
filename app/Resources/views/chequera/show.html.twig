@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Chequera</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Numeroinicial</th>
+                <td>{{ chequera.numeroInicial }}</td>
+            </tr>
+            <tr>
+                <th>Cantidadcheques</th>
+                <td>{{ chequera.cantidadCheques }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{% if chequera.fecha %}{{ chequera.fecha|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Activa</th>
+                <td>{% if chequera.activa %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ chequera.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('chequera_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('chequera_edit', { 'id': chequera.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

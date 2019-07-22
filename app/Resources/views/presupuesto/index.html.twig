@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Presupuestos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fechaemision</th>
+                <th>Valor</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for presupuesto in presupuestos %}
+            <tr>
+                <td><a href="{{ path('presupuesto_show', { 'id': presupuesto.id }) }}">{{ presupuesto.fechaEmision }}</a></td>
+                <td>{{ presupuesto.valor }}</td>
+                <td>{{ presupuesto.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('presupuesto_show', { 'id': presupuesto.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('presupuesto_edit', { 'id': presupuesto.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('presupuesto_new') }}">Create a new presupuesto</a>
+        </li>
+    </ul>
+{% endblock %}

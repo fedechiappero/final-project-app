@@ -84,5 +84,206 @@ class Contrato
     private $idObra;
 
 
-}
 
+    /**
+     * Set fechaEmision
+     *
+     * @param \DateTime $fechaEmision
+     *
+     * @return Contrato
+     */
+    public function setFechaEmision($fechaEmision)
+    {
+        $this->fechaEmision = $fechaEmision;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEmision
+     *
+     * @return \DateTime
+     */
+    public function getFechaEmision()
+    {
+        return $this->fechaEmision;
+    }
+
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return Contrato
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set arquitectoNombre
+     *
+     * @param string $arquitectoNombre
+     *
+     * @return Contrato
+     */
+    public function setArquitectoNombre($arquitectoNombre)
+    {
+        $this->arquitectoNombre = $arquitectoNombre;
+
+        return $this;
+    }
+
+    /**
+     * Get arquitectoNombre
+     *
+     * @return string
+     */
+    public function getArquitectoNombre()
+    {
+        return $this->arquitectoNombre;
+    }
+
+    /**
+     * Set arquitectoMatricula
+     *
+     * @param string $arquitectoMatricula
+     *
+     * @return Contrato
+     */
+    public function setArquitectoMatricula($arquitectoMatricula)
+    {
+        $this->arquitectoMatricula = $arquitectoMatricula;
+
+        return $this;
+    }
+
+    /**
+     * Get arquitectoMatricula
+     *
+     * @return string
+     */
+    public function getArquitectoMatricula()
+    {
+        return $this->arquitectoMatricula;
+    }
+
+    /**
+     * Set arquitectoDomicilio
+     *
+     * @param string $arquitectoDomicilio
+     *
+     * @return Contrato
+     */
+    public function setArquitectoDomicilio($arquitectoDomicilio)
+    {
+        $this->arquitectoDomicilio = $arquitectoDomicilio;
+
+        return $this;
+    }
+
+    /**
+     * Get arquitectoDomicilio
+     *
+     * @return string
+     */
+    public function getArquitectoDomicilio()
+    {
+        return $this->arquitectoDomicilio;
+    }
+
+    /**
+     * Set fechaEstimadaInicio
+     *
+     * @param \DateTime $fechaEstimadaInicio
+     *
+     * @return Contrato
+     */
+    public function setFechaEstimadaInicio($fechaEstimadaInicio)
+    {
+        $this->fechaEstimadaInicio = $fechaEstimadaInicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEstimadaInicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaEstimadaInicio()
+    {
+        return $this->fechaEstimadaInicio;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idPresupuesto
+     *
+     * @param \AppBundle\Entity\Presupuesto $idPresupuesto
+     *
+     * @return Contrato
+     */
+    public function setIdPresupuesto(\AppBundle\Entity\Presupuesto $idPresupuesto = null)
+    {
+        $this->idPresupuesto = $idPresupuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get idPresupuesto
+     *
+     * @return \AppBundle\Entity\Presupuesto
+     */
+    public function getIdPresupuesto()
+    {
+        return $this->idPresupuesto;
+    }
+
+    /**
+     * Set idObra
+     *
+     * @param \AppBundle\Entity\Obra $idObra
+     *
+     * @return Contrato
+     */
+    public function setIdObra(\AppBundle\Entity\Obra $idObra = null)
+    {
+        $this->idObra = $idObra;
+
+        return $this;
+    }
+
+    /**
+     * Get idObra
+     *
+     * @return \AppBundle\Entity\Obra
+     */
+    public function getIdObra()
+    {
+        return $this->idObra;
+    }
+}

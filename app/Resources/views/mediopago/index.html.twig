@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mediopagos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for medioPago in medioPagos %}
+            <tr>
+                <td><a href="{{ path('mediopago_show', { 'id': medioPago.id }) }}">{{ medioPago.nombre }}</a></td>
+                <td>{{ medioPago.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('mediopago_show', { 'id': medioPago.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('mediopago_edit', { 'id': medioPago.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('mediopago_new') }}">Create a new medioPago</a>
+        </li>
+    </ul>
+{% endblock %}

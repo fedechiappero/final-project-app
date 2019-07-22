@@ -32,5 +32,52 @@ class Contratista
     private $id;
 
 
-}
 
+    /**
+     * Set razonSocial
+     *
+     * @param string $razonSocial
+     *
+     * @return Contratista
+     */
+    public function setRazonSocial($razonSocial)
+    {
+        $this->razonSocial = $razonSocial;
+
+        return $this;
+    }
+
+    /**
+     * Get razonSocial
+     *
+     * @return string
+     */
+    public function getRazonSocial()
+    {
+        return $this->razonSocial;
+    }
+
+    /**
+     * Set id
+     *
+     * @param \AppBundle\Entity\Persona $id
+     *
+     * @return Contratista
+     */
+    public function setId(\AppBundle\Entity\Persona $id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return \AppBundle\Entity\Persona
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

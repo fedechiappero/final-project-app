@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Contratistaobras list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fechadesde</th>
+                <th>Fechahasta</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contratistaObra in contratistaObras %}
+            <tr>
+                <td><a href="{{ path('contratistaobra_show', { 'id': contratistaObra.id }) }}">{{ contratistaObra.fechaDesde }}</a></td>
+                <td>{% if contratistaObra.fechaHasta %}{{ contratistaObra.fechaHasta|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ contratistaObra.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('contratistaobra_show', { 'id': contratistaObra.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('contratistaobra_edit', { 'id': contratistaObra.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contratistaobra_new') }}">Create a new contratistaObra</a>
+        </li>
+    </ul>
+{% endblock %}

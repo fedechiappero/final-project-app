@@ -6,14 +6,6 @@
     <table>
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ pedido.id }}</td>
-            </tr>
-            <tr>
-                <th>Idcontratistaobra</th>
-                <td>{{ pedido.idContratistaObra }}</td>
-            </tr>
-            <tr>
                 <th>Numero</th>
                 <td>{{ pedido.numero }}</td>
             </tr>
@@ -24,6 +16,10 @@
             <tr>
                 <th>Necesarioparafecha</th>
                 <td>{% if pedido.necesarioParaFecha %}{{ pedido.necesarioParaFecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ pedido.id }}</td>
             </tr>
         </tbody>
     </table>

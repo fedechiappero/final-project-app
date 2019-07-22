@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Obrafinalizacions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for obraFinalizacion in obraFinalizacions %}
+            <tr>
+                <td><a href="{{ path('obrafinalizacion_show', { 'id': obraFinalizacion.id }) }}">{{ obraFinalizacion.fecha }}</a></td>
+                <td>{{ obraFinalizacion.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('obrafinalizacion_show', { 'id': obraFinalizacion.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('obrafinalizacion_edit', { 'id': obraFinalizacion.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('obrafinalizacion_new') }}">Create a new obraFinalizacion</a>
+        </li>
+    </ul>
+{% endblock %}

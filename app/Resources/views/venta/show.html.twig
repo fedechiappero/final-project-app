@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Venta</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Fecha</th>
+                <td>{% if venta.fecha %}{{ venta.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Numero</th>
+                <td>{{ venta.numero }}</td>
+            </tr>
+            <tr>
+                <th>Numerofactura</th>
+                <td>{{ venta.numeroFactura }}</td>
+            </tr>
+            <tr>
+                <th>Subtotal</th>
+                <td>{{ venta.subtotal }}</td>
+            </tr>
+            <tr>
+                <th>Descuentoporcentaje</th>
+                <td>{{ venta.descuentoPorcentaje }}</td>
+            </tr>
+            <tr>
+                <th>Netogravado</th>
+                <td>{{ venta.netoGravado }}</td>
+            </tr>
+            <tr>
+                <th>Totaliva</th>
+                <td>{{ venta.totalIva }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>{{ venta.total }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ venta.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('venta_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('venta_edit', { 'id': venta.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

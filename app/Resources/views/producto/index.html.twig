@@ -6,20 +6,20 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Nombre</th>
                 <th>Unidad</th>
                 <th>Stock</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for producto in productos %}
             <tr>
-                <td><a href="{{ path('producto_show', { 'id': producto.id }) }}">{{ producto.id }}</a></td>
-                <td>{{ producto.nombre }}</td>
+                <td><a href="{{ path('producto_show', { 'id': producto.id }) }}">{{ producto.nombre }}</a></td>
                 <td>{{ producto.unidad }}</td>
                 <td>{{ producto.stock }}</td>
+                <td>{{ producto.id }}</td>
                 <td>
                     <ul>
                         <li>

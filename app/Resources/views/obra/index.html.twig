@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Obras list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th>Fechainicio</th>
+                <th>Foto</th>
+                <th>Legajomunicipalnumero</th>
+                <th>Colegioarquitectonumero</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for obra in obras %}
+            <tr>
+                <td><a href="{{ path('obra_show', { 'id': obra.id }) }}">{{ obra.nombre }}</a></td>
+                <td>{{ obra.direccion }}</td>
+                <td>{% if obra.fechaInicio %}{{ obra.fechaInicio|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ obra.foto }}</td>
+                <td>{{ obra.legajoMunicipalNumero }}</td>
+                <td>{{ obra.colegioArquitectoNumero }}</td>
+                <td>{{ obra.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('obra_show', { 'id': obra.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('obra_edit', { 'id': obra.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('obra_new') }}">Create a new obra</a>
+        </li>
+    </ul>
+{% endblock %}

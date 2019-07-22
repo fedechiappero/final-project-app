@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Detallepedidoordens list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for detallePedidoOrden in detallePedidoOrdens %}
+            <tr>
+                <td><a href="{{ path('detallepedidoorden_show', { 'id': detallePedidoOrden.id }) }}">{{ detallePedidoOrden.id }}</a></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('detallepedidoorden_show', { 'id': detallePedidoOrden.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('detallepedidoorden_edit', { 'id': detallePedidoOrden.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('detallepedidoorden_new') }}">Create a new detallePedidoOrden</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Mediopago</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ medioPago.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ medioPago.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('mediopago_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('mediopago_edit', { 'id': medioPago.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

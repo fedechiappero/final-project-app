@@ -6,24 +6,16 @@
     <table>
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ precio.id }}</td>
-            </tr>
-            <tr>
-                <th>Idproveedor</th>
-                <td>{{ precio.idProveedor }}</td>
-            </tr>
-            <tr>
-                <th>Idproducto</th>
-                <td>{{ precio.idProducto }}</td>
-            </tr>
-            <tr>
                 <th>Precio</th>
                 <td>{{ precio.precio }}</td>
             </tr>
             <tr>
                 <th>Fechaultimaactualizacion</th>
                 <td>{% if precio.fechaUltimaActualizacion %}{{ precio.fechaUltimaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ precio.id }}</td>
             </tr>
         </tbody>
     </table>

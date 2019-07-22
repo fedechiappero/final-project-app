@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tipoinmuebles list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tipoInmueble in tipoInmuebles %}
+            <tr>
+                <td><a href="{{ path('tipoinmueble_show', { 'id': tipoInmueble.id }) }}">{{ tipoInmueble.nombre }}</a></td>
+                <td>{{ tipoInmueble.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('tipoinmueble_show', { 'id': tipoInmueble.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('tipoinmueble_edit', { 'id': tipoInmueble.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('tipoinmueble_new') }}">Create a new tipoInmueble</a>
+        </li>
+    </ul>
+{% endblock %}

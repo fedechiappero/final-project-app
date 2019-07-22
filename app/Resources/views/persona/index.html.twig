@@ -6,8 +6,6 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Idlocalidad</th>
                 <th>Nombre</th>
                 <th>Personajuridica</th>
                 <th>Cuit</th>
@@ -15,21 +13,21 @@
                 <th>Direccion</th>
                 <th>Celular</th>
                 <th>Email</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for persona in personas %}
             <tr>
-                <td><a href="{{ path('persona_show', { 'id': persona.id }) }}">{{ persona.id }}</a></td>
-                <td>{{ persona.idLocalidad }}</td>
-                <td>{{ persona.nombre }}</td>
+                <td><a href="{{ path('persona_show', { 'id': persona.id }) }}">{{ persona.nombre }}</a></td>
                 <td>{% if persona.personaJuridica %}Yes{% else %}No{% endif %}</td>
                 <td>{{ persona.cuit }}</td>
                 <td>{{ persona.documento }}</td>
                 <td>{{ persona.direccion }}</td>
                 <td>{{ persona.celular }}</td>
                 <td>{{ persona.email }}</td>
+                <td>{{ persona.id }}</td>
                 <td>
                     <ul>
                         <li>

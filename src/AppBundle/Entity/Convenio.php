@@ -60,5 +60,134 @@ class Convenio
     private $idProveedor;
 
 
-}
 
+    /**
+     * Set descripcion
+     *
+     * @param string $descripcion
+     *
+     * @return Convenio
+     */
+    public function setDescripcion($descripcion)
+    {
+        $this->descripcion = $descripcion;
+
+        return $this;
+    }
+
+    /**
+     * Get descripcion
+     *
+     * @return string
+     */
+    public function getDescripcion()
+    {
+        return $this->descripcion;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return Convenio
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set vigente
+     *
+     * @param boolean $vigente
+     *
+     * @return Convenio
+     */
+    public function setVigente($vigente)
+    {
+        $this->vigente = $vigente;
+
+        return $this;
+    }
+
+    /**
+     * Get vigente
+     *
+     * @return boolean
+     */
+    public function getVigente()
+    {
+        return $this->vigente;
+    }
+
+    /**
+     * Set descuentoPorcentaje
+     *
+     * @param float $descuentoPorcentaje
+     *
+     * @return Convenio
+     */
+    public function setDescuentoPorcentaje($descuentoPorcentaje)
+    {
+        $this->descuentoPorcentaje = $descuentoPorcentaje;
+
+        return $this;
+    }
+
+    /**
+     * Get descuentoPorcentaje
+     *
+     * @return float
+     */
+    public function getDescuentoPorcentaje()
+    {
+        return $this->descuentoPorcentaje;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProveedor
+     *
+     * @param \AppBundle\Entity\Proveedor $idProveedor
+     *
+     * @return Convenio
+     */
+    public function setIdProveedor(\AppBundle\Entity\Proveedor $idProveedor = null)
+    {
+        $this->idProveedor = $idProveedor;
+
+        return $this;
+    }
+
+    /**
+     * Get idProveedor
+     *
+     * @return \AppBundle\Entity\Proveedor
+     */
+    public function getIdProveedor()
+    {
+        return $this->idProveedor;
+    }
+}

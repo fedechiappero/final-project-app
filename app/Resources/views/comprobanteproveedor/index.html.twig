@@ -6,9 +6,6 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Idproveedor</th>
-                <th>Idremito</th>
                 <th>Fechaemision</th>
                 <th>Letra</th>
                 <th>Numero</th>
@@ -20,16 +17,14 @@
                 <th>Netogravado</th>
                 <th>Totaliva</th>
                 <th>Total</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for comprobanteProveedor in comprobanteProveedors %}
             <tr>
-                <td><a href="{{ path('comprobanteproveedor_show', { 'id': comprobanteProveedor.id }) }}">{{ comprobanteProveedor.id }}</a></td>
-                <td>{{ comprobanteProveedor.idProveedor }}</td>
-                <td>{{ comprobanteProveedor.idRemito }}</td>
-                <td>{% if comprobanteProveedor.fechaEmision %}{{ comprobanteProveedor.fechaEmision|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td><a href="{{ path('comprobanteproveedor_show', { 'id': comprobanteProveedor.id }) }}">{{ comprobanteProveedor.fechaEmision }}</a></td>
                 <td>{{ comprobanteProveedor.letra }}</td>
                 <td>{{ comprobanteProveedor.numero }}</td>
                 <td>{{ comprobanteProveedor.puntoVenta }}</td>
@@ -40,6 +35,7 @@
                 <td>{{ comprobanteProveedor.netoGravado }}</td>
                 <td>{{ comprobanteProveedor.totalIva }}</td>
                 <td>{{ comprobanteProveedor.total }}</td>
+                <td>{{ comprobanteProveedor.id }}</td>
                 <td>
                     <ul>
                         <li>

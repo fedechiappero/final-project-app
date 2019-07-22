@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Contactoalternativos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contactoAlternativo in contactoAlternativos %}
+            <tr>
+                <td><a href="{{ path('contactoalternativo_show', { 'id': contactoAlternativo.id }) }}">{{ contactoAlternativo.id }}</a></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('contactoalternativo_show', { 'id': contactoAlternativo.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('contactoalternativo_edit', { 'id': contactoAlternativo.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contactoalternativo_new') }}">Create a new contactoAlternativo</a>
+        </li>
+    </ul>
+{% endblock %}

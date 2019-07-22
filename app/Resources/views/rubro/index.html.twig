@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Rubros list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rubro in rubros %}
+            <tr>
+                <td><a href="{{ path('rubro_show', { 'id': rubro.id }) }}">{{ rubro.nombre }}</a></td>
+                <td>{{ rubro.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('rubro_show', { 'id': rubro.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('rubro_edit', { 'id': rubro.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('rubro_new') }}">Create a new rubro</a>
+        </li>
+    </ul>
+{% endblock %}

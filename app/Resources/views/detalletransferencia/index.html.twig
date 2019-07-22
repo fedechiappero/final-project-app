@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Detalletransferencias list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for detalleTransferencia in detalleTransferencias %}
+            <tr>
+                <td><a href="{{ path('detalletransferencia_show', { 'id': detalleTransferencia.id }) }}">{{ detalleTransferencia.id }}</a></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('detalletransferencia_show', { 'id': detalleTransferencia.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('detalletransferencia_edit', { 'id': detalleTransferencia.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('detalletransferencia_new') }}">Create a new detalleTransferencium</a>
+        </li>
+    </ul>
+{% endblock %}

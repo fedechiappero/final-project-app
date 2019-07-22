@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Ventas list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Numero</th>
+                <th>Numerofactura</th>
+                <th>Subtotal</th>
+                <th>Descuentoporcentaje</th>
+                <th>Netogravado</th>
+                <th>Totaliva</th>
+                <th>Total</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for venta in ventas %}
+            <tr>
+                <td><a href="{{ path('venta_show', { 'id': venta.id }) }}">{{ venta.fecha }}</a></td>
+                <td>{{ venta.numero }}</td>
+                <td>{{ venta.numeroFactura }}</td>
+                <td>{{ venta.subtotal }}</td>
+                <td>{{ venta.descuentoPorcentaje }}</td>
+                <td>{{ venta.netoGravado }}</td>
+                <td>{{ venta.totalIva }}</td>
+                <td>{{ venta.total }}</td>
+                <td>{{ venta.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('venta_show', { 'id': venta.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('venta_edit', { 'id': venta.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('venta_new') }}">Create a new venta</a>
+        </li>
+    </ul>
+{% endblock %}

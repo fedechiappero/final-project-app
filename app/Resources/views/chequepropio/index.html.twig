@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Chequepropios list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Fechapago</th>
+                <th>Fechaemision</th>
+                <th>Importe</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for chequePropio in chequePropios %}
+            <tr>
+                <td><a href="{{ path('chequepropio_show', { 'id': chequePropio.id }) }}">{{ chequePropio.numero }}</a></td>
+                <td>{% if chequePropio.fechaPago %}{{ chequePropio.fechaPago|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if chequePropio.fechaEmision %}{{ chequePropio.fechaEmision|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ chequePropio.importe }}</td>
+                <td>{{ chequePropio.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('chequepropio_show', { 'id': chequePropio.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('chequepropio_edit', { 'id': chequePropio.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('chequepropio_new') }}">Create a new chequePropio</a>
+        </li>
+    </ul>
+{% endblock %}

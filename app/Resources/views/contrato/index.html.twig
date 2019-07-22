@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Contratos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fechaemision</th>
+                <th>Numero</th>
+                <th>Arquitectonombre</th>
+                <th>Arquitectomatricula</th>
+                <th>Arquitectodomicilio</th>
+                <th>Fechaestimadainicio</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for contrato in contratos %}
+            <tr>
+                <td><a href="{{ path('contrato_show', { 'id': contrato.id }) }}">{{ contrato.fechaEmision }}</a></td>
+                <td>{{ contrato.numero }}</td>
+                <td>{{ contrato.arquitectoNombre }}</td>
+                <td>{{ contrato.arquitectoMatricula }}</td>
+                <td>{{ contrato.arquitectoDomicilio }}</td>
+                <td>{% if contrato.fechaEstimadaInicio %}{{ contrato.fechaEstimadaInicio|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ contrato.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('contrato_show', { 'id': contrato.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('contrato_edit', { 'id': contrato.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contrato_new') }}">Create a new contrato</a>
+        </li>
+    </ul>
+{% endblock %}

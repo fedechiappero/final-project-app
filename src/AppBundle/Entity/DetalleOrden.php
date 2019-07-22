@@ -56,5 +56,110 @@ class DetalleOrden
     private $idOrden;
 
 
-}
 
+    /**
+     * Set cantidad
+     *
+     * @param integer $cantidad
+     *
+     * @return DetalleOrden
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return integer
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
+    }
+
+    /**
+     * Set precioUnitario
+     *
+     * @param float $precioUnitario
+     *
+     * @return DetalleOrden
+     */
+    public function setPrecioUnitario($precioUnitario)
+    {
+        $this->precioUnitario = $precioUnitario;
+
+        return $this;
+    }
+
+    /**
+     * Get precioUnitario
+     *
+     * @return float
+     */
+    public function getPrecioUnitario()
+    {
+        return $this->precioUnitario;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProducto
+     *
+     * @param \AppBundle\Entity\Producto $idProducto
+     *
+     * @return DetalleOrden
+     */
+    public function setIdProducto(\AppBundle\Entity\Producto $idProducto = null)
+    {
+        $this->idProducto = $idProducto;
+
+        return $this;
+    }
+
+    /**
+     * Get idProducto
+     *
+     * @return \AppBundle\Entity\Producto
+     */
+    public function getIdProducto()
+    {
+        return $this->idProducto;
+    }
+
+    /**
+     * Set idOrden
+     *
+     * @param \AppBundle\Entity\OrdenCompra $idOrden
+     *
+     * @return DetalleOrden
+     */
+    public function setIdOrden(\AppBundle\Entity\OrdenCompra $idOrden = null)
+    {
+        $this->idOrden = $idOrden;
+
+        return $this;
+    }
+
+    /**
+     * Get idOrden
+     *
+     * @return \AppBundle\Entity\OrdenCompra
+     */
+    public function getIdOrden()
+    {
+        return $this->idOrden;
+    }
+}

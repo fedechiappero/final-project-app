@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Detallerevisions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Descripcion</th>
+                <th>Hora</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for detalleRevision in detalleRevisions %}
+            <tr>
+                <td><a href="{{ path('detallerevision_show', { 'id': detalleRevision.id }) }}">{{ detalleRevision.descripcion }}</a></td>
+                <td>{% if detalleRevision.hora %}{{ detalleRevision.hora|date('H:i:s') }}{% endif %}</td>
+                <td>{{ detalleRevision.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('detallerevision_show', { 'id': detalleRevision.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('detallerevision_edit', { 'id': detalleRevision.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('detallerevision_new') }}">Create a new detalleRevision</a>
+        </li>
+    </ul>
+{% endblock %}

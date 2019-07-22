@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Obra</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ obra.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Direccion</th>
+                <td>{{ obra.direccion }}</td>
+            </tr>
+            <tr>
+                <th>Fechainicio</th>
+                <td>{% if obra.fechaInicio %}{{ obra.fechaInicio|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Foto</th>
+                <td>{{ obra.foto }}</td>
+            </tr>
+            <tr>
+                <th>Legajomunicipalnumero</th>
+                <td>{{ obra.legajoMunicipalNumero }}</td>
+            </tr>
+            <tr>
+                <th>Colegioarquitectonumero</th>
+                <td>{{ obra.colegioArquitectoNumero }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ obra.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('obra_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('obra_edit', { 'id': obra.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

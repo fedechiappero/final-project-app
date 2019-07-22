@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagomediopagos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Importe</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pagoMedioPago in pagoMedioPagos %}
+            <tr>
+                <td><a href="{{ path('pagomediopago_show', { 'id': pagoMedioPago.id }) }}">{{ pagoMedioPago.importe }}</a></td>
+                <td>{{ pagoMedioPago.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('pagomediopago_show', { 'id': pagoMedioPago.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('pagomediopago_edit', { 'id': pagoMedioPago.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pagomediopago_new') }}">Create a new pagoMedioPago</a>
+        </li>
+    </ul>
+{% endblock %}

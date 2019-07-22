@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Tiporevisions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for tipoRevision in tipoRevisions %}
+            <tr>
+                <td><a href="{{ path('tiporevision_show', { 'id': tipoRevision.id }) }}">{{ tipoRevision.nombre }}</a></td>
+                <td>{{ tipoRevision.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('tiporevision_show', { 'id': tipoRevision.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('tiporevision_edit', { 'id': tipoRevision.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('tiporevision_new') }}">Create a new tipoRevision</a>
+        </li>
+    </ul>
+{% endblock %}

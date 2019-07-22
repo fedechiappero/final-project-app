@@ -119,5 +119,326 @@ class ComprobanteProveedor
     private $idProveedor;
 
 
-}
 
+    /**
+     * Set fechaEmision
+     *
+     * @param \DateTime $fechaEmision
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setFechaEmision($fechaEmision)
+    {
+        $this->fechaEmision = $fechaEmision;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEmision
+     *
+     * @return \DateTime
+     */
+    public function getFechaEmision()
+    {
+        return $this->fechaEmision;
+    }
+
+    /**
+     * Set letra
+     *
+     * @param string $letra
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setLetra($letra)
+    {
+        $this->letra = $letra;
+
+        return $this;
+    }
+
+    /**
+     * Get letra
+     *
+     * @return string
+     */
+    public function getLetra()
+    {
+        return $this->letra;
+    }
+
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set puntoVenta
+     *
+     * @param integer $puntoVenta
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setPuntoVenta($puntoVenta)
+    {
+        $this->puntoVenta = $puntoVenta;
+
+        return $this;
+    }
+
+    /**
+     * Get puntoVenta
+     *
+     * @return integer
+     */
+    public function getPuntoVenta()
+    {
+        return $this->puntoVenta;
+    }
+
+    /**
+     * Set fechaVencimiento
+     *
+     * @param \DateTime $fechaVencimiento
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setFechaVencimiento($fechaVencimiento)
+    {
+        $this->fechaVencimiento = $fechaVencimiento;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaVencimiento
+     *
+     * @return \DateTime
+     */
+    public function getFechaVencimiento()
+    {
+        return $this->fechaVencimiento;
+    }
+
+    /**
+     * Set cuentaCorriente
+     *
+     * @param boolean $cuentaCorriente
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setCuentaCorriente($cuentaCorriente)
+    {
+        $this->cuentaCorriente = $cuentaCorriente;
+
+        return $this;
+    }
+
+    /**
+     * Get cuentaCorriente
+     *
+     * @return boolean
+     */
+    public function getCuentaCorriente()
+    {
+        return $this->cuentaCorriente;
+    }
+
+    /**
+     * Set subtotal
+     *
+     * @param float $subtotal
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setSubtotal($subtotal)
+    {
+        $this->subtotal = $subtotal;
+
+        return $this;
+    }
+
+    /**
+     * Get subtotal
+     *
+     * @return float
+     */
+    public function getSubtotal()
+    {
+        return $this->subtotal;
+    }
+
+    /**
+     * Set descuentoPorcentaje
+     *
+     * @param float $descuentoPorcentaje
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setDescuentoPorcentaje($descuentoPorcentaje)
+    {
+        $this->descuentoPorcentaje = $descuentoPorcentaje;
+
+        return $this;
+    }
+
+    /**
+     * Get descuentoPorcentaje
+     *
+     * @return float
+     */
+    public function getDescuentoPorcentaje()
+    {
+        return $this->descuentoPorcentaje;
+    }
+
+    /**
+     * Set netoGravado
+     *
+     * @param float $netoGravado
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setNetoGravado($netoGravado)
+    {
+        $this->netoGravado = $netoGravado;
+
+        return $this;
+    }
+
+    /**
+     * Get netoGravado
+     *
+     * @return float
+     */
+    public function getNetoGravado()
+    {
+        return $this->netoGravado;
+    }
+
+    /**
+     * Set totalIva
+     *
+     * @param float $totalIva
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setTotalIva($totalIva)
+    {
+        $this->totalIva = $totalIva;
+
+        return $this;
+    }
+
+    /**
+     * Get totalIva
+     *
+     * @return float
+     */
+    public function getTotalIva()
+    {
+        return $this->totalIva;
+    }
+
+    /**
+     * Set total
+     *
+     * @param float $total
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return float
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idRemito
+     *
+     * @param \AppBundle\Entity\Remito $idRemito
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setIdRemito(\AppBundle\Entity\Remito $idRemito = null)
+    {
+        $this->idRemito = $idRemito;
+
+        return $this;
+    }
+
+    /**
+     * Get idRemito
+     *
+     * @return \AppBundle\Entity\Remito
+     */
+    public function getIdRemito()
+    {
+        return $this->idRemito;
+    }
+
+    /**
+     * Set idProveedor
+     *
+     * @param \AppBundle\Entity\Proveedor $idProveedor
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setIdProveedor(\AppBundle\Entity\Proveedor $idProveedor = null)
+    {
+        $this->idProveedor = $idProveedor;
+
+        return $this;
+    }
+
+    /**
+     * Get idProveedor
+     *
+     * @return \AppBundle\Entity\Proveedor
+     */
+    public function getIdProveedor()
+    {
+        return $this->idProveedor;
+    }
+}

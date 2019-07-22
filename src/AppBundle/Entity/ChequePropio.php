@@ -70,5 +70,158 @@ class ChequePropio
     private $idChequera;
 
 
-}
 
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return ChequePropio
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set fechaPago
+     *
+     * @param \DateTime $fechaPago
+     *
+     * @return ChequePropio
+     */
+    public function setFechaPago($fechaPago)
+    {
+        $this->fechaPago = $fechaPago;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaPago
+     *
+     * @return \DateTime
+     */
+    public function getFechaPago()
+    {
+        return $this->fechaPago;
+    }
+
+    /**
+     * Set fechaEmision
+     *
+     * @param \DateTime $fechaEmision
+     *
+     * @return ChequePropio
+     */
+    public function setFechaEmision($fechaEmision)
+    {
+        $this->fechaEmision = $fechaEmision;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEmision
+     *
+     * @return \DateTime
+     */
+    public function getFechaEmision()
+    {
+        return $this->fechaEmision;
+    }
+
+    /**
+     * Set importe
+     *
+     * @param float $importe
+     *
+     * @return ChequePropio
+     */
+    public function setImporte($importe)
+    {
+        $this->importe = $importe;
+
+        return $this;
+    }
+
+    /**
+     * Get importe
+     *
+     * @return float
+     */
+    public function getImporte()
+    {
+        return $this->importe;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idPersona
+     *
+     * @param \AppBundle\Entity\Persona $idPersona
+     *
+     * @return ChequePropio
+     */
+    public function setIdPersona(\AppBundle\Entity\Persona $idPersona = null)
+    {
+        $this->idPersona = $idPersona;
+
+        return $this;
+    }
+
+    /**
+     * Get idPersona
+     *
+     * @return \AppBundle\Entity\Persona
+     */
+    public function getIdPersona()
+    {
+        return $this->idPersona;
+    }
+
+    /**
+     * Set idChequera
+     *
+     * @param \AppBundle\Entity\Chequera $idChequera
+     *
+     * @return ChequePropio
+     */
+    public function setIdChequera(\AppBundle\Entity\Chequera $idChequera = null)
+    {
+        $this->idChequera = $idChequera;
+
+        return $this;
+    }
+
+    /**
+     * Get idChequera
+     *
+     * @return \AppBundle\Entity\Chequera
+     */
+    public function getIdChequera()
+    {
+        return $this->idChequera;
+    }
+}

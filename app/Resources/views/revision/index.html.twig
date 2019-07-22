@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Revisions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for revision in revisions %}
+            <tr>
+                <td><a href="{{ path('revision_show', { 'id': revision.id }) }}">{{ revision.fecha }}</a></td>
+                <td>{{ revision.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('revision_show', { 'id': revision.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('revision_edit', { 'id': revision.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('revision_new') }}">Create a new revision</a>
+        </li>
+    </ul>
+{% endblock %}

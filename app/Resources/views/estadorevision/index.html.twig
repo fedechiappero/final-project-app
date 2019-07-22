@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Estadorevisions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for estadoRevision in estadoRevisions %}
+            <tr>
+                <td><a href="{{ path('estadorevision_show', { 'id': estadoRevision.id }) }}">{{ estadoRevision.nombre }}</a></td>
+                <td>{{ estadoRevision.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('estadorevision_show', { 'id': estadoRevision.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('estadorevision_edit', { 'id': estadoRevision.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('estadorevision_new') }}">Create a new estadoRevision</a>
+        </li>
+    </ul>
+{% endblock %}

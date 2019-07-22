@@ -6,18 +6,18 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Fecha</th>
                 <th>Numero</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for remito in remitos %}
             <tr>
-                <td><a href="{{ path('remito_show', { 'id': remito.id }) }}">{{ remito.id }}</a></td>
-                <td>{% if remito.fecha %}{{ remito.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td><a href="{{ path('remito_show', { 'id': remito.id }) }}">{{ remito.fecha }}</a></td>
                 <td>{{ remito.numero }}</td>
+                <td>{{ remito.id }}</td>
                 <td>
                     <ul>
                         <li>

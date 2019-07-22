@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Chequetercero</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Numero</th>
+                <td>{{ chequeTercero.numero }}</td>
+            </tr>
+            <tr>
+                <th>Cuittitular</th>
+                <td>{{ chequeTercero.cuitTitular }}</td>
+            </tr>
+            <tr>
+                <th>Nombretitular</th>
+                <td>{{ chequeTercero.nombreTitular }}</td>
+            </tr>
+            <tr>
+                <th>Fechacobro</th>
+                <td>{% if chequeTercero.fechaCobro %}{{ chequeTercero.fechaCobro|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fechaemision</th>
+                <td>{% if chequeTercero.fechaEmision %}{{ chequeTercero.fechaEmision|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Fecharecibido</th>
+                <td>{% if chequeTercero.fechaRecibido %}{{ chequeTercero.fechaRecibido|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ chequeTercero.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('chequetercero_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('chequetercero_edit', { 'id': chequeTercero.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

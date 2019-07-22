@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Detallepresupuestos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Cantidad</th>
+                <th>Subtotal</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for detallePresupuesto in detallePresupuestos %}
+            <tr>
+                <td><a href="{{ path('detallepresupuesto_show', { 'id': detallePresupuesto.id }) }}">{{ detallePresupuesto.cantidad }}</a></td>
+                <td>{{ detallePresupuesto.subtotal }}</td>
+                <td>{{ detallePresupuesto.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('detallepresupuesto_show', { 'id': detallePresupuesto.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('detallepresupuesto_edit', { 'id': detallePresupuesto.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('detallepresupuesto_new') }}">Create a new detallePresupuesto</a>
+        </li>
+    </ul>
+{% endblock %}

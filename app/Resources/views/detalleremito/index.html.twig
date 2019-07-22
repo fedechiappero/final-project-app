@@ -7,8 +7,6 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Idproducto</th>
-                <th>Idremito</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -16,8 +14,6 @@
         {% for detalleRemito in detalleRemitos %}
             <tr>
                 <td><a href="{{ path('detalleremito_show', { 'id': detalleRemito.id }) }}">{{ detalleRemito.id }}</a></td>
-                <td>{{ detalleRemito.idProducto }}</td>
-                <td>{{ detalleRemito.idRemito }}</td>
                 <td>
                     <ul>
                         <li>

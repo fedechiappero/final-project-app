@@ -6,22 +6,18 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Idproveedor</th>
-                <th>Idproducto</th>
                 <th>Precio</th>
                 <th>Fechaultimaactualizacion</th>
+                <th>Id</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for precio in precios %}
             <tr>
-                <td><a href="{{ path('precio_show', { 'id': precio.id }) }}">{{ precio.id }}</a></td>
-                <td>{{ precio.idProveedor }}</td>
-                <td>{{ precio.idProducto }}</td>
-                <td>{{ precio.precio }}</td>
+                <td><a href="{{ path('precio_show', { 'id': precio.id }) }}">{{ precio.precio }}</a></td>
                 <td>{% if precio.fechaUltimaActualizacion %}{{ precio.fechaUltimaActualizacion|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ precio.id }}</td>
                 <td>
                     <ul>
                         <li>

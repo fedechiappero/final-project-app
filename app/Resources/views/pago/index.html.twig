@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pagos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Numerorecibo</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pago in pagos %}
+            <tr>
+                <td><a href="{{ path('pago_show', { 'id': pago.id }) }}">{{ pago.fecha }}</a></td>
+                <td>{{ pago.numeroRecibo }}</td>
+                <td>{{ pago.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('pago_show', { 'id': pago.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('pago_edit', { 'id': pago.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pago_new') }}">Create a new pago</a>
+        </li>
+    </ul>
+{% endblock %}

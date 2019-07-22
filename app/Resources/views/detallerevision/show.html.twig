@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Detallerevision</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Descripcion</th>
+                <td>{{ detalleRevision.descripcion }}</td>
+            </tr>
+            <tr>
+                <th>Hora</th>
+                <td>{% if detalleRevision.hora %}{{ detalleRevision.hora|date('H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ detalleRevision.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('detallerevision_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('detallerevision_edit', { 'id': detalleRevision.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

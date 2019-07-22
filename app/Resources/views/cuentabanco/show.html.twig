@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cuentabanco</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Numero</th>
+                <td>{{ cuentaBanco.numero }}</td>
+            </tr>
+            <tr>
+                <th>Cbu</th>
+                <td>{{ cuentaBanco.cbu }}</td>
+            </tr>
+            <tr>
+                <th>Activa</th>
+                <td>{% if cuentaBanco.activa %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ cuentaBanco.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('cuentabanco_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('cuentabanco_edit', { 'id': cuentaBanco.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

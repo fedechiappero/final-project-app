@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Contrato</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Fechaemision</th>
+                <td>{% if contrato.fechaEmision %}{{ contrato.fechaEmision|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Numero</th>
+                <td>{{ contrato.numero }}</td>
+            </tr>
+            <tr>
+                <th>Arquitectonombre</th>
+                <td>{{ contrato.arquitectoNombre }}</td>
+            </tr>
+            <tr>
+                <th>Arquitectomatricula</th>
+                <td>{{ contrato.arquitectoMatricula }}</td>
+            </tr>
+            <tr>
+                <th>Arquitectodomicilio</th>
+                <td>{{ contrato.arquitectoDomicilio }}</td>
+            </tr>
+            <tr>
+                <th>Fechaestimadainicio</th>
+                <td>{% if contrato.fechaEstimadaInicio %}{{ contrato.fechaEstimadaInicio|date('Y-m-d') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ contrato.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('contrato_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('contrato_edit', { 'id': contrato.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

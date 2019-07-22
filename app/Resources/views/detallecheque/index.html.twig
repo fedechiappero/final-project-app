@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Detallecheques list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for detalleCheque in detalleCheques %}
+            <tr>
+                <td><a href="{{ path('detallecheque_show', { 'id': detalleCheque.id }) }}">{{ detalleCheque.id }}</a></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('detallecheque_show', { 'id': detalleCheque.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('detallecheque_edit', { 'id': detalleCheque.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('detallecheque_new') }}">Create a new detalleCheque</a>
+        </li>
+    </ul>
+{% endblock %}

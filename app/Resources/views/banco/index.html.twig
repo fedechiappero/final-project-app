@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bancos list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for banco in bancos %}
+            <tr>
+                <td><a href="{{ path('banco_show', { 'id': banco.id }) }}">{{ banco.nombre }}</a></td>
+                <td>{{ banco.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('banco_show', { 'id': banco.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('banco_edit', { 'id': banco.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('banco_new') }}">Create a new banco</a>
+        </li>
+    </ul>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Transferencia</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Numero</th>
+                <td>{{ transferencia.numero }}</td>
+            </tr>
+            <tr>
+                <th>Titular</th>
+                <td>{{ transferencia.titular }}</td>
+            </tr>
+            <tr>
+                <th>Cuit</th>
+                <td>{{ transferencia.cuit }}</td>
+            </tr>
+            <tr>
+                <th>Fecha</th>
+                <td>{% if transferencia.fecha %}{{ transferencia.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ transferencia.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('transferencia_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('transferencia_edit', { 'id': transferencia.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

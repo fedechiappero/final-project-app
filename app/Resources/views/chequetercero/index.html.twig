@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Chequeterceros list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Numero</th>
+                <th>Cuittitular</th>
+                <th>Nombretitular</th>
+                <th>Fechacobro</th>
+                <th>Fechaemision</th>
+                <th>Fecharecibido</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for chequeTercero in chequeTerceros %}
+            <tr>
+                <td><a href="{{ path('chequetercero_show', { 'id': chequeTercero.id }) }}">{{ chequeTercero.numero }}</a></td>
+                <td>{{ chequeTercero.cuitTitular }}</td>
+                <td>{{ chequeTercero.nombreTitular }}</td>
+                <td>{% if chequeTercero.fechaCobro %}{{ chequeTercero.fechaCobro|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if chequeTercero.fechaEmision %}{{ chequeTercero.fechaEmision|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if chequeTercero.fechaRecibido %}{{ chequeTercero.fechaRecibido|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ chequeTercero.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('chequetercero_show', { 'id': chequeTercero.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('chequetercero_edit', { 'id': chequeTercero.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('chequetercero_new') }}">Create a new chequeTercero</a>
+        </li>
+    </ul>
+{% endblock %}

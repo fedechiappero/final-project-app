@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Chequeras list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Numeroinicial</th>
+                <th>Cantidadcheques</th>
+                <th>Fecha</th>
+                <th>Activa</th>
+                <th>Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for chequera in chequeras %}
+            <tr>
+                <td><a href="{{ path('chequera_show', { 'id': chequera.id }) }}">{{ chequera.numeroInicial }}</a></td>
+                <td>{{ chequera.cantidadCheques }}</td>
+                <td>{% if chequera.fecha %}{{ chequera.fecha|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if chequera.activa %}Yes{% else %}No{% endif %}</td>
+                <td>{{ chequera.id }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('chequera_show', { 'id': chequera.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('chequera_edit', { 'id': chequera.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('chequera_new') }}">Create a new chequera</a>
+        </li>
+    </ul>
+{% endblock %}
