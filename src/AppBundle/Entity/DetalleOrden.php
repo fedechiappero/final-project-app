@@ -7,153 +7,54 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DetalleOrden
  *
- * @ORM\Table(name="detalle_orden")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DetalleOrdenRepository")
+ * @ORM\Table(name="detalle_orden", indexes={@ORM\Index(name="id_orden", columns={"id_orden"}), @ORM\Index(name="id_producto", columns={"id_producto"})})
+ * @ORM\Entity
  */
 class DetalleOrden
 {
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_orden", type="integer")
-     */
-    private $idOrden;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_producto", type="integer")
-     */
-    private $idProducto;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="cantidad", type="integer")
+     * @ORM\Column(name="cantidad", type="integer", nullable=false)
      */
     private $cantidad;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="precio_unitario", type="float")
+     * @ORM\Column(name="precio_unitario", type="float", precision=10, scale=0, nullable=false)
      */
     private $precioUnitario;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
     /**
-     * Get id
+     * @var \AppBundle\Entity\Producto
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Producto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idProducto;
 
     /**
-     * Set idOrden
+     * @var \AppBundle\Entity\OrdenCompra
      *
-     * @param integer $idOrden
-     *
-     * @return DetalleOrden
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OrdenCompra")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_orden", referencedColumnName="id")
+     * })
      */
-    public function setIdOrden($idOrden)
-    {
-        $this->idOrden = $idOrden;
+    private $idOrden;
 
-        return $this;
-    }
 
-    /**
-     * Get idOrden
-     *
-     * @return int
-     */
-    public function getIdOrden()
-    {
-        return $this->idOrden;
-    }
-
-    /**
-     * Set idProducto
-     *
-     * @param integer $idProducto
-     *
-     * @return DetalleOrden
-     */
-    public function setIdProducto($idProducto)
-    {
-        $this->idProducto = $idProducto;
-
-        return $this;
-    }
-
-    /**
-     * Get idProducto
-     *
-     * @return int
-     */
-    public function getIdProducto()
-    {
-        return $this->idProducto;
-    }
-
-    /**
-     * Set cantidad
-     *
-     * @param integer $cantidad
-     *
-     * @return DetalleOrden
-     */
-    public function setCantidad($cantidad)
-    {
-        $this->cantidad = $cantidad;
-
-        return $this;
-    }
-
-    /**
-     * Get cantidad
-     *
-     * @return int
-     */
-    public function getCantidad()
-    {
-        return $this->cantidad;
-    }
-
-    /**
-     * Set precioUnitario
-     *
-     * @param float $precioUnitario
-     *
-     * @return DetalleOrden
-     */
-    public function setPrecioUnitario($precioUnitario)
-    {
-        $this->precioUnitario = $precioUnitario;
-
-        return $this;
-    }
-
-    /**
-     * Get precioUnitario
-     *
-     * @return float
-     */
-    public function getPrecioUnitario()
-    {
-        return $this->precioUnitario;
-    }
 }
 

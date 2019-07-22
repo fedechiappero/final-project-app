@@ -7,153 +7,54 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DetallePresupuesto
  *
- * @ORM\Table(name="detalle_presupuesto")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DetallePresupuestoRepository")
+ * @ORM\Table(name="detalle_presupuesto", indexes={@ORM\Index(name="id_sitiotarea", columns={"id_sitiotarea"}), @ORM\Index(name="id_presupuesto", columns={"id_presupuesto"})})
+ * @ORM\Entity
  */
 class DetallePresupuesto
 {
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_sitiotarea", type="integer")
-     */
-    private $idSitiotarea;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_presupuesto", type="integer")
-     */
-    private $idPresupuesto;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="cantidad", type="integer")
+     * @ORM\Column(name="cantidad", type="integer", nullable=false)
      */
     private $cantidad;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="subtotal", type="float")
+     * @ORM\Column(name="subtotal", type="float", precision=10, scale=0, nullable=false)
      */
     private $subtotal;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
     /**
-     * Get id
+     * @var \AppBundle\Entity\Presupuesto
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Presupuesto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_presupuesto", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idPresupuesto;
 
     /**
-     * Set idSitiotarea
+     * @var \AppBundle\Entity\SitioTarea
      *
-     * @param integer $idSitiotarea
-     *
-     * @return DetallePresupuesto
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SitioTarea")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_sitiotarea", referencedColumnName="id")
+     * })
      */
-    public function setIdSitiotarea($idSitiotarea)
-    {
-        $this->idSitiotarea = $idSitiotarea;
+    private $idSitiotarea;
 
-        return $this;
-    }
 
-    /**
-     * Get idSitiotarea
-     *
-     * @return int
-     */
-    public function getIdSitiotarea()
-    {
-        return $this->idSitiotarea;
-    }
-
-    /**
-     * Set idPresupuesto
-     *
-     * @param integer $idPresupuesto
-     *
-     * @return DetallePresupuesto
-     */
-    public function setIdPresupuesto($idPresupuesto)
-    {
-        $this->idPresupuesto = $idPresupuesto;
-
-        return $this;
-    }
-
-    /**
-     * Get idPresupuesto
-     *
-     * @return int
-     */
-    public function getIdPresupuesto()
-    {
-        return $this->idPresupuesto;
-    }
-
-    /**
-     * Set cantidad
-     *
-     * @param integer $cantidad
-     *
-     * @return DetallePresupuesto
-     */
-    public function setCantidad($cantidad)
-    {
-        $this->cantidad = $cantidad;
-
-        return $this;
-    }
-
-    /**
-     * Get cantidad
-     *
-     * @return int
-     */
-    public function getCantidad()
-    {
-        return $this->cantidad;
-    }
-
-    /**
-     * Set subtotal
-     *
-     * @param float $subtotal
-     *
-     * @return DetallePresupuesto
-     */
-    public function setSubtotal($subtotal)
-    {
-        $this->subtotal = $subtotal;
-
-        return $this;
-    }
-
-    /**
-     * Get subtotal
-     *
-     * @return float
-     */
-    public function getSubtotal()
-    {
-        return $this->subtotal;
-    }
 }
 

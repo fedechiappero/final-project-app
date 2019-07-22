@@ -7,153 +7,54 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Precio
  *
- * @ORM\Table(name="precio")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PrecioRepository")
+ * @ORM\Table(name="precio", indexes={@ORM\Index(name="id_proveedor", columns={"id_proveedor"}), @ORM\Index(name="id_producto", columns={"id_producto"})})
+ * @ORM\Entity
  */
 class Precio
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_proveedor", type="integer")
-     */
-    private $idProveedor;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_producto", type="integer")
-     */
-    private $idProducto;
-
-    /**
      * @var float
      *
-     * @ORM\Column(name="precio", type="float")
+     * @ORM\Column(name="precio", type="float", precision=10, scale=0, nullable=false)
      */
     private $precio;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_ultima_actualizacion", type="datetime")
+     * @ORM\Column(name="fecha_ultima_actualizacion", type="datetime", nullable=false)
      */
     private $fechaUltimaActualizacion;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
     /**
-     * Get id
+     * @var \AppBundle\Entity\Producto
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Producto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idProducto;
 
     /**
-     * Set idProveedor
+     * @var \AppBundle\Entity\Proveedor
      *
-     * @param integer $idProveedor
-     *
-     * @return Precio
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Proveedor")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_proveedor", referencedColumnName="id")
+     * })
      */
-    public function setIdProveedor($idProveedor)
-    {
-        $this->idProveedor = $idProveedor;
+    private $idProveedor;
 
-        return $this;
-    }
 
-    /**
-     * Get idProveedor
-     *
-     * @return int
-     */
-    public function getIdProveedor()
-    {
-        return $this->idProveedor;
-    }
-
-    /**
-     * Set idProducto
-     *
-     * @param integer $idProducto
-     *
-     * @return Precio
-     */
-    public function setIdProducto($idProducto)
-    {
-        $this->idProducto = $idProducto;
-
-        return $this;
-    }
-
-    /**
-     * Get idProducto
-     *
-     * @return int
-     */
-    public function getIdProducto()
-    {
-        return $this->idProducto;
-    }
-
-    /**
-     * Set precio
-     *
-     * @param float $precio
-     *
-     * @return Precio
-     */
-    public function setPrecio($precio)
-    {
-        $this->precio = $precio;
-
-        return $this;
-    }
-
-    /**
-     * Get precio
-     *
-     * @return float
-     */
-    public function getPrecio()
-    {
-        return $this->precio;
-    }
-
-    /**
-     * Set fechaUltimaActualizacion
-     *
-     * @param \DateTime $fechaUltimaActualizacion
-     *
-     * @return Precio
-     */
-    public function setFechaUltimaActualizacion($fechaUltimaActualizacion)
-    {
-        $this->fechaUltimaActualizacion = $fechaUltimaActualizacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaUltimaActualizacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaUltimaActualizacion()
-    {
-        return $this->fechaUltimaActualizacion;
-    }
 }
 

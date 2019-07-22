@@ -8,59 +8,29 @@ use Doctrine\ORM\Mapping as ORM;
  * Caducidad
  *
  * @ORM\Table(name="caducidad")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CaducidadRepository")
+ * @ORM\Entity
  */
 class Caducidad
 {
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="cantidad_meses", type="integer")
+     * @ORM\Column(name="cantidad_meses", type="integer", nullable=false)
      */
     private $cantidadMeses;
 
-
     /**
-     * Get id
+     * @var \AppBundle\Entity\Producto
      *
-     * @return int
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Producto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $id;
 
-    /**
-     * Set cantidadMeses
-     *
-     * @param integer $cantidadMeses
-     *
-     * @return Caducidad
-     */
-    public function setCantidadMeses($cantidadMeses)
-    {
-        $this->cantidadMeses = $cantidadMeses;
 
-        return $this;
-    }
-
-    /**
-     * Get cantidadMeses
-     *
-     * @return int
-     */
-    public function getCantidadMeses()
-    {
-        return $this->cantidadMeses;
-    }
 }
 

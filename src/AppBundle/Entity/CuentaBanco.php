@@ -7,153 +7,51 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CuentaBanco
  *
- * @ORM\Table(name="cuenta_banco")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\CuentaBancoRepository")
+ * @ORM\Table(name="cuenta_banco", indexes={@ORM\Index(name="id_banco", columns={"id_banco"})})
+ * @ORM\Entity
  */
 class CuentaBanco
 {
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_banco", type="integer")
-     */
-    private $idBanco;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numero", type="integer")
+     * @ORM\Column(name="numero", type="integer", nullable=false)
      */
     private $numero;
 
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="cbu", type="integer")
+     * @ORM\Column(name="cbu", type="integer", nullable=false)
      */
     private $cbu;
 
     /**
-     * @var bool
+     * @var boolean
      *
-     * @ORM\Column(name="activa", type="boolean")
+     * @ORM\Column(name="activa", type="boolean", nullable=false)
      */
     private $activa;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
     /**
-     * Get id
+     * @var \AppBundle\Entity\Banco
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Banco")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_banco", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idBanco;
 
-    /**
-     * Set idBanco
-     *
-     * @param integer $idBanco
-     *
-     * @return CuentaBanco
-     */
-    public function setIdBanco($idBanco)
-    {
-        $this->idBanco = $idBanco;
 
-        return $this;
-    }
-
-    /**
-     * Get idBanco
-     *
-     * @return int
-     */
-    public function getIdBanco()
-    {
-        return $this->idBanco;
-    }
-
-    /**
-     * Set numero
-     *
-     * @param integer $numero
-     *
-     * @return CuentaBanco
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return int
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
-     * Set cbu
-     *
-     * @param integer $cbu
-     *
-     * @return CuentaBanco
-     */
-    public function setCbu($cbu)
-    {
-        $this->cbu = $cbu;
-
-        return $this;
-    }
-
-    /**
-     * Get cbu
-     *
-     * @return int
-     */
-    public function getCbu()
-    {
-        return $this->cbu;
-    }
-
-    /**
-     * Set activa
-     *
-     * @param boolean $activa
-     *
-     * @return CuentaBanco
-     */
-    public function setActiva($activa)
-    {
-        $this->activa = $activa;
-
-        return $this;
-    }
-
-    /**
-     * Get activa
-     *
-     * @return bool
-     */
-    public function getActiva()
-    {
-        return $this->activa;
-    }
 }
 

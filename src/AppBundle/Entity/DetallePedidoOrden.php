@@ -7,91 +7,40 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DetallePedidoOrden
  *
- * @ORM\Table(name="detalle_pedido_orden")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DetallePedidoOrdenRepository")
+ * @ORM\Table(name="detalle_pedido_orden", indexes={@ORM\Index(name="id_pedido", columns={"id_pedido"}), @ORM\Index(name="id_orden", columns={"id_orden"})})
+ * @ORM\Entity
  */
 class DetallePedidoOrden
 {
     /**
-     * @var int
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int
+     * @var \AppBundle\Entity\OrdenCompra
      *
-     * @ORM\Column(name="id_pedido", type="integer")
-     */
-    private $idPedido;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_orden", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\OrdenCompra")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_orden", referencedColumnName="id")
+     * })
      */
     private $idOrden;
 
-
     /**
-     * Get id
+     * @var \AppBundle\Entity\Pedido
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pedido")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_pedido", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idPedido;
 
-    /**
-     * Set idPedido
-     *
-     * @param integer $idPedido
-     *
-     * @return DetallePedidoOrden
-     */
-    public function setIdPedido($idPedido)
-    {
-        $this->idPedido = $idPedido;
 
-        return $this;
-    }
-
-    /**
-     * Get idPedido
-     *
-     * @return int
-     */
-    public function getIdPedido()
-    {
-        return $this->idPedido;
-    }
-
-    /**
-     * Set idOrden
-     *
-     * @param integer $idOrden
-     *
-     * @return DetallePedidoOrden
-     */
-    public function setIdOrden($idOrden)
-    {
-        $this->idOrden = $idOrden;
-
-        return $this;
-    }
-
-    /**
-     * Get idOrden
-     *
-     * @return int
-     */
-    public function getIdOrden()
-    {
-        return $this->idOrden;
-    }
 }
 

@@ -7,91 +7,40 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DetalleCheque
  *
- * @ORM\Table(name="detalle_cheque")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DetalleChequeRepository")
+ * @ORM\Table(name="detalle_cheque", indexes={@ORM\Index(name="id_pago", columns={"id_pago"}), @ORM\Index(name="id_cheque", columns={"id_cheque"})})
+ * @ORM\Entity
  */
 class DetalleCheque
 {
     /**
-     * @var int
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int
+     * @var \AppBundle\Entity\ChequeTercero
      *
-     * @ORM\Column(name="id_pago", type="integer")
-     */
-    private $idPago;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_cheque", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ChequeTercero")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_cheque", referencedColumnName="id")
+     * })
      */
     private $idCheque;
 
-
     /**
-     * Get id
+     * @var \AppBundle\Entity\Pago
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pago")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_pago", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idPago;
 
-    /**
-     * Set idPago
-     *
-     * @param integer $idPago
-     *
-     * @return DetalleCheque
-     */
-    public function setIdPago($idPago)
-    {
-        $this->idPago = $idPago;
 
-        return $this;
-    }
-
-    /**
-     * Get idPago
-     *
-     * @return int
-     */
-    public function getIdPago()
-    {
-        return $this->idPago;
-    }
-
-    /**
-     * Set idCheque
-     *
-     * @param integer $idCheque
-     *
-     * @return DetalleCheque
-     */
-    public function setIdCheque($idCheque)
-    {
-        $this->idCheque = $idCheque;
-
-        return $this;
-    }
-
-    /**
-     * Get idCheque
-     *
-     * @return int
-     */
-    public function getIdCheque()
-    {
-        return $this->idCheque;
-    }
 }
 

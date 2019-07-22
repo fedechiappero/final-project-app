@@ -7,122 +7,47 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PagoMedioPago
  *
- * @ORM\Table(name="pago_medio_pago")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PagoMedioPagoRepository")
+ * @ORM\Table(name="pago_medio_pago", indexes={@ORM\Index(name="id_pago", columns={"id_pago"}), @ORM\Index(name="id_medio_pago", columns={"id_medio_pago"})})
+ * @ORM\Entity
  */
 class PagoMedioPago
 {
     /**
-     * @var int
+     * @var float
+     *
+     * @ORM\Column(name="importe", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $importe;
+
+    /**
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int
+     * @var \AppBundle\Entity\MedioPago
      *
-     * @ORM\Column(name="id_pago", type="integer")
-     */
-    private $idPago;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_medio_pago", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\MedioPago")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_medio_pago", referencedColumnName="id")
+     * })
      */
     private $idMedioPago;
 
     /**
-     * @var float
+     * @var \AppBundle\Entity\Pago
      *
-     * @ORM\Column(name="importe", type="float")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pago")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_pago", referencedColumnName="id")
+     * })
      */
-    private $importe;
+    private $idPago;
 
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set idPago
-     *
-     * @param integer $idPago
-     *
-     * @return PagoMedioPago
-     */
-    public function setIdPago($idPago)
-    {
-        $this->idPago = $idPago;
-
-        return $this;
-    }
-
-    /**
-     * Get idPago
-     *
-     * @return int
-     */
-    public function getIdPago()
-    {
-        return $this->idPago;
-    }
-
-    /**
-     * Set idMedioPago
-     *
-     * @param integer $idMedioPago
-     *
-     * @return PagoMedioPago
-     */
-    public function setIdMedioPago($idMedioPago)
-    {
-        $this->idMedioPago = $idMedioPago;
-
-        return $this;
-    }
-
-    /**
-     * Get idMedioPago
-     *
-     * @return int
-     */
-    public function getIdMedioPago()
-    {
-        return $this->idMedioPago;
-    }
-
-    /**
-     * Set importe
-     *
-     * @param float $importe
-     *
-     * @return PagoMedioPago
-     */
-    public function setImporte($importe)
-    {
-        $this->importe = $importe;
-
-        return $this;
-    }
-
-    /**
-     * Get importe
-     *
-     * @return float
-     */
-    public function getImporte()
-    {
-        return $this->importe;
-    }
 }
 

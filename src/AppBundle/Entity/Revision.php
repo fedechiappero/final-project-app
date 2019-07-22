@@ -7,91 +7,37 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Revision
  *
- * @ORM\Table(name="revision")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RevisionRepository")
+ * @ORM\Table(name="revision", indexes={@ORM\Index(name="id_obra", columns={"id_obra"})})
+ * @ORM\Entity
  */
 class Revision
 {
     /**
-     * @var int
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="date", nullable=false)
+     */
+    private $fecha;
+
+    /**
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int
+     * @var \AppBundle\Entity\Obra
      *
-     * @ORM\Column(name="id_obra", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Obra")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_obra", referencedColumnName="id")
+     * })
      */
     private $idObra;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha", type="date")
-     */
-    private $fecha;
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set idObra
-     *
-     * @param integer $idObra
-     *
-     * @return Revision
-     */
-    public function setIdObra($idObra)
-    {
-        $this->idObra = $idObra;
-
-        return $this;
-    }
-
-    /**
-     * Get idObra
-     *
-     * @return int
-     */
-    public function getIdObra()
-    {
-        return $this->idObra;
-    }
-
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return Revision
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
 }
 

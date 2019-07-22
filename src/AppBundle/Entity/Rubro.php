@@ -8,59 +8,26 @@ use Doctrine\ORM\Mapping as ORM;
  * Rubro
  *
  * @ORM\Table(name="rubro")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RubroRepository")
+ * @ORM\Entity
  */
 class Rubro
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255)
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=false)
      */
     private $nombre;
 
-
     /**
-     * Get id
+     * @var integer
      *
-     * @return int
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $id;
 
-    /**
-     * Set nombre
-     *
-     * @param string $nombre
-     *
-     * @return Rubro
-     */
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
 
-        return $this;
-    }
-
-    /**
-     * Get nombre
-     *
-     * @return string
-     */
-    public function getNombre()
-    {
-        return $this->nombre;
-    }
 }
 

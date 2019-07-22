@@ -7,91 +7,40 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ContratistaRubro
  *
- * @ORM\Table(name="contratista_rubro")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ContratistaRubroRepository")
+ * @ORM\Table(name="contratista_rubro", indexes={@ORM\Index(name="contratista_rubro_ibfk_1", columns={"id_contratista"}), @ORM\Index(name="id_rubro", columns={"id_rubro"})})
+ * @ORM\Entity
  */
 class ContratistaRubro
 {
     /**
-     * @var int
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int
+     * @var \AppBundle\Entity\Rubro
      *
-     * @ORM\Column(name="id_contratista", type="integer")
-     */
-    private $idContratista;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_rubro", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Rubro")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_rubro", referencedColumnName="id")
+     * })
      */
     private $idRubro;
 
-
     /**
-     * Get id
+     * @var \AppBundle\Entity\Contratista
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Contratista")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_contratista", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idContratista;
 
-    /**
-     * Set idContratista
-     *
-     * @param integer $idContratista
-     *
-     * @return ContratistaRubro
-     */
-    public function setIdContratista($idContratista)
-    {
-        $this->idContratista = $idContratista;
 
-        return $this;
-    }
-
-    /**
-     * Get idContratista
-     *
-     * @return int
-     */
-    public function getIdContratista()
-    {
-        return $this->idContratista;
-    }
-
-    /**
-     * Set idRubro
-     *
-     * @param integer $idRubro
-     *
-     * @return ContratistaRubro
-     */
-    public function setIdRubro($idRubro)
-    {
-        $this->idRubro = $idRubro;
-
-        return $this;
-    }
-
-    /**
-     * Get idRubro
-     *
-     * @return int
-     */
-    public function getIdRubro()
-    {
-        return $this->idRubro;
-    }
 }
 

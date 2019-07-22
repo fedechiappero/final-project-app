@@ -7,91 +7,40 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DetalleRemito
  *
- * @ORM\Table(name="detalle_remito")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DetalleRemitoRepository")
+ * @ORM\Table(name="detalle_remito", indexes={@ORM\Index(name="id_producto", columns={"id_producto"}), @ORM\Index(name="id_remito", columns={"id_remito"})})
+ * @ORM\Entity
  */
 class DetalleRemito
 {
     /**
-     * @var int
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int
+     * @var \AppBundle\Entity\Remito
      *
-     * @ORM\Column(name="id_producto", type="integer")
-     */
-    private $idProducto;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_remito", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Remito")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_remito", referencedColumnName="id")
+     * })
      */
     private $idRemito;
 
-
     /**
-     * Get id
+     * @var \AppBundle\Entity\Producto
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Producto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idProducto;
 
-    /**
-     * Set idProducto
-     *
-     * @param integer $idProducto
-     *
-     * @return DetalleRemito
-     */
-    public function setIdProducto($idProducto)
-    {
-        $this->idProducto = $idProducto;
 
-        return $this;
-    }
-
-    /**
-     * Get idProducto
-     *
-     * @return int
-     */
-    public function getIdProducto()
-    {
-        return $this->idProducto;
-    }
-
-    /**
-     * Set idRemito
-     *
-     * @param integer $idRemito
-     *
-     * @return DetalleRemito
-     */
-    public function setIdRemito($idRemito)
-    {
-        $this->idRemito = $idRemito;
-
-        return $this;
-    }
-
-    /**
-     * Get idRemito
-     *
-     * @return int
-     */
-    public function getIdRemito()
-    {
-        return $this->idRemito;
-    }
 }
 

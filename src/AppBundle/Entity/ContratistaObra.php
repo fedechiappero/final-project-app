@@ -7,153 +7,54 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ContratistaObra
  *
- * @ORM\Table(name="contratista_obra")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ContratistaObraRepository")
+ * @ORM\Table(name="contratista_obra", indexes={@ORM\Index(name="id_contratista_rubro", columns={"id_contratista_rubro"}), @ORM\Index(name="id_obra", columns={"id_obra"})})
+ * @ORM\Entity
  */
 class ContratistaObra
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_contratista_rubro", type="integer")
-     */
-    private $idContratistaRubro;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_obra", type="integer")
-     */
-    private $idObra;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_desde", type="date")
+     * @ORM\Column(name="fecha_desde", type="date", nullable=false)
      */
     private $fechaDesde;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha_hasta", type="date")
+     * @ORM\Column(name="fecha_hasta", type="date", nullable=false)
      */
     private $fechaHasta;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
     /**
-     * Get id
+     * @var \AppBundle\Entity\Obra
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Obra")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_obra", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idObra;
 
     /**
-     * Set idContratistaRubro
+     * @var \AppBundle\Entity\ContratistaRubro
      *
-     * @param integer $idContratistaRubro
-     *
-     * @return ContratistaObra
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ContratistaRubro")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_contratista_rubro", referencedColumnName="id")
+     * })
      */
-    public function setIdContratistaRubro($idContratistaRubro)
-    {
-        $this->idContratistaRubro = $idContratistaRubro;
+    private $idContratistaRubro;
 
-        return $this;
-    }
 
-    /**
-     * Get idContratistaRubro
-     *
-     * @return int
-     */
-    public function getIdContratistaRubro()
-    {
-        return $this->idContratistaRubro;
-    }
-
-    /**
-     * Set idObra
-     *
-     * @param integer $idObra
-     *
-     * @return ContratistaObra
-     */
-    public function setIdObra($idObra)
-    {
-        $this->idObra = $idObra;
-
-        return $this;
-    }
-
-    /**
-     * Get idObra
-     *
-     * @return int
-     */
-    public function getIdObra()
-    {
-        return $this->idObra;
-    }
-
-    /**
-     * Set fechaDesde
-     *
-     * @param \DateTime $fechaDesde
-     *
-     * @return ContratistaObra
-     */
-    public function setFechaDesde($fechaDesde)
-    {
-        $this->fechaDesde = $fechaDesde;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaDesde
-     *
-     * @return \DateTime
-     */
-    public function getFechaDesde()
-    {
-        return $this->fechaDesde;
-    }
-
-    /**
-     * Set fechaHasta
-     *
-     * @param \DateTime $fechaHasta
-     *
-     * @return ContratistaObra
-     */
-    public function setFechaHasta($fechaHasta)
-    {
-        $this->fechaHasta = $fechaHasta;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaHasta
-     *
-     * @return \DateTime
-     */
-    public function getFechaHasta()
-    {
-        return $this->fechaHasta;
-    }
 }
 

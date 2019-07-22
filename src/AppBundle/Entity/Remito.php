@@ -8,90 +8,33 @@ use Doctrine\ORM\Mapping as ORM;
  * Remito
  *
  * @ORM\Table(name="remito")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\RemitoRepository")
+ * @ORM\Entity
  */
 class Remito
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="datetime")
+     * @ORM\Column(name="fecha", type="datetime", nullable=false)
      */
     private $fecha;
 
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="numero", type="integer")
+     * @ORM\Column(name="numero", type="integer", nullable=false)
      */
     private $numero;
 
-
     /**
-     * Get id
+     * @var integer
      *
-     * @return int
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $id;
 
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return Remito
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
 
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
-     * Set numero
-     *
-     * @param integer $numero
-     *
-     * @return Remito
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return int
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
 }
 

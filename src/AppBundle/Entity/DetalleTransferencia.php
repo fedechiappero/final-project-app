@@ -7,91 +7,40 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DetalleTransferencia
  *
- * @ORM\Table(name="detalle_transferencia")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DetalleTransferenciaRepository")
+ * @ORM\Table(name="detalle_transferencia", indexes={@ORM\Index(name="id_pago", columns={"id_pago"}), @ORM\Index(name="id_transferencia", columns={"id_transferencia"})})
+ * @ORM\Entity
  */
 class DetalleTransferencia
 {
     /**
-     * @var int
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int
+     * @var \AppBundle\Entity\Transferencia
      *
-     * @ORM\Column(name="id_pago", type="integer")
-     */
-    private $idPago;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_transferencia", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Transferencia")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_transferencia", referencedColumnName="id")
+     * })
      */
     private $idTransferencia;
 
-
     /**
-     * Get id
+     * @var \AppBundle\Entity\Pago
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pago")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_pago", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idPago;
 
-    /**
-     * Set idPago
-     *
-     * @param integer $idPago
-     *
-     * @return DetalleTransferencia
-     */
-    public function setIdPago($idPago)
-    {
-        $this->idPago = $idPago;
 
-        return $this;
-    }
-
-    /**
-     * Get idPago
-     *
-     * @return int
-     */
-    public function getIdPago()
-    {
-        return $this->idPago;
-    }
-
-    /**
-     * Set idTransferencia
-     *
-     * @param integer $idTransferencia
-     *
-     * @return DetalleTransferencia
-     */
-    public function setIdTransferencia($idTransferencia)
-    {
-        $this->idTransferencia = $idTransferencia;
-
-        return $this;
-    }
-
-    /**
-     * Get idTransferencia
-     *
-     * @return int
-     */
-    public function getIdTransferencia()
-    {
-        return $this->idTransferencia;
-    }
 }
 

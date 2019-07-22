@@ -7,91 +7,40 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ContactoAlternativo
  *
- * @ORM\Table(name="contacto_alternativo")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ContactoAlternativoRepository")
+ * @ORM\Table(name="contacto_alternativo", indexes={@ORM\Index(name="id_persona", columns={"id_persona"}), @ORM\Index(name="id_contacto", columns={"id_contacto"})})
+ * @ORM\Entity
  */
 class ContactoAlternativo
 {
     /**
-     * @var int
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
     /**
-     * @var int
+     * @var \AppBundle\Entity\Persona
      *
-     * @ORM\Column(name="id_persona", type="integer")
-     */
-    private $idPersona;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_contacto", type="integer")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Persona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_contacto", referencedColumnName="id")
+     * })
      */
     private $idContacto;
 
-
     /**
-     * Get id
+     * @var \AppBundle\Entity\Persona
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Persona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_persona", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idPersona;
 
-    /**
-     * Set idPersona
-     *
-     * @param integer $idPersona
-     *
-     * @return ContactoAlternativo
-     */
-    public function setIdPersona($idPersona)
-    {
-        $this->idPersona = $idPersona;
 
-        return $this;
-    }
-
-    /**
-     * Get idPersona
-     *
-     * @return int
-     */
-    public function getIdPersona()
-    {
-        return $this->idPersona;
-    }
-
-    /**
-     * Set idContacto
-     *
-     * @param integer $idContacto
-     *
-     * @return ContactoAlternativo
-     */
-    public function setIdContacto($idContacto)
-    {
-        $this->idContacto = $idContacto;
-
-        return $this;
-    }
-
-    /**
-     * Get idContacto
-     *
-     * @return int
-     */
-    public function getIdContacto()
-    {
-        return $this->idContacto;
-    }
 }
 

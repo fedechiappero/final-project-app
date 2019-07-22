@@ -7,184 +7,64 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * DetalleRevision
  *
- * @ORM\Table(name="detalle_revision")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\DetalleRevisionRepository")
+ * @ORM\Table(name="detalle_revision", indexes={@ORM\Index(name="id_revision", columns={"id_revision"}), @ORM\Index(name="id_tipo_revision", columns={"id_tipo_revision"}), @ORM\Index(name="id_estado_revision", columns={"id_estado_revision"})})
+ * @ORM\Entity
  */
 class DetalleRevision
 {
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_revision", type="integer")
-     */
-    private $idRevision;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_tipo_revision", type="integer")
-     */
-    private $idTipoRevision;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_estado_revision", type="integer")
-     */
-    private $idEstadoRevision;
-
-    /**
      * @var string
      *
-     * @ORM\Column(name="descripcion", type="string", length=255)
+     * @ORM\Column(name="descripcion", type="string", length=255, nullable=false)
      */
     private $descripcion;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="hora", type="time")
+     * @ORM\Column(name="hora", type="time", nullable=false)
      */
     private $hora;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
     /**
-     * Get id
+     * @var \AppBundle\Entity\EstadoRevision
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\EstadoRevision")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_estado_revision", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idEstadoRevision;
 
     /**
-     * Set idRevision
+     * @var \AppBundle\Entity\TipoRevision
      *
-     * @param integer $idRevision
-     *
-     * @return DetalleRevision
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\TipoRevision")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_tipo_revision", referencedColumnName="id")
+     * })
      */
-    public function setIdRevision($idRevision)
-    {
-        $this->idRevision = $idRevision;
-
-        return $this;
-    }
+    private $idTipoRevision;
 
     /**
-     * Get idRevision
+     * @var \AppBundle\Entity\Revision
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Revision")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_revision", referencedColumnName="id")
+     * })
      */
-    public function getIdRevision()
-    {
-        return $this->idRevision;
-    }
+    private $idRevision;
 
-    /**
-     * Set idTipoRevision
-     *
-     * @param integer $idTipoRevision
-     *
-     * @return DetalleRevision
-     */
-    public function setIdTipoRevision($idTipoRevision)
-    {
-        $this->idTipoRevision = $idTipoRevision;
 
-        return $this;
-    }
-
-    /**
-     * Get idTipoRevision
-     *
-     * @return int
-     */
-    public function getIdTipoRevision()
-    {
-        return $this->idTipoRevision;
-    }
-
-    /**
-     * Set idEstadoRevision
-     *
-     * @param integer $idEstadoRevision
-     *
-     * @return DetalleRevision
-     */
-    public function setIdEstadoRevision($idEstadoRevision)
-    {
-        $this->idEstadoRevision = $idEstadoRevision;
-
-        return $this;
-    }
-
-    /**
-     * Get idEstadoRevision
-     *
-     * @return int
-     */
-    public function getIdEstadoRevision()
-    {
-        return $this->idEstadoRevision;
-    }
-
-    /**
-     * Set descripcion
-     *
-     * @param string $descripcion
-     *
-     * @return DetalleRevision
-     */
-    public function setDescripcion($descripcion)
-    {
-        $this->descripcion = $descripcion;
-
-        return $this;
-    }
-
-    /**
-     * Get descripcion
-     *
-     * @return string
-     */
-    public function getDescripcion()
-    {
-        return $this->descripcion;
-    }
-
-    /**
-     * Set hora
-     *
-     * @param \DateTime $hora
-     *
-     * @return DetalleRevision
-     */
-    public function setHora($hora)
-    {
-        $this->hora = $hora;
-
-        return $this;
-    }
-
-    /**
-     * Get hora
-     *
-     * @return \DateTime
-     */
-    public function getHora()
-    {
-        return $this->hora;
-    }
 }
 

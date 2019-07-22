@@ -7,184 +7,58 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Chequera
  *
- * @ORM\Table(name="chequera")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ChequeraRepository")
+ * @ORM\Table(name="chequera", indexes={@ORM\Index(name="id_cuenta_banco", columns={"id_cuenta_banco"})})
+ * @ORM\Entity
  */
 class Chequera
 {
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_cuenta_banco", type="integer")
-     */
-    private $idCuentaBanco;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numero_inicial", type="integer")
+     * @ORM\Column(name="numero_inicial", type="integer", nullable=false)
      */
     private $numeroInicial;
 
     /**
-     * @var int
+     * @var integer
      *
-     * @ORM\Column(name="cantidad_cheques", type="integer")
+     * @ORM\Column(name="cantidad_cheques", type="integer", nullable=false)
      */
     private $cantidadCheques;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="fecha", type="date")
+     * @ORM\Column(name="fecha", type="date", nullable=false)
      */
     private $fecha;
 
     /**
-     * @var bool
+     * @var boolean
      *
-     * @ORM\Column(name="activa", type="boolean")
+     * @ORM\Column(name="activa", type="boolean", nullable=false)
      */
     private $activa;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
 
     /**
-     * Get id
+     * @var \AppBundle\Entity\CuentaBanco
      *
-     * @return int
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\CuentaBanco")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_cuenta_banco", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idCuentaBanco;
 
-    /**
-     * Set idCuentaBanco
-     *
-     * @param integer $idCuentaBanco
-     *
-     * @return Chequera
-     */
-    public function setIdCuentaBanco($idCuentaBanco)
-    {
-        $this->idCuentaBanco = $idCuentaBanco;
 
-        return $this;
-    }
-
-    /**
-     * Get idCuentaBanco
-     *
-     * @return int
-     */
-    public function getIdCuentaBanco()
-    {
-        return $this->idCuentaBanco;
-    }
-
-    /**
-     * Set numeroInicial
-     *
-     * @param integer $numeroInicial
-     *
-     * @return Chequera
-     */
-    public function setNumeroInicial($numeroInicial)
-    {
-        $this->numeroInicial = $numeroInicial;
-
-        return $this;
-    }
-
-    /**
-     * Get numeroInicial
-     *
-     * @return int
-     */
-    public function getNumeroInicial()
-    {
-        return $this->numeroInicial;
-    }
-
-    /**
-     * Set cantidadCheques
-     *
-     * @param integer $cantidadCheques
-     *
-     * @return Chequera
-     */
-    public function setCantidadCheques($cantidadCheques)
-    {
-        $this->cantidadCheques = $cantidadCheques;
-
-        return $this;
-    }
-
-    /**
-     * Get cantidadCheques
-     *
-     * @return int
-     */
-    public function getCantidadCheques()
-    {
-        return $this->cantidadCheques;
-    }
-
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return Chequera
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
-
-    /**
-     * Set activa
-     *
-     * @param boolean $activa
-     *
-     * @return Chequera
-     */
-    public function setActiva($activa)
-    {
-        $this->activa = $activa;
-
-        return $this;
-    }
-
-    /**
-     * Get activa
-     *
-     * @return bool
-     */
-    public function getActiva()
-    {
-        return $this->activa;
-    }
 }
 
