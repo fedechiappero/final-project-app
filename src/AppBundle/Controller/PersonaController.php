@@ -6,7 +6,10 @@ use AppBundle\Entity\Persona;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
 
 /**
  * Persona controller.
@@ -40,21 +43,40 @@ class PersonaController extends Controller
      */
     public function newAction(Request $request)
     {
-        $persona = new Persona();
-        $form = $this->createForm('AppBundle\Form\PersonaType', $persona);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+        if ($request->isMethod('POST')) {//guardo datos
+
+            $nombre = $request->request->get('nombre');
+            $personajuridica = ($request->request->get('personajuridica') ? true : false);
+            $cuit = $request->request->get('cuit');
+            $documento = $request->request->get('documento');
+            $direccion = $request->request->get('direccion');
+            $celular = $request->request->get('celular');
+            $email = $request->request->get('email');
+            $localidad = $request->request->get('idlocalidad');
+
+            $persona = new Persona();
+            $persona
+                ->setNombre($nombre)
+                ->setPersonaJuridica($personajuridica)
+                ->setCuit($cuit)
+                ->setDocumento($documento)
+                ->setDireccion($direccion)
+                ->setCelular($celular)
+                ->setEmail($email)
+                ->setIdLocalidad($em->find('AppBundle:Localidad', $localidad));
+            ;
             $em->persist($persona);
             $em->flush();
 
             return $this->redirectToRoute('persona_show', array('id' => $persona->getId()));
         }
 
+        //muestro formulario                                  all     orderby
+        $provincias = $em->getRepository('AppBundle:Provincia')->findBy(array(),array('nombre'=>'ASC'));
         return $this->render('persona/new.html.twig', array(
-            'persona' => $persona,
-            'form' => $form->createView(),
+            'provincias' => $provincias
         ));
     }
 
@@ -67,9 +89,13 @@ class PersonaController extends Controller
     public function showAction(Persona $persona)
     {
         $deleteForm = $this->createDeleteForm($persona);
+        $em = $this->getDoctrine()->getManager();
+
+        $localidad = $em->find('AppBundle:Localidad', $persona->getIdLocalidad());
 
         return $this->render('persona/show.html.twig', array(
             'persona' => $persona,
+            'localidad' => $localidad,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -82,20 +108,42 @@ class PersonaController extends Controller
      */
     public function editAction(Request $request, Persona $persona)
     {
-        $deleteForm = $this->createDeleteForm($persona);
-        $editForm = $this->createForm('AppBundle\Form\PersonaType', $persona);
-        $editForm->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($request->isMethod('POST')) {
 
-            return $this->redirectToRoute('persona_edit', array('id' => $persona->getId()));
+            $nombre = $request->request->get('nombre');
+            $personajuridica = ($request->request->get('personajuridica') ? true : false);
+            $cuit = $request->request->get('cuit');
+            $documento = $request->request->get('documento');
+            $direccion = $request->request->get('direccion');
+            $celular = $request->request->get('celular');
+            $email = $request->request->get('email');
+            $localidad = $request->request->get('idlocalidad');
+
+            $persona
+                ->setNombre($nombre)
+                ->setPersonaJuridica($personajuridica)
+                ->setCuit($cuit)
+                ->setDocumento($documento)
+                ->setDireccion($direccion)
+                ->setCelular($celular)
+                ->setEmail($email)
+                ->setIdLocalidad($em->find('AppBundle:Localidad', $localidad));
+            ;
+
+            $em->flush();
+
+            return $this->redirectToRoute('persona_show', array('id' => $persona->getId()));
         }
+
+        $provincias = $em->getRepository('AppBundle:Provincia')->findBy(array(),array('nombre'=>'ASC'));
+        $localidad = $em->getRepository('AppBundle:Localidad')->find($persona->getIdLocalidad());
 
         return $this->render('persona/edit.html.twig', array(
             'persona' => $persona,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'provincias' => $provincias,
+            'localidad' => $localidad
         ));
     }
 

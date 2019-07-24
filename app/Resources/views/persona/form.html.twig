@@ -1,0 +1,138 @@
+<form id="frmpersona" method='POST' action=''>
+
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input id="nombre" class="form-control" type="text" name="nombre"
+            {% if persona is defined %}
+                value="{{ persona.nombre }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="cuit">CUIT:</label>
+        <input id="cuit" class="form-control" type="text" name="cuit"
+            {% if persona is defined %}
+                value="{{ persona.cuit }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="documento">Documento:</label>
+        <input id="documento" class="form-control" type="text" name="documento"
+            {% if persona is defined %}
+                value="{{ persona.documento }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="personajuridica" name="personajuridica"
+            {% if persona is defined %}
+                {{ persona.personajuridica ? 'checked' : '' }}
+            {% endif %}
+        >
+        <label class="custom-control-label" for="personajuridica">Persona juridica</label>
+    </div>
+
+    <div class="form-group">
+        <label for="direccion">Direccion:</label>
+        <input id="direccion" class="form-control" type="text" name="direccion"
+            {% if persona is defined %}
+                value="{{ persona.direccion }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="celular">Celular:</label>
+        <input id="celular" class="form-control" type="text" name="celular"
+            {% if persona is defined %}
+                value="{{ persona.celular }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input id="email" class="form-control" type="text" name="email"
+            {% if persona is defined %}
+                value="{{ persona.email }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#myModal">Seleccionar localidad</button>
+    </div>
+
+    <div class="form-group">
+        <input id="idlocalidad" type="hidden" name="idlocalidad"
+            {% if localidad is defined %}
+                value="{{ localidad.id }}"
+            {% endif %}
+        >
+        <label for="nombrelocalidad">Localidad:</label>
+        <input id="nombrelocalidad" readonly class="form-control" type="text" name="nombrelocalidad"
+            {% if localidad is defined %}
+                value="{{ localidad.nombre }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <button id="nuevapersona" class="btn btn-success" type="submit" {#disabled#}>Guardar</button>
+    </div>
+
+    {{ include(':persona:modalLocalidad.html.twig') }}
+</form>
+
+<script>
+    $('#provincia').on('change', function () {
+        var selector = document.getElementById('provincia');
+        var valor = selector[selector.selectedIndex].value;
+        if(valor != 0){
+            $.ajax({
+                url:'{{ (path('buscar_localidades')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "idprovincia": valor
+                },
+                async: true,
+                success: function (data)
+                {
+                    var tablaLocalidades = $('#tablalocalidades');
+                    tablaLocalidades.html('');
+                    //tablaLocalidades.append(e);
+
+                    $.each(data, function (index, value) {
+                        //console.log(value);
+                        var e = $('<tr scope="row"><td id = "id"><a></a></td><td id = "nombre"><a></a></td></tr>');
+                        $('#id a', e).html(value[0]);
+                        $('#nombre a', e).html(value[1]);
+                        tablaLocalidades.append(e);
+                    });
+                    $('#provinciaselected').val(valor);
+                },
+                error : function() {
+                    alert('Ajax request failed.');
+                    $('#provinciaselected').val(0);
+                }
+            });
+            return false;
+        }else{
+
+        }
+
+    });
+
+    $(document).on('click', '#tlocalidades tr', function () {
+        var id = $(this).find('#id').text();
+        var nombre = $(this).find('#nombre').text();
+        $('#idlocalidad').val(id);
+        $('#nombrelocalidad').val(nombre);
+        $('#myModal').modal('hide');
+    });
+</script>

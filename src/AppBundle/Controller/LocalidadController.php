@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Localidad controller.
@@ -133,5 +135,35 @@ class LocalidadController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Busca las localidades de una provincia
+     *
+     * @Route("/ajax", name="buscar_localidades")
+     * @return JsonResponse|Response
+     */
+    public function buscarLocalidades(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            if ($request->request->get('idprovincia')) {
+            $provincia = $request->request->get('idprovincia');
+                $em = $this->getDoctrine()->getManager();
+                $localidades = $em
+                    ->getRepository('AppBundle:Localidad')
+                    ->findBy(array('idProvincia' => $provincia),array('nombre' => 'ASC'));
+                foreach ($localidades as $localidad){
+                    $output[]=array($localidad->getId(),$localidad->getNombre());
+                }
+                return new JsonResponse($output);
+            }
+                /*
+                //var_dump($localidades);
+                return new JsonResponse($localidades);*/
+
+                //return new Response(json_encode());
+
+        }
+        return $this->redirectToRoute('persona_new');
     }
 }

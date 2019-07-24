@@ -128,4 +128,8 @@ class Localidad
     {
         return $this->idProvincia;
     }
+
+    public function __toString() {
+        return $this->nombre;
+    }
 }
