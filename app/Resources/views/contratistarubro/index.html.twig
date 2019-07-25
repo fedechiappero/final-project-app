@@ -6,14 +6,16 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Razon Social</th>
+                <th>Rubro</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for contratistaRubro in contratistaRubros %}
             <tr>
-                <td><a href="{{ path('contratistarubro_show', { 'id': contratistaRubro.id }) }}">{{ contratistaRubro.id }}</a></td>
+                <td><a href="{{ path('contratistarubro_show', { 'id': contratistaRubro.id }) }}">{{ contratistaRubro.razonSocial }}</a></td>
+                <td>{{ contratistaRubro.rubro }}</td>
                 <td>
                     <ul>
                         <li>

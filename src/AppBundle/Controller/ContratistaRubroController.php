@@ -25,7 +25,14 @@ class ContratistaRubroController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $contratistaRubros = $em->getRepository('AppBundle:ContratistaRubro')->findAll();
+        //$contratistaRubros = $em->getRepository('AppBundle:ContratistaRubro')->findAll();
+
+        $query = $em->createQuery("          
+            SELECT cr.id, r.nombre AS rubro, c.razonSocial FROM AppBundle:ContratistaRubro cr
+            INNER JOIN AppBundle:Rubro r WITH cr.idRubro = r.id
+            INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+        ");
+        $contratistaRubros = $query->getResult();
 
         return $this->render('contratistarubro/index.html.twig', array(
             'contratistaRubros' => $contratistaRubros,
@@ -68,8 +75,22 @@ class ContratistaRubroController extends Controller
     {
         $deleteForm = $this->createDeleteForm($contratistaRubro);
 
+        $em = $this->getDoctrine()->getManager();
+
+        $dql ="          
+            SELECT cr.id, r.nombre, c.razonSocial FROM AppBundle:ContratistaRubro cr
+            INNER JOIN AppBundle:Rubro r WITH cr.idRubro = r.id
+            INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+            WHERE cr.id = :id
+        ";
+
+        $query = $em->createQuery($dql)
+            ->setParameter('id', $contratistaRubro->getId());
+
+        $contratistaRubro = $query->getResult();
+
         return $this->render('contratistarubro/show.html.twig', array(
-            'contratistaRubro' => $contratistaRubro,
+            'contratistaRubro' => $contratistaRubro[0],
             'delete_form' => $deleteForm->createView(),
         ));
     }

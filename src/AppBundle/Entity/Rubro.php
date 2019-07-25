@@ -63,4 +63,8 @@ class Rubro
     {
         return $this->id;
     }
+
+    public function __toString() {
+        return $this->nombre;
+    }
 }
