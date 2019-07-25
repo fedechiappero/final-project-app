@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Contratista;
 use AppBundle\Entity\Persona;
+use AppBundle\Entity\Proveedor;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -70,6 +72,24 @@ class PersonaController extends Controller
             $em->persist($persona);
             $em->flush();
 
+
+            if($request->request->get('contratista')){
+                $contrazonsocial = $request->request->get('contrazonsocial');
+                $contratista = new Contratista();
+                $contratista->setId($persona);
+                $contratista->setRazonSocial($contrazonsocial);
+                $em->persist($contratista);
+                $em->flush();
+            }
+            if($request->request->get('proveedor')){
+                $provrazonsocial = $request->request->get('provrazonsocial');
+                $proveedor = new Proveedor();
+                $proveedor->setId($persona);
+                $proveedor->setRazonSocial($provrazonsocial);
+                $em->persist($proveedor);
+                $em->flush();
+            }
+
             return $this->redirectToRoute('persona_show', array('id' => $persona->getId()));
         }
 
@@ -92,10 +112,14 @@ class PersonaController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $localidad = $em->find('AppBundle:Localidad', $persona->getIdLocalidad());
+        $contratista = $em->find('AppBundle:Contratista', $persona->getId());
+        $proveedor = $em->find('AppBundle:Proveedor', $persona->getId());
 
         return $this->render('persona/show.html.twig', array(
             'persona' => $persona,
             'localidad' => $localidad,
+            'proveedor' => $proveedor,
+            'contratista' => $contratista,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -134,16 +158,64 @@ class PersonaController extends Controller
 
             $em->flush();
 
+            if($request->request->get('contratista')){
+                $new = false;
+                $contrazonsocial = $request->request->get('contrazonsocial');
+                $contratista = $em->find('AppBundle:Contratista', $persona->getId());
+                if($contratista == null){
+                    $contratista = new Contratista();
+                    $new = true;
+                }
+                $contratista->setId($persona);
+                $contratista->setRazonSocial($contrazonsocial);
+                if($new){
+                    $em->persist($contratista);
+                }
+                $em->flush();
+            }else {//no contratista checked or, contratista uncheck
+                $contratista = $em->find('AppBundle:Contratista', $persona->getId());
+                if ($contratista) {
+                    $em->remove($contratista);
+                    $em->flush();
+                }
+            }
+
+            if($request->request->get('proveedor')){
+                $new = false;
+                $provrazonsocial = $request->request->get('provrazonsocial');
+                $proveedor = $em->find('AppBundle:Proveedor', $persona->getId());
+                if($proveedor == null){
+                    $proveedor = new Proveedor();
+                    $new = true;
+                }
+                $proveedor->setId($persona);
+                $proveedor->setRazonSocial($provrazonsocial);
+                if($new){
+                    $em->persist($proveedor);
+                }
+                $em->flush();
+            }else{//no provider checked or, provider uncheck
+                $proveedor = $em->find('AppBundle:Proveedor', $persona->getId());
+                if($proveedor){
+                    $em->remove($proveedor);
+                    $em->flush();
+                }
+            }
+
             return $this->redirectToRoute('persona_show', array('id' => $persona->getId()));
         }
 
         $provincias = $em->getRepository('AppBundle:Provincia')->findBy(array(),array('nombre'=>'ASC'));
         $localidad = $em->getRepository('AppBundle:Localidad')->find($persona->getIdLocalidad());
+        $contratista = $em->find('AppBundle:Contratista', $persona->getId());
+        $proveedor = $em->find('AppBundle:Proveedor', $persona->getId());
 
         return $this->render('persona/edit.html.twig', array(
             'persona' => $persona,
             'provincias' => $provincias,
-            'localidad' => $localidad
+            'localidad' => $localidad,
+            'proveedor' => $proveedor,
+            'contratista' => $contratista
         ));
     }
 

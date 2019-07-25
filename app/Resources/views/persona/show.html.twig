@@ -37,6 +37,17 @@
                 <th>Localidad</th>
                 <td>{{ localidad.nombre }}</td>
             </tr>
+            {% if proveedor.razonsocial is defined or contratista.razonsocial is defined %}
+                <tr>
+                    <th>Tags</th>
+                    {% if contratista.razonsocial is defined %}
+                        <td>Contratista: {{ contratista.razonsocial }}</td>
+                    {% endif %}
+                    {% if proveedor.razonsocial is defined %}
+                        <td>Proveedor: {{ proveedor.razonsocial }}</td>
+                    {% endif %}
+                </tr>
+            {% endif %}
         </tbody>
     </table>
 
