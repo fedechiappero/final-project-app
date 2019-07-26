@@ -6,18 +6,22 @@
     <table>
         <thead>
             <tr>
+                <th>Id</th>
                 <th>Fechadesde</th>
                 <th>Fechahasta</th>
-                <th>Id</th>
+                <th>Obra</th>
+                <th>Contratista</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for contratistaObra in contratistaObras %}
             <tr>
-                <td><a href="{{ path('contratistaobra_show', { 'id': contratistaObra.id }) }}">{{ contratistaObra.fechaDesde }}</a></td>
+                <td><a href="{{ path('contratistaobra_show', { 'id': contratistaObra.id }) }}">{{ contratistaObra.id }}</a></td>
+                <td>{% if contratistaObra.fechaDesde %}{{ contratistaObra.fechaDesde|date('Y-m-d') }}{% endif %}</td>
                 <td>{% if contratistaObra.fechaHasta %}{{ contratistaObra.fechaHasta|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ contratistaObra.id }}</td>
+                <td>{{ contratistaObra.nombre }}</td>
+                <td>{{ contratistaObra.razonSocial }}</td>
                 <td>
                     <ul>
                         <li>

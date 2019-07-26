@@ -252,4 +252,8 @@ class Obra
     {
         return $this->idUsuario;
     }
+
+    public function __toString() {
+        return $this->nombre;
+    }
 }

@@ -23,9 +23,16 @@ class ContratistaObraController extends Controller
      */
     public function indexAction()
     {
+
         $em = $this->getDoctrine()->getManager();
 
-        $contratistaObras = $em->getRepository('AppBundle:ContratistaObra')->findAll();
+        $query = $em->createQuery("          
+            SELECT co.id, co.fechaDesde, co.fechaHasta, c.razonSocial, o.nombre FROM AppBundle:ContratistaObra co,
+            AppBundle:Obra o, 
+            AppBundle:ContratistaRubro cr ,
+            AppBundle:Contratista c 
+        ");
+        $contratistaObras = $query->getResult();
 
         return $this->render('contratistaobra/index.html.twig', array(
             'contratistaObras' => $contratistaObras,
@@ -68,8 +75,23 @@ class ContratistaObraController extends Controller
     {
         $deleteForm = $this->createDeleteForm($contratistaObra);
 
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = "          
+            SELECT co.id, co.fechaDesde, co.fechaHasta, c.razonSocial, o.nombre FROM AppBundle:ContratistaObra co,
+            AppBundle:Obra o, 
+            AppBundle:ContratistaRubro cr ,
+            AppBundle:Contratista c 
+            WHERE co.idObra = :id
+        ";
+
+        $query = $em->createQuery($dql)
+            ->setParameter('id', $contratistaObra->getId());
+
+        $contratistaObra = $query->getResult();
+
         return $this->render('contratistaobra/show.html.twig', array(
-            'contratistaObra' => $contratistaObra,
+            'contratistaObra' => $contratistaObra[0],
             'delete_form' => $deleteForm->createView(),
         ));
     }

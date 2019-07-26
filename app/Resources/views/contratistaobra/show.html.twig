@@ -6,6 +6,10 @@
     <table>
         <tbody>
             <tr>
+                <th>Id</th>
+                <td>{{ contratistaObra.id }}</td>
+            </tr>
+            <tr>
                 <th>Fechadesde</th>
                 <td>{% if contratistaObra.fechaDesde %}{{ contratistaObra.fechaDesde|date('Y-m-d') }}{% endif %}</td>
             </tr>
@@ -14,8 +18,12 @@
                 <td>{% if contratistaObra.fechaHasta %}{{ contratistaObra.fechaHasta|date('Y-m-d') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Id</th>
-                <td>{{ contratistaObra.id }}</td>
+                <th>Obra</th>
+                <td>{{ contratistaObra.nombre }}</td>
+            </tr>
+            <tr>
+                <th>Contratista</th>
+                <td>{{ contratistaObra.razonSocial }}</td>
             </tr>
         </tbody>
     </table>

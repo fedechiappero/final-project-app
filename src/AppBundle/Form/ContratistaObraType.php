@@ -13,7 +13,11 @@ class ContratistaObraType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('fechaDesde')->add('fechaHasta')->add('idObra')->add('idContratistaRubro');
+        $builder
+            ->add('fechaDesde')
+            ->add('fechaHasta')
+            ->add('idObra')
+            ->add('idContratistaRubro');
     }
     
     /**

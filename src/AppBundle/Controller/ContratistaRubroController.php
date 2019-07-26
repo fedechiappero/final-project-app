@@ -33,7 +33,7 @@ class ContratistaRubroController extends Controller
             INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
         ");
         $contratistaRubros = $query->getResult();
-
+        
         return $this->render('contratistarubro/index.html.twig', array(
             'contratistaRubros' => $contratistaRubros,
         ));
