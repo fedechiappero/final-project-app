@@ -39,5 +39,62 @@ class ObraFinalizacion
     private $idObra;
 
 
-}
 
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return ObraFinalizacion
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idObra
+     *
+     * @param \AppBundle\Entity\Obra $idObra
+     *
+     * @return ObraFinalizacion
+     */
+    public function setIdObra(\AppBundle\Entity\Obra $idObra = null)
+    {
+        $this->idObra = $idObra;
+
+        return $this;
+    }
+
+    /**
+     * Get idObra
+     *
+     * @return \AppBundle\Entity\Obra
+     */
+    public function getIdObra()
+    {
+        return $this->idObra;
+    }
+}

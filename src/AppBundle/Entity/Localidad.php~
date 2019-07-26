@@ -46,5 +46,90 @@ class Localidad
     private $idProvincia;
 
 
-}
 
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return Localidad
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set codigoPostal
+     *
+     * @param string $codigoPostal
+     *
+     * @return Localidad
+     */
+    public function setCodigoPostal($codigoPostal)
+    {
+        $this->codigoPostal = $codigoPostal;
+
+        return $this;
+    }
+
+    /**
+     * Get codigoPostal
+     *
+     * @return string
+     */
+    public function getCodigoPostal()
+    {
+        return $this->codigoPostal;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProvincia
+     *
+     * @param \AppBundle\Entity\Provincia $idProvincia
+     *
+     * @return Localidad
+     */
+    public function setIdProvincia(\AppBundle\Entity\Provincia $idProvincia = null)
+    {
+        $this->idProvincia = $idProvincia;
+
+        return $this;
+    }
+
+    /**
+     * Get idProvincia
+     *
+     * @return \AppBundle\Entity\Provincia
+     */
+    public function getIdProvincia()
+    {
+        return $this->idProvincia;
+    }
+
+    public function __toString() {
+        return $this->nombre;
+    }
+}

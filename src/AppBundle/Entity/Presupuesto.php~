@@ -56,5 +56,110 @@ class Presupuesto
     private $idLocalidad;
 
 
-}
 
+    /**
+     * Set fechaEmision
+     *
+     * @param \DateTime $fechaEmision
+     *
+     * @return Presupuesto
+     */
+    public function setFechaEmision($fechaEmision)
+    {
+        $this->fechaEmision = $fechaEmision;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEmision
+     *
+     * @return \DateTime
+     */
+    public function getFechaEmision()
+    {
+        return $this->fechaEmision;
+    }
+
+    /**
+     * Set valor
+     *
+     * @param float $valor
+     *
+     * @return Presupuesto
+     */
+    public function setValor($valor)
+    {
+        $this->valor = $valor;
+
+        return $this;
+    }
+
+    /**
+     * Get valor
+     *
+     * @return float
+     */
+    public function getValor()
+    {
+        return $this->valor;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idPersona
+     *
+     * @param \AppBundle\Entity\Persona $idPersona
+     *
+     * @return Presupuesto
+     */
+    public function setIdPersona(\AppBundle\Entity\Persona $idPersona = null)
+    {
+        $this->idPersona = $idPersona;
+
+        return $this;
+    }
+
+    /**
+     * Get idPersona
+     *
+     * @return \AppBundle\Entity\Persona
+     */
+    public function getIdPersona()
+    {
+        return $this->idPersona;
+    }
+
+    /**
+     * Set idLocalidad
+     *
+     * @param \AppBundle\Entity\Localidad $idLocalidad
+     *
+     * @return Presupuesto
+     */
+    public function setIdLocalidad(\AppBundle\Entity\Localidad $idLocalidad = null)
+    {
+        $this->idLocalidad = $idLocalidad;
+
+        return $this;
+    }
+
+    /**
+     * Get idLocalidad
+     *
+     * @return \AppBundle\Entity\Localidad
+     */
+    public function getIdLocalidad()
+    {
+        return $this->idLocalidad;
+    }
+}

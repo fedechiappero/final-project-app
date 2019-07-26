@@ -49,5 +49,86 @@ class Inmueble
     private $idObra;
 
 
-}
 
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return Inmueble
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idTipo
+     *
+     * @param \AppBundle\Entity\TipoInmueble $idTipo
+     *
+     * @return Inmueble
+     */
+    public function setIdTipo(\AppBundle\Entity\TipoInmueble $idTipo = null)
+    {
+        $this->idTipo = $idTipo;
+
+        return $this;
+    }
+
+    /**
+     * Get idTipo
+     *
+     * @return \AppBundle\Entity\TipoInmueble
+     */
+    public function getIdTipo()
+    {
+        return $this->idTipo;
+    }
+
+    /**
+     * Set idObra
+     *
+     * @param \AppBundle\Entity\Obra $idObra
+     *
+     * @return Inmueble
+     */
+    public function setIdObra(\AppBundle\Entity\Obra $idObra = null)
+    {
+        $this->idObra = $idObra;
+
+        return $this;
+    }
+
+    /**
+     * Get idObra
+     *
+     * @return \AppBundle\Entity\Obra
+     */
+    public function getIdObra()
+    {
+        return $this->idObra;
+    }
+}

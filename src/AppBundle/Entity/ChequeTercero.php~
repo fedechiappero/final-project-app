@@ -74,5 +74,182 @@ class ChequeTercero
     private $idBanco;
 
 
-}
 
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return ChequeTercero
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set cuitTitular
+     *
+     * @param string $cuitTitular
+     *
+     * @return ChequeTercero
+     */
+    public function setCuitTitular($cuitTitular)
+    {
+        $this->cuitTitular = $cuitTitular;
+
+        return $this;
+    }
+
+    /**
+     * Get cuitTitular
+     *
+     * @return string
+     */
+    public function getCuitTitular()
+    {
+        return $this->cuitTitular;
+    }
+
+    /**
+     * Set nombreTitular
+     *
+     * @param string $nombreTitular
+     *
+     * @return ChequeTercero
+     */
+    public function setNombreTitular($nombreTitular)
+    {
+        $this->nombreTitular = $nombreTitular;
+
+        return $this;
+    }
+
+    /**
+     * Get nombreTitular
+     *
+     * @return string
+     */
+    public function getNombreTitular()
+    {
+        return $this->nombreTitular;
+    }
+
+    /**
+     * Set fechaCobro
+     *
+     * @param \DateTime $fechaCobro
+     *
+     * @return ChequeTercero
+     */
+    public function setFechaCobro($fechaCobro)
+    {
+        $this->fechaCobro = $fechaCobro;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaCobro
+     *
+     * @return \DateTime
+     */
+    public function getFechaCobro()
+    {
+        return $this->fechaCobro;
+    }
+
+    /**
+     * Set fechaEmision
+     *
+     * @param \DateTime $fechaEmision
+     *
+     * @return ChequeTercero
+     */
+    public function setFechaEmision($fechaEmision)
+    {
+        $this->fechaEmision = $fechaEmision;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEmision
+     *
+     * @return \DateTime
+     */
+    public function getFechaEmision()
+    {
+        return $this->fechaEmision;
+    }
+
+    /**
+     * Set fechaRecibido
+     *
+     * @param \DateTime $fechaRecibido
+     *
+     * @return ChequeTercero
+     */
+    public function setFechaRecibido($fechaRecibido)
+    {
+        $this->fechaRecibido = $fechaRecibido;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaRecibido
+     *
+     * @return \DateTime
+     */
+    public function getFechaRecibido()
+    {
+        return $this->fechaRecibido;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idBanco
+     *
+     * @param \AppBundle\Entity\Banco $idBanco
+     *
+     * @return ChequeTercero
+     */
+    public function setIdBanco(\AppBundle\Entity\Banco $idBanco = null)
+    {
+        $this->idBanco = $idBanco;
+
+        return $this;
+    }
+
+    /**
+     * Get idBanco
+     *
+     * @return \AppBundle\Entity\Banco
+     */
+    public function getIdBanco()
+    {
+        return $this->idBanco;
+    }
+}

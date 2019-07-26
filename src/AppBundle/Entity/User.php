@@ -13,9 +13,14 @@ use Doctrine\ORM\Mapping as ORM;
 class User extends BaseUser
 {
     /**
+     * @var \AppBundle\Entity\Persona
+     *
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Persona")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * })
      */
     protected $id;
 
@@ -23,5 +28,19 @@ class User extends BaseUser
     {
         parent::__construct();
         // your own logic
+    }
+
+    /**
+     * Set id
+     *
+     * @param \AppBundle\Entity\Persona $id
+     *
+     * @return User
+     */
+    public function setId(\AppBundle\Entity\Persona $id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

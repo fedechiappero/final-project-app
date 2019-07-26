@@ -13,7 +13,7 @@ class ObraType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nombre')->add('direccion')->add('fechaInicio')->add('foto')->add('legajoMunicipalNumero')->add('colegioArquitectoNumero')->add('idPersona');
+        $builder->add('nombre')->add('direccion')->add('fechaInicio')->add('foto')->add('legajoMunicipalNumero')->add('colegioArquitectoNumero')->add('idUsuario');
     }
     
     /**

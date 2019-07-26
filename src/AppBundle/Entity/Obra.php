@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Obra
  *
- * @ORM\Table(name="obra", indexes={@ORM\Index(name="id_persona", columns={"id_persona"})})
+ * @ORM\Table(name="obra", indexes={@ORM\Index(name="id_usuario", columns={"id_usuario"})})
  * @ORM\Entity
  */
 class Obra
@@ -64,14 +64,14 @@ class Obra
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Persona
+     * @var \AppBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Persona")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_persona", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
      * })
      */
-    private $idPersona;
+    private $idUsuario;
 
 
 
@@ -230,26 +230,26 @@ class Obra
     }
 
     /**
-     * Set idPersona
+     * Set idUsuario
      *
-     * @param \AppBundle\Entity\Persona $idPersona
+     * @param \AppBundle\Entity\User $idUsuario
      *
      * @return Obra
      */
-    public function setIdPersona(\AppBundle\Entity\Persona $idPersona = null)
+    public function setIdUsuario(\AppBundle\Entity\User $idUsuario = null)
     {
-        $this->idPersona = $idPersona;
+        $this->idUsuario = $idUsuario;
 
         return $this;
     }
 
     /**
-     * Get idPersona
+     * Get idUsuario
      *
-     * @return \AppBundle\Entity\Persona
+     * @return \AppBundle\Entity\User
      */
-    public function getIdPersona()
+    public function getIdUsuario()
     {
-        return $this->idPersona;
+        return $this->idUsuario;
     }
 }

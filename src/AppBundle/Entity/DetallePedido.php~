@@ -49,5 +49,86 @@ class DetallePedido
     private $idPedido;
 
 
-}
 
+    /**
+     * Set cantidad
+     *
+     * @param integer $cantidad
+     *
+     * @return DetallePedido
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return integer
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProducto
+     *
+     * @param \AppBundle\Entity\Producto $idProducto
+     *
+     * @return DetallePedido
+     */
+    public function setIdProducto(\AppBundle\Entity\Producto $idProducto = null)
+    {
+        $this->idProducto = $idProducto;
+
+        return $this;
+    }
+
+    /**
+     * Get idProducto
+     *
+     * @return \AppBundle\Entity\Producto
+     */
+    public function getIdProducto()
+    {
+        return $this->idProducto;
+    }
+
+    /**
+     * Set idPedido
+     *
+     * @param \AppBundle\Entity\Pedido $idPedido
+     *
+     * @return DetallePedido
+     */
+    public function setIdPedido(\AppBundle\Entity\Pedido $idPedido = null)
+    {
+        $this->idPedido = $idPedido;
+
+        return $this;
+    }
+
+    /**
+     * Get idPedido
+     *
+     * @return \AppBundle\Entity\Pedido
+     */
+    public function getIdPedido()
+    {
+        return $this->idPedido;
+    }
+}

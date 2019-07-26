@@ -81,5 +81,206 @@ class Persona
     private $idLocalidad;
 
 
-}
 
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return Persona
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set personaJuridica
+     *
+     * @param boolean $personaJuridica
+     *
+     * @return Persona
+     */
+    public function setPersonaJuridica($personaJuridica)
+    {
+        $this->personaJuridica = $personaJuridica;
+
+        return $this;
+    }
+
+    /**
+     * Get personaJuridica
+     *
+     * @return boolean
+     */
+    public function getPersonaJuridica()
+    {
+        return $this->personaJuridica;
+    }
+
+    /**
+     * Set cuit
+     *
+     * @param string $cuit
+     *
+     * @return Persona
+     */
+    public function setCuit($cuit)
+    {
+        $this->cuit = $cuit;
+
+        return $this;
+    }
+
+    /**
+     * Get cuit
+     *
+     * @return string
+     */
+    public function getCuit()
+    {
+        return $this->cuit;
+    }
+
+    /**
+     * Set documento
+     *
+     * @param integer $documento
+     *
+     * @return Persona
+     */
+    public function setDocumento($documento)
+    {
+        $this->documento = $documento;
+
+        return $this;
+    }
+
+    /**
+     * Get documento
+     *
+     * @return integer
+     */
+    public function getDocumento()
+    {
+        return $this->documento;
+    }
+
+    /**
+     * Set direccion
+     *
+     * @param string $direccion
+     *
+     * @return Persona
+     */
+    public function setDireccion($direccion)
+    {
+        $this->direccion = $direccion;
+
+        return $this;
+    }
+
+    /**
+     * Get direccion
+     *
+     * @return string
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    /**
+     * Set celular
+     *
+     * @param string $celular
+     *
+     * @return Persona
+     */
+    public function setCelular($celular)
+    {
+        $this->celular = $celular;
+
+        return $this;
+    }
+
+    /**
+     * Get celular
+     *
+     * @return string
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Persona
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idLocalidad
+     *
+     * @param \AppBundle\Entity\Localidad $idLocalidad
+     *
+     * @return Persona
+     */
+    public function setIdLocalidad(\AppBundle\Entity\Localidad $idLocalidad = null)
+    {
+        $this->idLocalidad = $idLocalidad;
+
+        return $this;
+    }
+
+    /**
+     * Get idLocalidad
+     *
+     * @return \AppBundle\Entity\Localidad
+     */
+    public function getIdLocalidad()
+    {
+        return $this->idLocalidad;
+    }
+}

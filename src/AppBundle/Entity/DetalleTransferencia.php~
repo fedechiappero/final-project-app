@@ -42,5 +42,62 @@ class DetalleTransferencia
     private $idPago;
 
 
-}
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idTransferencia
+     *
+     * @param \AppBundle\Entity\Transferencia $idTransferencia
+     *
+     * @return DetalleTransferencia
+     */
+    public function setIdTransferencia(\AppBundle\Entity\Transferencia $idTransferencia = null)
+    {
+        $this->idTransferencia = $idTransferencia;
+
+        return $this;
+    }
+
+    /**
+     * Get idTransferencia
+     *
+     * @return \AppBundle\Entity\Transferencia
+     */
+    public function getIdTransferencia()
+    {
+        return $this->idTransferencia;
+    }
+
+    /**
+     * Set idPago
+     *
+     * @param \AppBundle\Entity\Pago $idPago
+     *
+     * @return DetalleTransferencia
+     */
+    public function setIdPago(\AppBundle\Entity\Pago $idPago = null)
+    {
+        $this->idPago = $idPago;
+
+        return $this;
+    }
+
+    /**
+     * Get idPago
+     *
+     * @return \AppBundle\Entity\Pago
+     */
+    public function getIdPago()
+    {
+        return $this->idPago;
+    }
+}

@@ -53,5 +53,110 @@ class Pedido
     private $idContratistaObra;
 
 
-}
 
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return Pedido
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return Pedido
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set necesarioParaFecha
+     *
+     * @param \DateTime $necesarioParaFecha
+     *
+     * @return Pedido
+     */
+    public function setNecesarioParaFecha($necesarioParaFecha)
+    {
+        $this->necesarioParaFecha = $necesarioParaFecha;
+
+        return $this;
+    }
+
+    /**
+     * Get necesarioParaFecha
+     *
+     * @return \DateTime
+     */
+    public function getNecesarioParaFecha()
+    {
+        return $this->necesarioParaFecha;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idContratistaObra
+     *
+     * @param \AppBundle\Entity\ContratistaObra $idContratistaObra
+     *
+     * @return Pedido
+     */
+    public function setIdContratistaObra(\AppBundle\Entity\ContratistaObra $idContratistaObra = null)
+    {
+        $this->idContratistaObra = $idContratistaObra;
+
+        return $this;
+    }
+
+    /**
+     * Get idContratistaObra
+     *
+     * @return \AppBundle\Entity\ContratistaObra
+     */
+    public function getIdContratistaObra()
+    {
+        return $this->idContratistaObra;
+    }
+}
