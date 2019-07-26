@@ -5,7 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Obra;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Obra controller.
@@ -24,7 +25,14 @@ class ObraController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $obras = $em->getRepository('AppBundle:Obra')->findAll();
+        //$obras = $em->getRepository('AppBundle:Obra')->findAll();
+
+        $query = $em->createQuery("          
+            SELECT o.id, o.nombre, o.direccion, o.fechaInicio, o.foto, o.legajoMunicipalNumero, o.colegioArquitectoNumero, u.username as encargado FROM AppBundle:Obra o
+            INNER JOIN AppBundle:User u WITH o.idUsuario = u.id
+            
+        ");
+        $obras = $query->getResult();
 
         return $this->render('obra/index.html.twig', array(
             'obras' => $obras,
@@ -67,8 +75,20 @@ class ObraController extends Controller
     {
         $deleteForm = $this->createDeleteForm($obra);
 
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = "          
+            SELECT o.id, o.nombre, o.direccion, o.fechaInicio, o.foto, o.legajoMunicipalNumero, o.colegioArquitectoNumero, u.username as encargado FROM AppBundle:Obra o
+            INNER JOIN AppBundle:User u WITH o.idUsuario = u.id
+            WHERE o.id = :id            
+        ";
+        $query = $em->createQuery($dql)
+            ->setParameter('id', $obra->getId());
+
+        $obra = $query->getResult();
+
         return $this->render('obra/show.html.twig', array(
-            'obra' => $obra,
+            'obra' => $obra[0],
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -88,7 +108,7 @@ class ObraController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('obra_edit', array('id' => $obra->getId()));
+            return $this->redirectToRoute('obra_show', array('id' => $obra->getId()));
         }
 
         return $this->render('obra/edit.html.twig', array(

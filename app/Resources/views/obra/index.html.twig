@@ -10,9 +10,9 @@
                 <th>Direccion</th>
                 <th>Fechainicio</th>
                 <th>Foto</th>
-                <th>Legajomunicipalnumero</th>
-                <th>Colegioarquitectonumero</th>
-                <th>Id</th>
+                <th>Legajomunicipal</th>
+                <th>Colegioarquitecto</th>
+                <th>Persona encargada</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -24,8 +24,8 @@
                 <td>{% if obra.fechaInicio %}{{ obra.fechaInicio|date('Y-m-d') }}{% endif %}</td>
                 <td>{{ obra.foto }}</td>
                 <td>{{ obra.legajoMunicipalNumero }}</td>
-                <td>{{ obra.colegioArquitectoNumero }}</td>
-                <td>{{ obra.id }}</td>
+                <td>{{ obra.colegioArquitectoNumero }}<td>
+                <td>{{ obra.encargado }}</td>
                 <td>
                     <ul>
                         <li>
