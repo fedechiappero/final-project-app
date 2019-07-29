@@ -27,10 +27,11 @@ class ContratistaObraController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery("          
-            SELECT co.id, co.fechaDesde, co.fechaHasta, c.razonSocial, o.nombre FROM AppBundle:ContratistaObra co,
-            AppBundle:Obra o, 
-            AppBundle:ContratistaRubro cr ,
-            AppBundle:Contratista c 
+            SELECT co.id, co.fechaDesde, co.fechaHasta, c.razonSocial, o.nombre AS obraNombre, r.nombre AS rubroNombre FROM AppBundle:ContratistaObra co
+            INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
+            INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id 
+            INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+            INNER JOIN AppBundle:Rubro r WITH cr.idRubro = r.id
         ");
         $contratistaObras = $query->getResult();
 
@@ -78,10 +79,11 @@ class ContratistaObraController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $dql = "          
-            SELECT co.id, co.fechaDesde, co.fechaHasta, c.razonSocial, o.nombre FROM AppBundle:ContratistaObra co,
-            AppBundle:Obra o, 
-            AppBundle:ContratistaRubro cr ,
-            AppBundle:Contratista c 
+            SELECT co.id, co.fechaDesde, co.fechaHasta, c.razonSocial, o.nombre AS obraNombre, r.nombre AS rubroNombre FROM AppBundle:ContratistaObra co
+            INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
+            INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id 
+            INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+            INNER JOIN AppBundle:Rubro r WITH cr.idRubro = r.id
             WHERE co.idObra = :id
         ";
 

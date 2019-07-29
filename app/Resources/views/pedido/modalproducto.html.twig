@@ -1,0 +1,165 @@
+<div id="modalproducto" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Seleccione Productos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="busqueda">Busqueda</label>
+                    <input id="busqueda" class="form-control" type="text" name="busqueda">
+                </div>
+
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table id="tproducto" class="table table-bordered table-striped mb-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Unidad</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Accion</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tablaproductos">
+                        {% for producto in productos %}
+                            <tr>
+                                <td id="idproducto">{{ producto.id }}</td>
+                                <td id="nombreproducto">{{ producto.nombre }}</td>
+                                <td>{{ producto.unidad }}</td>
+                                <td id="cantidadproducto">
+                                    <div class="col-lg-2">
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="quantity-left-minus btn btn-danger btn-number"  data-type="minus" data-field="">
+                                                    <span class="glyphicon glyphicon-minus"></span>
+                                                </button>
+                                            </span>
+                                            <input type="text" id="quantity" name="quantity" class="form-control input-number" value="0" min="1" max="100" style="text-align: center">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-field="">
+                                                    <span class="glyphicon glyphicon-plus"></span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><button type="button" class="btn btn-primary btn-sm btnagregar">Agregar</button></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+
+        var tabla = $('#tablapedido').DataTable({
+            paging: false
+        });
+
+        var btneliminar = `<span class="input-group-btn"><button type="button" class="quantity-right-plus btn btn-danger btn-number btneliminar" data-type="plus" data-field=""><span class="glyphicon glyphicon-minus"></span></button></span>`;
+
+        $('.quantity-right-plus').click(function(e){
+            var button = $(this);
+            var oldValue = button.parent().parent().find("input").val();
+            // Stop acting like a button
+            e.preventDefault();
+            button.parent().parent().find("input").val(parseInt(oldValue)+1);
+        });
+
+        $('.quantity-left-minus').click(function(e){
+            var button = $(this);
+            var oldValue = button.parent().parent().find("input").val();
+            // Stop acting like a button
+            e.preventDefault();
+            if(parseInt(oldValue)>=1){
+                button.parent().parent().find("input").val(parseInt(oldValue)-1);
+            }
+        });
+
+        $('.btnagregar').on('click', function(){
+            var button = $(this);
+            var id = button.parent().parent().find('#idproducto').text();
+            var nombre = button.parent().parent().find('#nombreproducto').text();
+            var cantidad = button.parent().parent().find('#quantity').val();
+
+            if(id != "" && nombre != "" && cantidad > 0){
+                var existe = false;
+                var cantencontrada = 0;
+                if (tabla.data().any()) {
+                    var i=0;
+                    var y=0;
+                    tabla.rows().every(function () {
+                        var data = this.data();
+                        if(id == data[0]){
+                            existe = true;
+                            cantencontrada = data[2];
+                            y=i;
+                        }
+                        i++;
+                    });
+                    if(existe){
+                        var respuesta = confirm("Ya hay agregado " + cantencontrada + " " + nombre + ". ¿Desea agregar " + cantidad + " mas?");
+                        if (respuesta) {
+                            var cantidadtotal = parseInt(cantencontrada) + parseInt(cantidad);
+                            tabla.cell(y, 2).data(cantidadtotal);
+                        }
+                    }else{
+                        tabla.row.add([id,nombre,cantidad,btneliminar]).draw(false);
+                    }
+                }
+                else{
+                    tabla.row.add([id,nombre,cantidad,btneliminar]).draw(false);
+                }
+                crearArreglo();
+            }
+        });
+
+        $('#tablapedido tbody').on('click', 'td', function(){
+            if(parseInt(tabla.cell(this).index().column) == 3){//delete
+                console.log(3);
+                //tabla.row(this).delete();
+                tabla.row(this).remove().draw(false);
+                crearArreglo();
+            }
+        });
+
+        function crearArreglo(){
+            var producto = "";
+            var cantidad = "";
+            var array = [];
+            var array2 = [];
+
+            if(tabla.data().any()) {
+                tabla.rows().every( function() {
+                    var data = this.data();
+                    producto = data[0];
+                    cantidad = data[3];
+                    array2 = [producto, cantidad];
+                    array.push(array2);
+                });
+            }
+            $("#arrproductos").val(array);
+        }
+    });
+</script>
+
+<style>
+    .my-custom-scrollbar {
+        position: relative;
+        height: 300px;
+        overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+</style>

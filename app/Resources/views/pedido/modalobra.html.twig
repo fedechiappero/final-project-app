@@ -1,0 +1,50 @@
+<div id="modalobra" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Seleccione una Obra</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="busqueda">Busqueda</label>
+                    <input id="busqueda" class="form-control" type="text" name="busqueda">
+                </div>
+
+                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                    <table id="tobra" class="table table-bordered table-striped mb-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">id</th>
+                            <th scope="col">Obra</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tablaobras">
+                        {% for obra in obras %}
+                            <tr>
+                                <td id="id"><a>{{ obra.id }}</a></td>
+                                <td id="nombre"><a>{{ obra.nombre }}</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .my-custom-scrollbar {
+        position: relative;
+        height: 300px;
+        overflow: auto;
+    }
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+</style>

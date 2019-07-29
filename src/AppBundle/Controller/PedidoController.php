@@ -40,21 +40,31 @@ class PedidoController extends Controller
      */
     public function newAction(Request $request)
     {
-        $pedido = new Pedido();
-        $form = $this->createForm('AppBundle\Form\PedidoType', $pedido);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($pedido);
-            $em->flush();
+        $em = $this->getDoctrine()->getManager();
 
+        if ($request->isMethod('POST')) {//guardo datos
+
+            $obra = $em->getRepository('AppBundle:Obra')->find($request->request->get('idobra'));
+
+            $contratistaobra = $em->getRepository('AppBundle:ContratistaObra')->find(array('idObra'=>$obra,'id'));
+
+            $pedido = new Pedido();
             return $this->redirectToRoute('pedido_show', array('id' => $pedido->getId()));
         }
 
+        $productos = $em->getRepository('AppBundle:Producto')->findAll();
+        //next update, filter contractor "obras" or find all if user logged is admin
+        //inner join obra_finalizacion ON (bla bla) where obra.fecha_inicio >= hoy-30
+        $obras = $em->getRepository('AppBundle:Obra')->findAll();
+
+        $query = $em->createQuery("SELECT MAX(p.numero) AS numero FROM AppBundle:Pedido p");
+        $pedido = $query->getResult();
+
         return $this->render('pedido/new.html.twig', array(
-            'pedido' => $pedido,
-            'form' => $form->createView(),
+            'pedido' => $pedido[0],
+            'productos' => $productos,
+            'obras' => $obras
         ));
     }
 

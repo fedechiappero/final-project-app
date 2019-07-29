@@ -11,6 +11,7 @@
                 <th>Fechahasta</th>
                 <th>Obra</th>
                 <th>Contratista</th>
+                <th>Rubro</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -20,8 +21,9 @@
                 <td><a href="{{ path('contratistaobra_show', { 'id': contratistaObra.id }) }}">{{ contratistaObra.id }}</a></td>
                 <td>{% if contratistaObra.fechaDesde %}{{ contratistaObra.fechaDesde|date('Y-m-d') }}{% endif %}</td>
                 <td>{% if contratistaObra.fechaHasta %}{{ contratistaObra.fechaHasta|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ contratistaObra.nombre }}</td>
+                <td>{{ contratistaObra.obraNombre }}</td>
                 <td>{{ contratistaObra.razonSocial }}</td>
+                <td>{{ contratistaObra.rubroNombre }}</td>
                 <td>
                     <ul>
                         <li>
