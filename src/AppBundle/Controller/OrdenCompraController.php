@@ -25,7 +25,14 @@ class OrdenCompraController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $ordenCompras = $em->getRepository('AppBundle:OrdenCompra')->findAll();
+        $query = $em->createQuery("
+            SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, u.username AS username, p.razonSocial AS proveedorRazonSocial, o.nombre AS obraNombre FROM AppBundle:OrdenCompra oc
+            INNER JOIN AppBundle:User u WITH oc.idUsuario = u.id
+            INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id
+            INNER JOIN AppBundle:Obra o WITH oc.idObra = o.id
+        ");
+
+        $ordenCompras = $query->getResult();
 
         return $this->render('ordencompra/index.html.twig', array(
             'ordenCompras' => $ordenCompras,
@@ -68,8 +75,23 @@ class OrdenCompraController extends Controller
     {
         $deleteForm = $this->createDeleteForm($ordenCompra);
 
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = "
+            SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, u.username AS username, p.razonSocial AS proveedorRazonSocial, o.nombre AS obraNombre FROM AppBundle:OrdenCompra oc
+            INNER JOIN AppBundle:User u WITH oc.idUsuario = u.id
+            INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id
+            INNER JOIN AppBundle:Obra o WITH oc.idObra = o.id
+            WHERE oc.id = :id
+        ";
+
+        $queryOrdenes = $em->createQuery($dql)
+            ->setParameter('id',$ordenCompra->getId());
+
+        $ordenCompra = $queryOrdenes->getResult();
+
         return $this->render('ordencompra/show.html.twig', array(
-            'ordenCompra' => $ordenCompra,
+            'ordenCompra' => $ordenCompra[0],
             'delete_form' => $deleteForm->createView(),
         ));
     }
