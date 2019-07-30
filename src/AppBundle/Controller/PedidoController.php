@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\DetallePedido;
 use AppBundle\Entity\Pedido;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -25,7 +26,17 @@ class PedidoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $pedidos = $em->getRepository('AppBundle:Pedido')->findAll();
+        //$pedidos = $em->getRepository('AppBundle:Pedido')->findAll();
+
+        $query = $em->createQuery("
+            SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.nombre AS obraNombre, c.razonSocial FROM AppBundle:Pedido p
+            INNER JOIN AppBundle:ContratistaObra co WITH p.idContratistaObra = co.id
+            INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
+            INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
+            INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+        ");
+
+        $pedidos = $query->getResult();
 
         return $this->render('pedido/index.html.twig', array(
             'pedidos' => $pedidos,
@@ -45,19 +56,71 @@ class PedidoController extends Controller
 
         if ($request->isMethod('POST')) {//guardo datos
 
-            $obra = $em->getRepository('AppBundle:Obra')->find($request->request->get('idobra'));
+            //temporary data
+            $obra = $em
+                ->getRepository('AppBundle:Obra')
+                ->find($request->request
+                    ->get('idobra'));
 
-            $contratistaobra = $em->getRepository('AppBundle:ContratistaObra')->find(array('idObra'=>$obra,'id'));
+            //temporary data
+            $contratistaRubro = $em
+                ->getRepository('AppBundle:ContratistaRubro')
+                ->find($request->request
+                    ->get('contratistaobraselected'));
+
+            $contratistaObra = $em
+                ->getRepository('AppBundle:ContratistaObra')
+                ->findOneBy(array(
+                    'idObra'=>$obra->getId(),
+                    'idContratistaRubro'=>$contratistaRubro->getId()));
+
+            $contratistaObra = $em->getRepository('AppBundle:ContratistaObra')->find($contratistaObra->getId());
+
+            $numero = $request->request->get('numero');
+            $fecha = new \DateTime('now');
+            $necesarioparafecha = new \DateTime($request->request->get('necesarioparafecha'));
 
             $pedido = new Pedido();
+            $pedido->setIdContratistaObra($contratistaObra);
+            $pedido->setNumero($numero);
+            $pedido->setFecha($fecha);
+            $pedido->setNecesarioParaFecha($necesarioparafecha);
+
+            $em->persist($pedido);
+            $em->flush();
+
+            $arrproductos = $request->request->get('arrproductos');
+            $indice = 0;
+            $arrprod = explode(',', $arrproductos);//paso a arreglo
+            $longitud = count($arrprod);
+            while($indice < $longitud){
+                $producto = $em->getRepository('AppBundle:Producto')->find($arrprod[$indice]);
+                $cantidad = $arrprod[$indice+1];
+
+                $detallePedido = new DetallePedido();
+                $detallePedido
+                    ->setIdPedido($pedido)
+                    ->setIdProducto($producto)
+                    ->setCantidad($cantidad);
+
+                $em->persist($detallePedido);
+                $em->flush();
+
+                $indice += 2;
+            }
+
             return $this->redirectToRoute('pedido_show', array('id' => $pedido->getId()));
         }
 
+        //select all the products
         $productos = $em->getRepository('AppBundle:Producto')->findAll();
+
+        //select "obras"
         //next update, filter contractor "obras" or find all if user logged is admin
-        //inner join obra_finalizacion ON (bla bla) where obra.fecha_inicio >= hoy-30
+        //inner join obra_finalizacion WITH (bla bla) where obra.fecha_inicio >= hoy-30
         $obras = $em->getRepository('AppBundle:Obra')->findAll();
 
+        //select last request number
         $query = $em->createQuery("SELECT MAX(p.numero) AS numero FROM AppBundle:Pedido p");
         $pedido = $query->getResult();
 
@@ -78,8 +141,36 @@ class PedidoController extends Controller
     {
         $deleteForm = $this->createDeleteForm($pedido);
 
+        $em = $this->getDoctrine()->getManager();
+
+        $dqlPedido = "
+            SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.id AS obraId, o.nombre AS obraNombre, c.razonSocial FROM AppBundle:Pedido p
+            INNER JOIN AppBundle:ContratistaObra co WITH p.idContratistaObra = co.id
+            INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
+            INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
+            INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+            WHERE p.id = :id
+        ";
+
+        $queryPedido = $em->createQuery($dqlPedido)
+            ->setParameter('id', $pedido->getId());
+
+        $resPedido = $queryPedido->getResult();
+
+        $dqlDetalles = "
+            SELECT d.id, d.cantidad, p.nombre FROM AppBundle:DetallePedido d
+            INNER JOIN AppBundle:Producto p WITH d.idProducto = p.id
+            WHERE d.idPedido = :id
+        ";
+
+        $queryDetalles = $em->createQuery($dqlDetalles)
+            ->setParameter('id', $pedido->getId());
+
+        $detalles = $queryDetalles->getResult();
+
         return $this->render('pedido/show.html.twig', array(
-            'pedido' => $pedido,
+            'pedido' => $resPedido[0],
+            'detalles' => $detalles,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -93,18 +184,112 @@ class PedidoController extends Controller
     public function editAction(Request $request, Pedido $pedido)
     {
         $deleteForm = $this->createDeleteForm($pedido);
-        $editForm = $this->createForm('AppBundle\Form\PedidoType', $pedido);
-        $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        $em = $this->getDoctrine()->getManager();
 
-            return $this->redirectToRoute('pedido_edit', array('id' => $pedido->getId()));
+        if ($request->isMethod('POST')) {//edito
+
+            //temporary data
+            $obra = $em
+                ->getRepository('AppBundle:Obra')
+                ->find($request->request
+                    ->get('idobra'));
+
+            //temporary data
+            $contratistaRubro = $em
+                ->getRepository('AppBundle:ContratistaRubro')
+                ->find($request->request
+                    ->get('contratistaobraselected'));
+
+            $contratistaObra = $em
+                ->getRepository('AppBundle:ContratistaObra')
+                ->findOneBy(array(
+                    'idObra'=>$obra->getId(),
+                    'idContratistaRubro'=>$contratistaRubro->getId()));
+
+            $contratistaObra = $em->getRepository('AppBundle:ContratistaObra')->find($contratistaObra->getId());
+
+            //pretty useless, request number should not change, neither the date
+            //$numero = $request->request->get('numero');
+            //$fecha = new \DateTime($request->request->get('fecha'));
+
+            $necesarioparafecha = new \DateTime($request->request->get('necesarioparafecha'));
+
+            $pedido = $em->getRepository('AppBundle:Pedido')->find($pedido);
+            $pedido->setIdContratistaObra($contratistaObra);
+            //$pedido->setNumero($numero);
+            //$pedido->setFecha($fecha);
+            $pedido->setNecesarioParaFecha($necesarioparafecha);
+
+            $em->flush();//updated
+
+            $detalles = $pedido->getDetallePedido();
+            foreach ($detalles as $deta){
+                $em->remove($deta);
+            }
+            $em->flush();//cya
+
+            $arrproductos = $request->request->get('arrproductos');
+            $indice = 0;
+            $arrprod = explode(',', $arrproductos);//paso a arreglo
+            $longitud = count($arrprod);
+            while($indice < $longitud){
+                $producto = $em->getRepository('AppBundle:Producto')->find($arrprod[$indice]);
+                $cantidad = $arrprod[$indice+1];
+
+                $detallePedido = new DetallePedido();
+                $detallePedido
+                    ->setIdPedido($pedido)
+                    ->setIdProducto($producto)
+                    ->setCantidad($cantidad);
+
+                $em->persist($detallePedido);
+                $em->flush();
+
+                $indice += 2;
+            }
+
+            return $this->redirectToRoute('pedido_show', array('id' => $pedido->getId()));
         }
+
+        //muestro formulario con datos cargados
+
+        //select all the products
+        $productos = $em->getRepository('AppBundle:Producto')->findAll();
+
+        //select "obras"
+        //next update, filter contractor "obras" or find all if user logged is admin
+        //inner join obra_finalizacion WITH (bla bla) where obra.fecha_inicio >= hoy-30
+        $obras = $em->getRepository('AppBundle:Obra')->findAll();
+
+        $dql = "
+            SELECT o.id AS id, o.nombre AS nombre FROM AppBundle:Obra o
+            INNER JOIN AppBundle:ContratistaObra co WITH co.idObra = o.id
+            WHERE co.id = :id
+        ";
+
+        $queryObra = $em->createQuery($dql)
+            ->setParameter('id', $pedido->getIdContratistaObra());
+
+        $obra = $queryObra->getResult();
+
+        $dqlDetalles = "
+            SELECT p.id AS id, d.cantidad AS cantidad, p.nombre AS nombre FROM AppBundle:DetallePedido d
+            INNER JOIN AppBundle:Producto p WITH d.idProducto = p.id
+            WHERE d.idPedido = :id
+        ";
+
+        $queryDetalles = $em->createQuery($dqlDetalles)
+            ->setParameter('id', $pedido->getId());
+
+        $detalles = $queryDetalles->getResult();
 
         return $this->render('pedido/edit.html.twig', array(
             'pedido' => $pedido,
-            'edit_form' => $editForm->createView(),
+            'productos' => $productos,
+            'obra' => $obra[0],
+            'obras' => $obras,
+            'detalles' => $detalles,
             'delete_form' => $deleteForm->createView(),
         ));
     }

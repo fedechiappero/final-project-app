@@ -21,8 +21,8 @@
                 <td>{{ pedido.id }}</td>
                 <td><a href="{{ path('pedido_show', { 'id': pedido.id }) }}">{{ pedido.numero }}</a></td>
                 <td>{% if pedido.fecha %}{{ pedido.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>Obra nombre</td>
-                <td>Contratista razon social</td>
+                <td>{{ pedido.obraNombre }}</td>
+                <td>{{ pedido.razonSocial }}</td>
                 <td>{% if pedido.necesarioParaFecha %}{{ pedido.necesarioParaFecha|date('Y-m-d') }}{% endif %}</td>
                 <td>
                     <ul>

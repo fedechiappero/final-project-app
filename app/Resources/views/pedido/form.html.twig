@@ -1,0 +1,238 @@
+<form id="frmpedido" method='POST' action=''>
+    <div class="form-group">
+        <label>Fecha:</label>
+        <input type="text" readonly required="required" class="form-control" name="fecha"
+        {% if pedido.fecha is defined %}
+            value="{{ pedido.fecha | date("d/m/Y") }}"
+        {% else %}
+            value="{{ "now" | date("d/m/Y") }}"
+        {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label>Numero:</label>
+        <input type="text" readonly required="required" class="form-control" name="numero"
+        {% if pedido.numero is null %}
+            value="1"
+        {% elseif detalles is defined %}
+            value="{{ pedido.numero }}"
+        {% else %}
+            value="{{ pedido.numero + 1 }}"
+        {% endif %}
+        >
+    </div>
+
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalobra">Seleccionar Obra</button>
+    <div class="form-group">
+        <input id="idobra" type="hidden" name="idobra"
+        {% if obra is defined %}
+            value="{{ obra.id }}"
+        {% endif %}
+        >
+        <label for="nombreobra">Obra:</label>
+        <input id="nombreobra" readonly class="form-control" type="text" name="nombreobra"
+        {% if obra is defined %}
+            value="{{ obra.nombre }}"
+        {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="contratistaobra">Asignado con Rubro</label>
+        <select id="contratistaobra">
+            <option value="0"></option>
+        </select>
+        <input id="contratistaobraselected" type="hidden" name="contratistaobraselected"
+        {% if pedido.idContratistaObra is defined %}
+            value="{{ pedido.idContratistaObra.id }}"
+        {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label>Nesario para fecha:</label>
+        <input type="date" name="necesarioparafecha"
+        {% if pedido.necesarioParaFecha is defined %}
+            value="{{ pedido.necesarioParaFecha | date('Y-m-d') }}"
+        {% endif %}
+        >
+    </div>
+
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalproducto">Seleccionar Productos</button>
+
+    <table id="tablapedido" class="table table-striped">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Eliminar</th>
+        </tr>
+        </thead>
+        <tbody id="tpedidobody">
+        </tbody>
+    </table>
+
+    {{ include(':pedido:modalobra.html.twig') }}
+
+    {{ include(':pedido:modalproducto.html.twig') }}
+
+    <input id="arrproductos" type="hidden" name="arrproductos">
+
+    <div class="form-group">
+        <button id="nuevopedido" class="btn btn-success" type="submit">Enviar pedido</button>
+    </div>
+</form>
+
+<script>
+    $(document).on('click', '#tobra tr', function () {
+        var id = $(this).find('#id').text();
+        var nombre = $(this).find('#nombre').text();
+        $('#idobra').val(id);
+        $('#nombreobra').val(nombre);
+        $('#modalobra').modal('hide');
+        buscarRubros();
+    });
+
+    var buscarRubros = function(selected){
+        var valor = $('#idobra').val();
+        if(valor != 0){
+            $.ajax({
+                url:'{{ (path('buscar_rubros_asignados')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "idobra": valor
+                },
+                async: true,
+                success: function (data)
+                {
+                    var contratistaObraSelect = $('#contratistaobra');
+                    $.each(data, function (index, value) {
+                        var option = document.createElement("option");
+                        option.value = value.id;
+                        option.text = value.rubroNombre;
+                        contratistaObraSelect.append(option);
+                    });
+                    //$('#contratistaobraselected').val(selected);
+                    contratistaObraSelect.val(parseInt(selected));
+                },
+                error : function() {
+                    alert('Ajax request failed.');
+                    $('#contratistaobraselected').val(0);
+                }
+            });
+            return false;
+        }
+    };
+
+    $(document).ready(function(){
+
+        var tabla = $('#tablapedido').DataTable({
+            paging: false
+        });
+
+        var btneliminar = `<span class="input-group-btn"><button type="button" class="quantity-right-plus btn btn-danger btn-number btneliminar" data-type="plus" data-field=""><span class="glyphicon glyphicon-minus"></span></button></span>`;
+
+        var opcion = $('#contratistaobraselected');
+        var valor = opcion.val();
+        buscarRubros(valor);
+
+        {% if detalles is defined %}
+            {% for detalle in detalles %}
+                var id = {{ detalle.id }};
+                var nombre = "{{ detalle.nombre }}";
+                var cantidad = {{ detalle.cantidad }};
+                tabla.row.add([id,nombre,cantidad,btneliminar]).draw(false);
+            {% endfor %}
+        {% endif %}
+
+        $('.quantity-right-plus').click(function(e){
+            var button = $(this);
+            var oldValue = button.parent().parent().find("input").val();
+            // Stop acting like a button
+            e.preventDefault();
+            button.parent().parent().find("input").val(parseInt(oldValue)+1);
+        });
+
+        $('.quantity-left-minus').click(function(e){
+            var button = $(this);
+            var oldValue = button.parent().parent().find("input").val();
+            // Stop acting like a button
+            e.preventDefault();
+            if(parseInt(oldValue)>=1){
+                button.parent().parent().find("input").val(parseInt(oldValue)-1);
+            }
+        });
+
+        $('.btnagregar').on('click', function(){
+            var button = $(this);
+            var id = button.parent().parent().find('#idproducto').text();
+            var nombre = button.parent().parent().find('#nombreproducto').text();
+            var cantidad = button.parent().parent().find('#quantity').val();
+
+            if(id != "" && nombre != "" && cantidad > 0){
+                var existe = false;
+                var cantencontrada = 0;
+                if (tabla.data().any()) {
+                    var i=0;
+                    var y=0;
+                    tabla.rows().every(function () {
+                        var data = this.data();
+                        if(id == data[0]){
+                            existe = true;
+                            cantencontrada = data[2];
+                            y=i;
+                        }
+                        i++;
+                    });
+                    if(existe){
+                        var respuesta = confirm("Ya hay agregado " + cantencontrada + " " + nombre + ". ¿Desea agregar " + cantidad + " mas?");
+                        if (respuesta) {
+                            var cantidadtotal = parseInt(cantencontrada) + parseInt(cantidad);
+                            tabla.cell(y, 2).data(cantidadtotal);
+                        }
+                    }else{
+                        tabla.row.add([id,nombre,cantidad,btneliminar]).draw(false);
+                    }
+                }
+                else{
+                    tabla.row.add([id,nombre,cantidad,btneliminar]).draw(false);
+                }
+                crearArreglo();
+            }
+        });
+
+        $('#tablapedido tbody').on('click', 'td', function(){
+            if(parseInt(tabla.cell(this).index().column) == 3){//delete
+                tabla.row(this).remove().draw(false);
+                crearArreglo();
+            }
+        });
+
+        function crearArreglo(){
+            var producto = "";
+            var cantidad = "";
+            var array = [];
+            var array2 = [];
+
+            if(tabla.data().any()) {
+                tabla.rows().every( function() {
+                    var data = this.data();
+                    producto = data[0];
+                    cantidad = data[2];
+                    array2 = [producto, cantidad];
+                    array.push(array2);
+                });
+            }
+            $("#arrproductos").val(array);
+        }
+
+        $('#contratistaobra').on('change', function () {
+            var valor = $('#contratistaobra').val();
+            $("#contratistaobraselected").val(valor);
+        });
+    });
+
+</script>

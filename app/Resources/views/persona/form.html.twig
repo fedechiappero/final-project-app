@@ -138,6 +138,8 @@
     $('#provincia').on('change', function () {
         var selector = document.getElementById('provincia');
         var valor = selector[selector.selectedIndex].value;
+        //change 2 lines up above for this one and test if it works, it should
+        //var valor = $('#provincia').val();
         if(valor != 0){
             $.ajax({
                 url:'{{ (path('buscar_localidades')) }}',

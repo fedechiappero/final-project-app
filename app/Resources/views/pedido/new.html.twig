@@ -3,54 +3,7 @@
 {% block body %}
     <h1>Pedido creation</h1>
 
-    <form id="frmpedido" method='POST' action='{{ path('pedido_new') }}'>
-        <div class="form-group">
-            <label>Fecha:</label>
-            <input type="text" readonly required="required" class="form-control" value="{{ "now"|date("d/m/Y") }}" name="fecha">
-        </div>
-
-        <div class="form-group">
-            <label>Numero:</label>
-            <input type="text" readonly required="required" class="form-control" value="{{ pedido.numero ? pedido.numero+1 : 1}}" name="numero">
-        </div>
-
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalobra">Seleccionar Obra</button>
-        <div class="form-group">
-            <input id="idobra" type="hidden" name="idobra">
-            <label for="nombreobra">Obra:</label>
-            <input id="nombreobra" readonly class="form-control" type="text" name="nombreobra">
-        </div>
-
-        <div class="form-group">
-            <label>Nesario para fecha:</label>
-            <input type="date" name="necesarioparafecha">
-        </div>
-
-        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalproducto">Seleccionar Productos</button>
-
-        <table id="tablapedido" class="table table-striped">
-            <thead>
-            <tr>
-                <th>id</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Eliminar</th>
-            </tr>
-            </thead>
-            <tbody id="tpedidobody">
-            </tbody>
-        </table>
-
-        {{ include(':pedido:modalobra.html.twig') }}
-
-        {{ include(':pedido:modalproducto.html.twig') }}
-
-        <input id="arrproductos" type="hidden" name="arrproductos">
-
-        <div class="form-group">
-            <button id="nuevopedido" class="btn btn-success" type="submit">Enviar pedido</button>
-        </div>
-    </form>
+    {{ include(':pedido:form.html.twig') }}
 
     <ul>
         <li>
@@ -59,16 +12,8 @@
     </ul>
 
     <script>
-        $(document).on('click', '#tobra tr', function () {
-            var id = $(this).find('#id').text();
-            var nombre = $(this).find('#nombre').text();
-            $('#idobra').val(id);
-            $('#nombreobra').val(nombre);
-            $('#modalobra').modal('hide');
+        $(document).ready(function() {
+            $('#frmpedido').attr('action', "{{ path('pedido_new') }}");
         });
-
-        $(document).ready(function(){
-
-        })
     </script>
 {% endblock %}

@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Contratistaobra controller.
@@ -157,5 +159,42 @@ class ContratistaObraController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+    
+    
+    /**
+     * Busca los Rubros de contratistas asignados a una obra
+     *
+     * @Route("/ajax", name="buscar_rubros_asignados")
+     * @return JsonResponse|Response
+     */
+    public function buscarRubrosAsignados(Request $request){
+        if ($request->isXmlHttpRequest()) {
+            if ($request->request->get('idobra')) {
+                $idobra = $request->request->get('idobra');
+                $em = $this->getDoctrine()->getManager();
+
+                $dql = "          
+                    SELECT co.id, r.nombre AS rubroNombre FROM AppBundle:ContratistaObra co
+                    INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id 
+                    INNER JOIN AppBundle:Rubro r WITH cr.idRubro = r.id
+                    WHERE co.idObra = :id
+                ";
+
+                $query = $em->createQuery($dql)
+                    ->setParameter('id', $idobra);
+
+                $contratistaobras = $query->getResult();
+
+                return new JsonResponse($contratistaobras);
+            }
+            /*
+            //var_dump($localidades);
+            return new JsonResponse($localidades);*/
+
+            //return new Response(json_encode());
+
+        }
+        return $this->redirectToRoute('pedido_new');
     }
 }

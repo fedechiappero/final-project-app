@@ -6,21 +6,48 @@
     <table>
         <tbody>
             <tr>
+                <th>Id</th>
+                <td>{{ pedido.id }}</td>
+            </tr>
+            <tr>
                 <th>Numero</th>
                 <td>{{ pedido.numero }}</td>
             </tr>
             <tr>
-                <th>Fecha</th>
+                <th>Fecha creacion</th>
                 <td>{% if pedido.fecha %}{{ pedido.fecha|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Necesarioparafecha</th>
-                <td>{% if pedido.necesarioParaFecha %}{{ pedido.necesarioParaFecha|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if pedido.necesarioParaFecha %}{{ pedido.necesarioParaFecha|date('Y-m-d') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Id</th>
-                <td>{{ pedido.id }}</td>
+                <th>Obra</th>
+                <td>{{ pedido.obraNombre }}</td>
             </tr>
+            <tr>
+                <th>Contratista</th>
+                <td>{{ pedido.razonSocial }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table id="myTable" class="table table-striped">
+        <thead class="panel-primary">
+        <tr>
+            <th>Id</th>
+            <th>Producto</th>
+            <th>Cantidad</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for detalle in detalles %}
+            <tr>
+                <td id="prodid">{{ detalle.id }}</td>
+                <td id="prodnombre">{{ detalle.nombre }}</td>
+                <td id="prodcantidad">{{ detalle.cantidad }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
