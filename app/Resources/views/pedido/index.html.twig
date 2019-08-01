@@ -12,6 +12,7 @@
                 <th>Obra</th>
                 <th>Contratista</th>
                 <th>Necesarioparafecha</th>
+                <th>Estado</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -24,6 +25,7 @@
                 <td>{{ pedido.obraNombre }}</td>
                 <td>{{ pedido.razonSocial }}</td>
                 <td>{% if pedido.necesarioParaFecha %}{{ pedido.necesarioParaFecha|date('Y-m-d') }}{% endif %}</td>
+                <td>{{ pedido.estadoNombre }}</td>
                 <td>
                     <ul>
                         <li>
@@ -33,6 +35,11 @@
                             <a href="{{ path('pedido_edit', { 'id': pedido.id }) }}">edit</a>
                         </li>
                     </ul>
+                </td>
+                <td>
+                    {% if pedido.estadoId == 1 or pedido.estadoId == 2 %}
+                        <button class="btncancelar" value="{{ pedido.id }}">cancelar</button>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
@@ -44,4 +51,32 @@
             <a href="{{ path('pedido_new') }}">Create a new pedido</a>
         </li>
     </ul>
+
+    <script>
+        $('.btncancelar').click(function () {
+            var button = $(this);
+            var valor = button.val();
+            if(valor != 0){
+                $.ajax({
+                    url:'{{ (path('estado_edit')) }}',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "idPedido": valor,
+                        "estado": 4
+                    },
+                    async: true,
+                    success: function ()
+                    {
+                        alert("pedido cancelado");
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('el pedido no pudo ser cancelado');
+                    }
+                });
+                return false;
+            }
+        });
+    </script>
 {% endblock %}

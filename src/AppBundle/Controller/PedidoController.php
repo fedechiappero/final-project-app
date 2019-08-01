@@ -26,14 +26,16 @@ class PedidoController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        //$pedidos = $em->getRepository('AppBundle:Pedido')->findAll();
-
         $query = $em->createQuery("
-            SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.nombre AS obraNombre, c.razonSocial FROM AppBundle:Pedido p
+            SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.nombre AS obraNombre, c.razonSocial, e.id AS estadoId, e.nombre AS estadoNombre FROM AppBundle:Pedido p
             INNER JOIN AppBundle:ContratistaObra co WITH p.idContratistaObra = co.id
             INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
             INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
             INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+            INNER JOIN AppBundle:EstadoPedido ep WITH ep.idPedido = p.id
+            INNER JOIN AppBundle:Estado e WITH ep.idEstado = e.id
+            WHERE ep.fecha IN (SELECT MAX(ep2.fecha) FROM AppBundle:EstadoPedido ep2
+                                GROUP BY ep2.idPedido)
         ");
 
         $pedidos = $query->getResult();
@@ -108,6 +110,8 @@ class PedidoController extends Controller
 
                 $indice += 2;
             }
+
+            $em->getRepository('AppBundle:EstadoPedido')->newStatus($pedido, 1);
 
             return $this->redirectToRoute('pedido_show', array('id' => $pedido->getId()));
         }
@@ -248,6 +252,8 @@ class PedidoController extends Controller
 
                 $indice += 2;
             }
+
+            $em->getRepository('AppBundle:EstadoPedido')->newStatus($pedido, 2);
 
             return $this->redirectToRoute('pedido_show', array('id' => $pedido->getId()));
         }

@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\EstadoPedido;
 
 /**
  * EstadoPedidoRepository
@@ -10,4 +11,20 @@ namespace AppBundle\Repository;
  */
 class EstadoPedidoRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function newStatus($pedido, $valorEstado){
+        $em = $this->getEntityManager();
+        $estado = $em->getRepository('AppBundle:Estado')->findOneBy(array('id' => $valorEstado));
+        $pedido = $em->getRepository('AppBundle:Pedido')->findOneBy(array('id' => $pedido));
+        $estadoPedido = New EstadoPedido();
+        $estadoPedido->setIdPedido($pedido);
+        $estadoPedido->setIdEstado($estado);
+        $estadoPedido->setFecha(new \DateTime('now'));
+
+        $em->persist($estadoPedido);
+        $em->flush();
+        if($em->contains($estadoPedido)){
+            return true;
+        }
+        return false;
+    }
 }
