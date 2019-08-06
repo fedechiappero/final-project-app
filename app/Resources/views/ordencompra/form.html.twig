@@ -1,0 +1,341 @@
+<form id="frmordencompra" method='POST' action=''>
+
+    <div class="form-group">
+        <label>Fecha:</label>
+        <input type="text" readonly required="required" class="form-control" name="fecha"
+            {% if ordencompra.fecha is defined %}
+                value="{{ ordencompra.fecha | date("d/m/Y") }}"
+            {% else %}
+                value="{{ "now" | date("d/m/Y") }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label>Numero:</label>
+        <input type="text" readonly required="required" class="form-control" name="numero"
+            {% if ordencompra.numero is null %}
+                value="1"
+            {% elseif detalles is defined %}
+                value="{{ ordencompra.numero }}"
+            {% else %}
+                value="{{ ordencompra.numero + 1 }}"
+            {% endif %}
+        >
+    </div>
+
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalobra">Seleccionar Obra</button>
+    <div class="form-group">
+        <input id="idobra" type="hidden" name="idobra">
+        <label for="nombreobra">Obra:</label>
+        <input id="nombreobra" readonly class="form-control" type="text" name="nombreobra">
+    </div>
+
+    <div class="form-group">
+        <label for="proveedor">Proveedor</label>
+        <select id="proveedor">
+            <option value="0"></option>
+            {% for proveedor in proveedores %}
+                <option value="{{ proveedor.id.id }}">{{ proveedor.razonSocial }}</option>
+            {% endfor %}
+        </select>
+        <input id="proveedorselected" type="hidden" name="proveedorselected">
+        <input id="convenio" type="text" class="form-control" readonly>
+        <input id="descuentoconvenio" type="hidden" value="0">
+    </div>
+
+    <table id="tablapedidos" class="table table-striped">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>numero</th>
+            <th>fecha emision</th>
+            <th>necesario para fecha</th>
+            <th>Contratista</th>
+            <th>Incluir en orden</th>
+        </tr>
+        </thead>
+        <tbody id="tpedidobody">
+        </tbody>
+    </table>
+
+    <table id="tablapedidofinal" class="table table-striped">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Producto</th>
+            <th>Stock</th>
+            <th>Cantidad requerida</th>
+            <th>Precio unitario</th>
+        </tr>
+        </thead>
+        <tbody id="tpedidobodyfinal">
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label>Total:</label>
+                <input id="total" readonly class="form-control" type="text" name="total">
+            </div>
+        </div>
+        <div class="col-xs-6">
+            <div class="form-group">
+                <label>Total con descuento por convenio:</label>
+                <input id="totaldescuento" readonly class="form-control" type="text" name="totaldescuento">
+            </div>
+        </div>
+    </div>
+
+    {{ include(':pedido:modalobra.html.twig') }}
+
+    {{ include(':ordencompra:modaldetalle.html.twig') }}
+
+    <div class="form-group">
+        <button id="nuevaordencompra" class="btn btn-success" type="submit">Generar orden de compra</button>
+    </div>
+</form>
+
+<script>
+
+    var detalleOrden = [];
+
+    var cargarJson = function(idpedido, idproducto, nombreproducto, stock, cantidad, precio){
+        var detalle = {
+            'idpedido':idpedido,
+            'idproducto':idproducto,
+            'nombreproducto':nombreproducto,
+            'stock':stock,
+            'cantidad':cantidad,
+            'precio':precio
+        };
+        detalleOrden.push(detalle);
+    };
+
+    var actualiarTablaDetalle = function(){
+        //data shown
+        //idproducto,nombreproducto,stock,cantidad,precio
+        tablafinal.clear().draw();
+        if(detalleOrden.length > 0){
+            $.each(detalleOrden, function (index, value) {
+                if (tablafinal.data().any()) {
+                    var i=0;
+                    var y=0;
+                    var cantidadencontrada = 0;
+                    tablafinal.rows().every(function () {
+                        var data = this.data();
+                        if(value.idproducto == data[0]){
+                            cantidadencontrada = data[3];
+                            y=i;
+                        }
+                        i++;
+                    });
+                    if(cantidadencontrada != 0){
+                        var cantidadtotal = parseInt(cantidadencontrada) + parseInt(value.cantidad);
+                        tablafinal.cell(y, 3).data(cantidadtotal);
+                    }else{
+                        tablafinal.row.add([value.idproducto,value.nombreproducto,value.stock,value.cantidad,value.precio]).draw(false);
+                    }
+                }
+                else{
+                    tablafinal.row.add([value.idproducto,value.nombreproducto,value.stock,value.cantidad,value.precio]).draw(false);
+                }
+            });
+        }
+        calcularTotales();
+    };
+
+    var calcularTotales = function(){
+        var total = 0;
+        tablafinal.rows().every(function () {
+            var data = this.data();
+            total += parseInt(data[3]) * parseFloat(data[4]);
+        });
+        var valortotal = $('#total');
+        valortotal.val(total);
+        var descuento = $('#descuentoconvenio').val();
+        if(descuento != 0){
+            var totaldescuento = $('#totaldescuento');
+            totaldescuento.val(total - (total * parseFloat(descuento) / 100))
+        }
+    };
+
+    var eliminarDetalleJson = function(idpedido){
+        var i = detalleOrden.length;
+        while(i--){//backwards to avoid reindex when splice
+            if(detalleOrden[i].idpedido == idpedido) {
+                detalleOrden.splice(i, 1);
+            }
+        }
+
+    };
+
+    var tabla = $('#tablapedidos').DataTable({
+        paging: false
+    });
+
+    var tablafinal = $('#tablapedidofinal').DataTable({
+        paging: false
+    });
+
+    $(document).on('click', '#tobra tr', function () {
+        var id = $(this).find('#id').text();
+        var nombre = $(this).find('#nombre').text();
+        $('#idobra').val(id);
+        $('#nombreobra').val(nombre);
+        $('#modalobra').modal('hide');
+        buscarPedidos();
+    });
+
+    var buscarPedidos = function(selected){
+        var valor = $('#idobra').val();
+        if(valor != 0){
+            $.ajax({
+                url:'{{ (path('buscar_pedidos_obra')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "idobra": valor
+                },
+                async: true,
+                success: function (data)
+                {
+                    tabla.clear();
+                    $.each(data, function (index, value) {
+                        var id = value.id;
+                        var numero = value.numero;
+                        var fecha = value.fecha.date;
+                        var necesarioParaFecha = value.necesarioParaFecha.date;
+                        var contratista = value.razonSocial;
+                        var checkbox = `<input type="checkbox" class="custom-control-input chkincluir" onclick='check(this)' value="${id}">`;
+                        tabla.row.add([id, numero, fecha, necesarioParaFecha, contratista, checkbox]).draw(false);
+                    });
+                },
+                error : function() {
+                    alert('Ajax request failed.');
+                }
+            });
+            return false;
+        }
+    };
+
+    $('#proveedor').on('change', function () {
+        var convenio = $('#convenio');
+        convenio.val('');
+        var descuentoconvenio = $('#descuentoconvenio');
+        descuentoconvenio.val('');
+
+        var valor = $('#proveedor').val();
+        $("#proveedorselected").val(valor);
+        if(valor != 0){
+            $.ajax({
+                url:'{{ (path('buscar_convenio_proveedor')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "idproveedor": valor
+                },
+                async: true,
+                success: function (data)
+                {
+                    $.each(data, function (index, value) {
+                        var descripcion = value.descripcion;
+                        var descuento = value.descuentoPorcentaje;
+
+                        var mensaje = `Convenio: ${descripcion}, descuento ${descuento}%`;
+                        convenio.val(mensaje);
+                        descuentoconvenio.val(descuento);
+                    });
+                },
+                error : function() {
+                    alert('Ajax request failed.');
+                }
+            });
+            return false;
+        }
+    });
+
+    tabla.on('click', 'td', function(){
+        if(parseInt(tabla.cell(this).index().column) != 5){//not click on the checkbox
+            var valor = parseInt(tabla.row(this).data()[0]);//idpedido
+            var numeroPedido = tabla.row(this).data()[1];
+            if(valor != 0){
+                $.ajax({
+                    url:'{{ (path('buscar_detalles_pedido')) }}',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "idpedido": valor
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        var tabladetalle = $('#tabladetalle');
+                        tabladetalle.html('');
+
+                        $('#modaltitulo').text(`Detalle Pedido #${numeroPedido}`);
+
+                        $.each(data, function (index, value) {
+                            var cantidad = value.cantidad;
+                            var nombre = value.nombre;
+
+                            var row = `<tr><td>${nombre}</td><td>${cantidad}</td></tr>`;
+                            tabladetalle.append(row);
+                        });
+                        $('#modaldetalle').modal('show');
+                    },
+                    error : function() {
+                        alert('Ajax request failed.');
+                    }
+                });
+                return false;
+            }
+        }
+    });
+
+    var check = function(checkbox){
+        var valor = checkbox.value;//idpedido
+        if(checkbox.checked){
+            var proveedor = $("#proveedorselected").val();
+            if(valor != 0 && proveedor != 0){
+                $.ajax({
+                    url:'{{ (path('buscar_detalle_orden')) }}',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "idpedido": valor,
+                        "idproveedor": proveedor
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        $.each(data, function (index, value) {
+                            var pedidoid = value.pedidoid;
+                            var productoid = value.productoid;
+                            var nombre = value.nombre;
+                            var stock = value.stock;
+                            var cantidad = value.cantidad;
+                            var precio = value.precio;
+                            cargarJson(pedidoid,productoid,nombre,stock,cantidad,precio);
+                            actualiarTablaDetalle();
+                        });
+                    },
+                    error : function() {
+                        alert('Ajax request failed.');
+                    }
+                });
+                return false;
+            }
+        }else{
+            eliminarDetalleJson(valor);
+            actualiarTablaDetalle();
+        }
+    };
+
+    $(document).keydown(function(event) {
+        if (event.keyCode == 27) {
+            $('#modaldetalle').modal('hide');
+        }
+    });
+</script>

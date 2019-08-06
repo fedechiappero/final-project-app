@@ -47,21 +47,29 @@ class OrdenCompraController extends Controller
      */
     public function newAction(Request $request)
     {
-        $ordenCompra = new OrdenCompra();
-        $form = $this->createForm('AppBundle\Form\OrdenCompraType', $ordenCompra);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($ordenCompra);
-            $em->flush();
+        if ($request->isMethod('POST')) {
+
+            //future update, find user logged, this reflect who made the order
+            $usuario = $em->getRepository('ApBundle:User')->find(1);
+
+            $ordenCompra = new OrdenCompra();
 
             return $this->redirectToRoute('ordencompra_show', array('id' => $ordenCompra->getId()));
         }
 
+        $obras = $em->getRepository('AppBundle:Obra')->findAll();
+        $proveedores = $em->getRepository('AppBundle:Proveedor')->findAll();
+
+        //select last order number
+        $query = $em->createQuery("SELECT MAX(op.numero) AS numero FROM AppBundle:OrdenCompra op");
+        $ordenCompra = $query->getResult();
+
         return $this->render('ordencompra/new.html.twig', array(
-            'ordenCompra' => $ordenCompra,
-            'form' => $form->createView(),
+            'proveedores' => $proveedores,
+            'obras' => $obras,
+            'ordencompra' => $ordenCompra[0]
         ));
     }
 
@@ -108,11 +116,25 @@ class OrdenCompraController extends Controller
         $editForm = $this->createForm('AppBundle\Form\OrdenCompraType', $ordenCompra);
         $editForm->handleRequest($request);
 
+        $em = $this->getDoctrine()->getManager();
+
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('ordencompra_edit', array('id' => $ordenCompra->getId()));
         }
+
+
+        $dqlDetalles = "
+            /*SELECT p.id AS id, d.cantidad AS cantidad, p.nombre AS nombre FROM AppBundle:DetalleOrdenCompra d
+            INNER JOIN AppBundle:Producto p WITH d.idProducto = p.id
+            WHERE d.idPedido = :id*/
+        ";
+
+        $queryDetalles = $em->createQuery($dqlDetalles)
+            ->setParameter('id', $ordenCompra->getId());
+
+        $detalles = $queryDetalles->getResult();
 
         return $this->render('ordencompra/edit.html.twig', array(
             'ordenCompra' => $ordenCompra,

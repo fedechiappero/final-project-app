@@ -6,7 +6,9 @@ use AppBundle\Entity\DetallePedido;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Detallepedido controller.
@@ -133,5 +135,34 @@ class DetallePedidoController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Busca detalles de un pedido
+     *
+     * @Route("/ajax", name="buscar_detalles_pedido")
+     * @return JsonResponse|Response
+     */
+    public function buscarDetallesPedido(Request $request){
+        if ($request->isXmlHttpRequest()) {
+            if ($request->request->get('idpedido')) {
+                $idpedido = $request->request->get('idpedido');
+                $em = $this->getDoctrine()->getManager();
+
+                $dqlDetalles = "
+                    SELECT d.id, d.cantidad, p.nombre FROM AppBundle:DetallePedido d
+                    INNER JOIN AppBundle:Producto p WITH d.idProducto = p.id
+                    WHERE d.idPedido = :id
+                ";
+
+                $queryDetalles = $em->createQuery($dqlDetalles)
+                    ->setParameter('id', $idpedido);
+
+                $detalles = $queryDetalles->getResult();
+
+                return new JsonResponse($detalles);
+            }
+        }
+        return $this->redirectToRoute('ordencompra_new');
     }
 }

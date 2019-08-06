@@ -6,7 +6,9 @@ use AppBundle\Entity\Convenio;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Convenio controller.
@@ -133,5 +135,35 @@ class ConvenioController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * busca convenio con un proveedor
+     *
+     * @Route("/ajax", name="buscar_convenio_proveedor")
+     * @return JsonResponse|Response
+     */
+    public function buscarConvenioProveedor(Request $request){
+        if ($request->isXmlHttpRequest()) {
+            if ($request->request->get('idproveedor')) {
+                $idproveedor = $request->request->get('idproveedor');
+                $em = $this->getDoctrine()->getManager();
+
+                $dqlConvenio = "
+                    SELECT c.descripcion, c.descuentoPorcentaje FROM AppBundle:Convenio c
+                    WHERE c.idProveedor = :proveedor AND c.vigente = :vigente
+                ";
+
+                $queryDetalle = $em->createQuery($dqlConvenio)
+                    ->setParameter('proveedor',$idproveedor)
+                    ->setParameter('vigente', true);
+
+                $convenio = $queryDetalle->getResult();
+
+
+                return new JsonResponse($convenio);
+            }
+        }
+        return $this->redirectToRoute('convenio_new');
     }
 }

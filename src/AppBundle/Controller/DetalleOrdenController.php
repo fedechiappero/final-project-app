@@ -6,7 +6,9 @@ use AppBundle\Entity\DetalleOrden;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Detalleorden controller.
@@ -133,5 +135,38 @@ class DetalleOrdenController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * busca detalle para una orden a partir de un pedido
+     *
+     * @Route("/ajax", name="buscar_detalle_orden")
+     * @return JsonResponse|Response
+     */
+    public function buscarDetalleOrden(Request $request){
+        if ($request->isXmlHttpRequest()) {
+            if ($request->request->get('idpedido')) {
+                $idpedido = $request->request->get('idpedido');
+                $idproveedor = $request->request->get('idproveedor');
+                $em = $this->getDoctrine()->getManager();
+
+                $dqlDetalle = "
+                    SELECT pe.id AS pedidoid, p.id AS productoid, p.nombre, dp.cantidad, p.stock, pr.precio FROM AppBundle:Producto p
+                    INNER JOIN AppBundle:Precio pr WITH pr.idProducto = p.id
+                    INNER JOIN AppBundle:DetallePedido dp WITH dp.idProducto = p.id
+                    INNER JOIN AppBundle:Pedido pe WITH dp.idPedido = pe.id
+                    WHERE pr.idProveedor = :proveedor AND dp.idPedido = :pedido
+                ";
+
+                $queryDetalle = $em->createQuery($dqlDetalle)
+                    ->setParameter('proveedor',$idproveedor)
+                    ->setParameter('pedido', $idpedido);
+
+                $detalle = $queryDetalle->getResult();
+
+                return new JsonResponse($detalle);
+            }
+        }
+        return $this->redirectToRoute('ordencompra_new');
     }
 }

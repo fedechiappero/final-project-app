@@ -36,11 +36,11 @@
                         </li>
                     </ul>
                 </td>
-                <td>
-                    {% if pedido.estadoId == 1 or pedido.estadoId == 2 %}
+                {% if pedido.estadoId == 1 or pedido.estadoId == 2 %}
+                    <td>
                         <button class="btncancelar" value="{{ pedido.id }}">cancelar</button>
-                    {% endif %}
-                </td>
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
@@ -63,7 +63,7 @@
                     dataType: "json",
                     data: {
                         "idPedido": valor,
-                        "estado": 4
+                        "estado": 4/*yeah, i know this is wrong*/
                     },
                     async: true,
                     success: function ()

@@ -7,7 +7,9 @@ use AppBundle\Entity\Pedido;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Pedido controller.
@@ -334,5 +336,40 @@ class PedidoController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * Busca los Pedidos de una obra
+     *
+     * @Route("/ajax", name="buscar_pedidos_obra")
+     * @return JsonResponse|Response
+     */
+    public function buscarPedidosObra(Request $request){
+        if ($request->isXmlHttpRequest()) {
+            if ($request->request->get('idobra')) {
+                $idobra = $request->request->get('idobra');
+                $em = $this->getDoctrine()->getManager();
+
+                $dql = "          
+                    SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, c.razonSocial FROM AppBundle:Pedido p
+                    INNER JOIN AppBundle:ContratistaObra co WITH p.idContratistaObra = co.id
+                    INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
+                    INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
+                    INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+                    INNER JOIN AppBundle:EstadoPedido ep WITH ep.idPedido = p.id
+                    WHERE o.id = :id AND ep.idEstado <=2 AND ep.fecha IN 
+                        (SELECT MAX(ep2.fecha) FROM AppBundle:EstadoPedido ep2
+                        GROUP BY ep2.idPedido)
+                ";
+
+                $query = $em->createQuery($dql)
+                    ->setParameter('id', $idobra);
+
+                $pedidosObra = $query->getResult();
+
+                return new JsonResponse($pedidosObra);
+            }
+        }
+        return $this->redirectToRoute('ordencompra_new');
     }
 }
