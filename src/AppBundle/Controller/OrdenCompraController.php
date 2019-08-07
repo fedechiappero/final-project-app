@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\DetalleOrden;
+use AppBundle\Entity\DetallePedidoOrden;
 use AppBundle\Entity\OrdenCompra;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -51,10 +53,89 @@ class OrdenCompraController extends Controller
 
         if ($request->isMethod('POST')) {
 
+            //values from view
+            $proveedor = $request->request->get('proveedorselected');
+            $obra = $request->request->get('idobra');
+            $numero = $request->request->get('numero');
+            $fecha = new \DateTime('now');
+            $total = $request->request->get('total');
+
+            //values from db
+            $proveedor = $em->getRepository('AppBundle:Proveedor')->find($proveedor);
             //future update, find user logged, this reflect who made the order
-            $usuario = $em->getRepository('ApBundle:User')->find(1);
+            $usuario = $em->getRepository('AppBundle:User')->find(1);
+            $obra = $em->getRepository('AppBundle:Obra')->find($obra);
 
             $ordenCompra = new OrdenCompra();
+            $ordenCompra->setIdProveedor($proveedor);
+            $ordenCompra->setIdObra($obra);
+            $ordenCompra->setIdUsuario($usuario->getId()->getId());
+            $ordenCompra->setNumero($numero);
+            $ordenCompra->setFechaEmision($fecha);
+            $ordenCompra->setTotal($total);
+
+            $em->persist($ordenCompra);
+            $em->flush();
+
+            //details (product + quantity)
+            $arrproductos = $request->request->get('arrproductos');
+            $indice = 0;
+            $arrprod = explode(',', $arrproductos);//paso a arreglo
+            $longitud = count($arrprod);
+            while($indice < $longitud){
+                $producto = $em->getRepository('AppBundle:Producto')->find($arrprod[$indice]);
+
+                $dql = "
+                    SELECT p.id FROM AppBundle:Precio p
+                    WHERE p.idProducto = :idproducto AND 
+                    p.fechaUltimaActualizacion IN (SELECT MAX(p2.fechaUltimaActualizacion) FROM AppBundle:Precio p2
+                                                   GROUP BY p2.idProducto)
+                ";
+
+                $query = $em->createQuery($dql)
+                    ->setParameter('idproducto', $producto->getId());
+
+                //will throw an exception if more than one result are found, or if no result is found
+                $idprecio = $query->getSingleResult();
+
+                $precio = $em->getRepository('AppBundle:Precio')->findOneBy(array('id'=>$idprecio));
+
+                $cantidad = $arrprod[$indice+1];
+
+                $detalleOrden = new DetalleOrden();
+                $detalleOrden
+                    ->setIdOrden($ordenCompra)
+                    ->setIdProducto($producto)
+                    ->setPrecioUnitario($precio->getPrecio())
+                    ->setCantidad($cantidad);
+
+                $em->persist($detalleOrden);
+                $em->flush();
+
+                $indice += 2;
+            }
+
+            //details (which request was included in this buy order)
+            $arrdetalles = $request->request->get('arrdetalles');
+            $indice = 0;
+            $arrped = explode(',', $arrdetalles);//paso a arreglo
+            $longitud = count($arrped);
+            while($indice < $longitud){
+                $pedido = $em->getRepository('AppBundle:Pedido')->find($arrped[$indice]);
+
+                $detallePedidoOrden = new DetallePedidoOrden();
+                $detallePedidoOrden
+                    ->setIdOrden($ordenCompra)
+                    ->setIdPedido($pedido);
+
+                $em->persist($detallePedidoOrden);
+                $em->flush();
+
+                //                                              3 = order submitted
+                $em->getRepository('AppBundle:EstadoPedido')->newStatus($pedido, 3);
+
+                $indice += 1;
+            }
 
             return $this->redirectToRoute('ordencompra_show', array('id' => $ordenCompra->getId()));
         }

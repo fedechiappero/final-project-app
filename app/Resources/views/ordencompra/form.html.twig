@@ -92,6 +92,9 @@
 
     {{ include(':ordencompra:modaldetalle.html.twig') }}
 
+    <input id="arrproductos" type="hidden" name="arrproductos">
+    <input id="arrdetalles" type="hidden" name="arrdetalles">
+
     <div class="form-group">
         <button id="nuevaordencompra" class="btn btn-success" type="submit">Generar orden de compra</button>
     </div>
@@ -144,8 +147,11 @@
             });
         }
         calcularTotales();
+        crearArregloProductos();
+        crearArregloDetalles();
     };
 
+    //it should calculate totals with json object instead the table
     var calcularTotales = function(){
         var total = 0;
         tablafinal.rows().every(function () {
@@ -338,4 +344,34 @@
             $('#modaldetalle').modal('hide');
         }
     });
+
+    function crearArregloProductos(){
+        var producto = "";
+        var cantidad = "";
+        var array = [];
+        var array2 = [];
+
+        if(tablafinal.data().any()) {
+            tablafinal.rows().every( function() {
+                var data = this.data();
+                producto = data[0];
+                cantidad = data[3];
+                array2 = [producto, cantidad];
+                array.push(array2);
+            });
+        }
+        $("#arrproductos").val(array);
+    }
+
+    function crearArregloDetalles(){
+        var pedidos = [];
+
+        $.each(detalleOrden, function (index, value) {
+            if (!pedidos.includes(value.idpedido)) {
+                pedidos.push(value.idpedido);
+            }
+        });
+
+        $("#arrdetalles").val(pedidos);
+    }
 </script>

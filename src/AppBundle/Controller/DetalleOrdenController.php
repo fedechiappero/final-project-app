@@ -150,6 +150,8 @@ class DetalleOrdenController extends Controller
                 $idproveedor = $request->request->get('idproveedor');
                 $em = $this->getDoctrine()->getManager();
 
+
+                //that may not be the updated price product.. check new orden compra procedure
                 $dqlDetalle = "
                     SELECT pe.id AS pedidoid, p.id AS productoid, p.nombre, dp.cantidad, p.stock, pr.precio FROM AppBundle:Producto p
                     INNER JOIN AppBundle:Precio pr WITH pr.idProducto = p.id
