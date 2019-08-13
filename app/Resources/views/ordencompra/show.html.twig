@@ -37,6 +37,25 @@
         </tbody>
     </table>
 
+    <table id="myTable" class="table table-striped">
+        <thead class="panel-primary">
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for detalle in detalles %}
+            <tr>
+                <td>{{ detalle.nombre }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.precioUnitario }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <ul>
         <li>
             <a href="{{ path('ordencompra_index') }}">Back to the list</a>

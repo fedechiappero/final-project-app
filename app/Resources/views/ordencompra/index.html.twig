@@ -14,6 +14,7 @@
                 <th>Fechaemision</th>
                 <th>Total</th>
                 <th>Actions</th>
+                <th>Imprimir</th>
             </tr>
         </thead>
         <tbody>
@@ -36,6 +37,9 @@
                             <a href="{{ path('ordencompra_edit', { 'id': ordenCompra.id }) }}">edit</a>
                         </li>
                     </ul>
+                </td>
+                <td>
+                    <a href="{{ path('ordencompra_pdf', { 'id': ordenCompra.id }) }}" download><button class="btnimprimir">Pdf</button></a>
                 </td>
             </tr>
         {% endfor %}

@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 
 /**
  * Ordencompra controller.
@@ -166,7 +167,7 @@ class OrdenCompraController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $dql = "
+        $dqlOrden = "
             SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, u.username AS username, p.razonSocial AS proveedorRazonSocial, o.nombre AS obraNombre FROM AppBundle:OrdenCompra oc
             INNER JOIN AppBundle:User u WITH oc.idUsuario = u.id
             INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id
@@ -174,13 +175,24 @@ class OrdenCompraController extends Controller
             WHERE oc.id = :id
         ";
 
-        $queryOrdenes = $em->createQuery($dql)
+        $queryOrdenes = $em->createQuery($dqlOrden)
+            ->setParameter('id',$ordenCompra->getId());
+
+        $dqlDetalles = "
+            SELECT p.nombre, d.cantidad, d.precioUnitario FROM AppBundle:DetalleOrden d
+            INNER JOIN AppBundle:Producto p WITH d.idProducto = p.id
+            WHERE d.idOrden = :id
+        ";
+
+        $queryDetalles = $em->createQuery($dqlDetalles)
             ->setParameter('id',$ordenCompra->getId());
 
         $ordenCompra = $queryOrdenes->getResult();
+        $detalles = $queryDetalles->getResult();
 
         return $this->render('ordencompra/show.html.twig', array(
             'ordenCompra' => $ordenCompra[0],
+            'detalles' => $detalles,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -258,5 +270,52 @@ class OrdenCompraController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+    * Creates a pdf file for ordenCompra.
+    *
+    * @Route("/pdf/{id}", name="ordencompra_pdf")
+    */
+    public function crearPdf(OrdenCompra $ordenCompra){
+        $em = $this->getDoctrine()->getManager();
+
+        $dql = "
+            SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, u.email AS email, p.razonSocial AS proveedorRazonSocial, pe.direccion AS proveedorDireccion FROM AppBundle:OrdenCompra oc
+            INNER JOIN AppBundle:User u WITH oc.idUsuario = u.id
+            INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id
+            INNER JOIN AppBundle:Persona pe WITH p.id = pe.id
+            WHERE oc.id = :id
+        ";
+
+        $queryOrdenes = $em->createQuery($dql)
+            ->setParameter('id',$ordenCompra->getId());
+
+        $dqlDetalles = "
+            SELECT p.nombre, d.cantidad, d.precioUnitario FROM AppBundle:DetalleOrden d
+            INNER JOIN AppBundle:Producto p WITH d.idProducto = p.id
+            WHERE d.idOrden = :id
+        ";
+
+        $queryDetalles = $em->createQuery($dqlDetalles)
+            ->setParameter('id',$ordenCompra->getId());
+
+        $ordenCompra = $queryOrdenes->getResult();
+        $detalles = $queryDetalles->getResult();
+
+        $ordenCompra = $ordenCompra[0];
+        $twigoutput = $this->renderView('ordencompra/pdf.html.twig', array(
+            'ordenCompra' => $ordenCompra,
+            'detalles' => $detalles
+        ));
+
+        $numero = $ordenCompra['numero'];
+
+        $nombreArchivo = "ordenCompra-${numero}.pdf";
+
+        return new PdfResponse(
+            $this->get('knp_snappy.pdf')->getOutputFromHtml($twigoutput),
+            $nombreArchivo
+        );
     }
 }
