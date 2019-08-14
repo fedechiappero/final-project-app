@@ -66,6 +66,7 @@
             <th>Producto</th>
             <th>Stock</th>
             <th>Cantidad requerida</th>
+            <th>Cantidad a incluir</th>
             <th>Precio unitario</th>
         </tr>
         </thead>
@@ -114,6 +115,7 @@
             'precio':precio
         };
         detalleOrden.push(detalle);
+        console.log(detalleOrden);
     };
 
     var actualiarTablaDetalle = function(){
@@ -123,26 +125,32 @@
         if(detalleOrden.length > 0){
             $.each(detalleOrden, function (index, value) {
                 if (tablafinal.data().any()) {
-                    var i=0;
+                    //using i in function every instead of defining the variable avoid indexing problems when compare con array index
+                    //CHECK IT ON requests
                     var y=0;
                     var cantidadencontrada = 0;
-                    tablafinal.rows().every(function () {
+                    tablafinal.rows().every(function (i) {
                         var data = this.data();
+                        console.log('valor de i: '+i);
                         if(value.idproducto == data[0]){
                             cantidadencontrada = data[3];
                             y=i;
+                            console.log('valor de y: '+y);
                         }
-                        i++;
                     });
                     if(cantidadencontrada != 0){
                         var cantidadtotal = parseInt(cantidadencontrada) + parseInt(value.cantidad);
+                        console.log('encontro repetido ' + tablafinal.cell(y, 1).data() + ' cantidad encontrada '+cantidadencontrada + ' cantidad a insertar '+cantidadtotal);
                         tablafinal.cell(y, 3).data(cantidadtotal);
+                        tablafinal.cell(y, 4).data(Math.abs(parseInt(tablafinal.cell(y, 2).data()) - parseInt(tablafinal.cell(y, 3).data())))
                     }else{
-                        tablafinal.row.add([value.idproducto,value.nombreproducto,value.stock,value.cantidad,value.precio]).draw(false);
+                        console.log('tabla con datos no repetidos ' + value.nombreproducto+ ' cantidad: '+value.cantidad);
+                        tablafinal.row.add([value.idproducto,value.nombreproducto,value.stock,value.cantidad,Math.abs((parseInt(value.stock)-parseInt(value.cantidad))),value.precio]).draw(false);
                     }
                 }
                 else{
-                    tablafinal.row.add([value.idproducto,value.nombreproducto,value.stock,value.cantidad,value.precio]).draw(false);
+                    console.log('tabla vacia primero producto: ' + value.nombreproducto + ' cantidad: '+value.cantidad);
+                    tablafinal.row.add([value.idproducto,value.nombreproducto,value.stock,value.cantidad,Math.abs((parseInt(value.stock)-parseInt(value.cantidad))),value.precio]).draw(false);
                 }
             });
         }
@@ -156,7 +164,7 @@
         var total = 0;
         tablafinal.rows().every(function () {
             var data = this.data();
-            total += parseInt(data[3]) * parseFloat(data[4]);
+            total += parseInt(data[4]) * parseFloat(data[5]);
         });
         var valortotal = $('#total');
         valortotal.val(total);
@@ -324,8 +332,8 @@
                             var cantidad = value.cantidad;
                             var precio = value.precio;
                             cargarJson(pedidoid,productoid,nombre,stock,cantidad,precio);
-                            actualiarTablaDetalle();
                         });
+                        actualiarTablaDetalle();
                     },
                     error : function() {
                         alert('Ajax request failed.');
@@ -355,7 +363,7 @@
             tablafinal.rows().every( function() {
                 var data = this.data();
                 producto = data[0];
-                cantidad = data[3];
+                cantidad = data[4];
                 array2 = [producto, cantidad];
                 array.push(array2);
             });
