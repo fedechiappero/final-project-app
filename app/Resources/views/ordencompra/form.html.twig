@@ -93,6 +93,8 @@
 
     {{ include(':ordencompra:modaldetalle.html.twig') }}
 
+    {{ include(':ordencompra:modalcantidad.html.twig') }}
+
     <input id="arrproductos" type="hidden" name="arrproductos">
     <input id="arrdetalles" type="hidden" name="arrdetalles">
 
@@ -308,6 +310,18 @@
         }
     });
 
+    tablafinal.on('dblclick', 'td', function(){
+        if (tablafinal.data().any()) {
+            if(parseInt(tablafinal.cell(this).index().column) == 4){//click on amount to include
+                var index = parseInt(tablafinal.cell(this).index().row);
+                $('#indexeditar').val(index);
+                var cantidad = parseInt(tablafinal.cell(this).data());
+                $('#quantity').val(cantidad);
+                $('#modalcantidad').modal('show');
+            }
+        }
+    });
+
     var check = function(checkbox){
         var valor = checkbox.value;//idpedido
         if(checkbox.checked){
@@ -350,6 +364,7 @@
     $(document).keydown(function(event) {
         if (event.keyCode == 27) {
             $('#modaldetalle').modal('hide');
+            $('#modalcantidad').modal('hide');
         }
     });
 
@@ -382,4 +397,30 @@
 
         $("#arrdetalles").val(pedidos);
     }
+
+    $('.quantity-right-plus').click(function(e){
+        var button = $(this);
+        var oldValue = button.parent().parent().find("input").val();
+        // Stop acting like a button
+        e.preventDefault();
+        button.parent().parent().find("input").val(parseInt(oldValue)+1);
+    });
+
+    $('.quantity-left-minus').click(function(e){
+        var button = $(this);
+        var oldValue = button.parent().parent().find("input").val();
+        // Stop acting like a button
+        e.preventDefault();
+        if(parseInt(oldValue)>=1){
+            button.parent().parent().find("input").val(parseInt(oldValue)-1);
+        }
+    });
+
+    $('#btnaceptar').on('click', function(){
+        var cantidad = $('#quantity').val();
+        var index = $('#indexeditar').val();
+        tablafinal.cell(index, 4).data(cantidad);
+        crearArregloProductos();
+        calcularTotales();
+    });
 </script>
