@@ -1,0 +1,35 @@
+{% block navpublica %}
+    <div class="header">
+        <div id='cssmenu'>
+            <ul>
+                <li class="active"><a href='{{ path('homepage') }}'><span>Constructora S.A.</span></a></li>
+                <li class=' has-sub'><a href='#'><span>Categoria Productos</span></a>
+                    <ul>
+
+                    </ul>
+                </li>
+                <li><a href='{{ path('contact') }}'><span>Contact</span></a></li>
+                {% if app.user %}
+                    <li class='last'><a href={{ path('fos_user_security_logout') }}><span>Salir</span></a></li>
+                    <div>
+                        <br>
+                        <span>User: {{ app.user.username }}</span>
+                        <br>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <span>Tipo de cuenta: Administrador</span>
+                        {% elseif is_granted('ROLE_USER') %}
+                            <span>Tipo de cuenta: Usuario</span>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <li class='last'><a href={{ path('fos_user_security_login') }}><span>Ingresar</span></a></li>
+                {% endif %}
+            </ul>
+        </div>
+        {% if app.request.get('_route') == 'homepage' %}
+            <div class="custom-banner">
+                <img src="{{ asset('images/main.jpg') }}">
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
