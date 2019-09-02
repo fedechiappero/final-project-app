@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Error {{ status_code }}</h2>
+    <p>
+        {{ status_text }}
+        <a href="{{ path('homepage') }}">return to the homepage</a>.
+    </p>
+{% endblock %}
