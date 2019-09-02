@@ -3,25 +3,57 @@
         <div id='cssmenu'>
             <ul>
                 <li class="active"><a href='{{ path('homepage') }}'><span>Constructora S.A.</span></a></li>
-                <li class=' has-sub'><a href='#'><span>Categoria Productos</span></a>
-                    <ul>
-
-                    </ul>
-                </li>
-                <li><a href='{{ path('contact') }}'><span>Contact</span></a></li>
                 {% if app.user %}
+                    <li class="has-sub"><a href='#'><span>Pedidos</span></a>
+                        <ul>
+                            <li><a href="{{ path('pedido_index') }}">Listar</a></li>
+                            <li><a href="{{ path('pedido_new') }}">Nuevo</a></li>
+                        </ul>
+                    </li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="has-sub"><a href='#'><span>Orden de compra</span></a>
+                            <ul>
+                                <li><a href="{{ path('ordencompra_index') }}">Listar</a></li>
+                                <li><a href="{{ path('ordencompra_new') }}">Nueva</a></li>
+                            </ul>
+                        </li>
+                        <li class="has-sub"><a href='#'><span>Personas</span></a>
+                            <ul>
+                                <li><a href="{{ path('persona_index') }}">Listar</a></li>
+                                <li><a href="{{ path('persona_new') }}">Nuevo</a></li>
+                                <li class="has-sub"><a href='#'><span>Contratistas</span></a>
+                                    <ul>
+                                        <li><a href="{{ path('contratista_index') }}">Listar</a></li>
+                                        <li><a href="{{ path('contratista_new') }}">Nuevo</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-sub"><a href='#'><span>Proveedores</span></a>
+                                    <ul>
+                                        <li><a href="{{ path('proveedor_index') }}">Listar</a></li>
+                                        <li><a href="{{ path('proveedor_new') }}">Nuevo</a></li>
+                                    </ul>
+                                </li>
+                                <li class="has-sub"><a href='#'><span>Usuarios</span></a>
+                                    <ul>
+                                        <li><a href="{{ path('fos_user_registration_register') }}">Nuevo</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                    {% endif %}
                     <li class='last'><a href={{ path('fos_user_security_logout') }}><span>Salir</span></a></li>
                     <div>
                         <br>
-                        <span>User: {{ app.user.username }}</span>
+                        <span><a href={{ path('fos_user_profile_show') }}>User: {{ app.user.username }}</a></span>
                         <br>
                         {% if is_granted('ROLE_ADMIN') %}
                             <span>Tipo de cuenta: Administrador</span>
                         {% elseif is_granted('ROLE_USER') %}
-                            <span>Tipo de cuenta: Usuario</span>
+                            <span>Tipo de cuenta: Contratista</span>
                         {% endif %}
                     </div>
                 {% else %}
+                    <li><a href='{{ path('contact') }}'><span>Contacto</span></a></li>
                     <li class='last'><a href={{ path('fos_user_security_login') }}><span>Ingresar</span></a></li>
                 {% endif %}
             </ul>

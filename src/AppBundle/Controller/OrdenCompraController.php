@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\DetalleOrden;
 use AppBundle\Entity\DetallePedidoOrden;
 use AppBundle\Entity\OrdenCompra;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -13,7 +14,7 @@ use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
 
 /**
  * Ordencompra controller.
- *
+ * @Security("is_granted('ROLE_ADMIN')")
  * @Route("ordencompra")
  */
 class OrdenCompraController extends Controller

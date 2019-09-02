@@ -178,11 +178,17 @@ class ContratistaObraController extends Controller
                     SELECT co.id, r.nombre AS rubroNombre FROM AppBundle:ContratistaObra co
                     INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id 
                     INNER JOIN AppBundle:Rubro r WITH cr.idRubro = r.id
-                    WHERE co.idObra = :id
+                    WHERE co.idObra = :idObra AND cr.idContratista = :idContratista
                 ";
 
+                $idUser = $this->getUser()->getId();
+                //$user = $em->getRepository('AppBundle:Persona')->find($idUser);
+
                 $query = $em->createQuery($dql)
-                    ->setParameter('id', $idobra);
+                    ->setParameters(array(
+                        'idObra'=> $idobra,
+                        'idContratista'=>$idUser)
+                     );
 
                 $contratistaobras = $query->getResult();
 

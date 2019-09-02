@@ -9,7 +9,18 @@ class RegistrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('id');//ir order to select a person
+        $builder
+            ->add('id')//in order to select a person
+            ->add('roles', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', array(
+                'mapped' => false,
+                'required' => true,
+                'label'    => 'Tipo de usuario',
+                'choices' => array(
+                    'Administrador' => 'ROLE_ADMIN',
+                    'Contratista' => 'ROLE_USER',
+                ),
+                'expanded'   => true,
+            ));
     }
 
     //reuse fields from parent method
