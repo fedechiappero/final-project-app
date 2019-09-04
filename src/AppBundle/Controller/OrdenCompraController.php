@@ -85,35 +85,38 @@ class OrdenCompraController extends Controller
             $arrprod = explode(',', $arrproductos);//paso a arreglo
             $longitud = count($arrprod);
             while($indice < $longitud){
-                $producto = $em->getRepository('AppBundle:Producto')->find($arrprod[$indice]);
-
-                $dql = "
-                    SELECT p.id FROM AppBundle:Precio p
-                    WHERE p.idProducto = :idproducto AND 
-                    p.fechaUltimaActualizacion IN (SELECT MAX(p2.fechaUltimaActualizacion) FROM AppBundle:Precio p2
-                                                   GROUP BY p2.idProducto)
-                ";
-
-                $query = $em->createQuery($dql)
-                    ->setParameter('idproducto', $producto->getId());
-
-                //will throw an exception if more than one result are found, or if no result is found
-                $idprecio = $query->getSingleResult();
-
-                $precio = $em->getRepository('AppBundle:Precio')->findOneBy(array('id'=>$idprecio));
-
                 $cantidad = $arrprod[$indice+1];
 
-                $detalleOrden = new DetalleOrden();
-                $detalleOrden
-                    ->setIdOrden($ordenCompra)
-                    ->setIdProducto($producto)
-                    ->setPrecioUnitario($precio->getPrecio())
-                    ->setCantidad($cantidad);
+                if($cantidad > 0){//may be 0 because there are existing stock available or for some logic reason that product is not included in the order
+                    $producto = $em->getRepository('AppBundle:Producto')->find($arrprod[$indice]);
 
-                $em->persist($detalleOrden);
-                $em->flush();
+                    $dql = "
+                    SELECT p.id FROM AppBundle:Precio p
+                        WHERE p.idProducto = :idproducto AND 
+                        p.fechaUltimaActualizacion IN (SELECT MAX(p2.fechaUltimaActualizacion) FROM AppBundle:Precio p2
+                                                           GROUP BY p2.idProducto)
+                    ";
 
+                    $query = $em->createQuery($dql)
+                        ->setParameter('idproducto', $producto->getId());
+
+                    //will throw an exception if more than one result are found, or if no result is found
+                    $idprecio = $query->getSingleResult();
+
+                    $precio = $em->getRepository('AppBundle:Precio')->findOneBy(array('id'=>$idprecio));
+
+                    $detalleOrden = new DetalleOrden();
+                    $detalleOrden
+                        ->setIdOrden($ordenCompra)
+                        ->setIdProducto($producto)
+                        ->setPrecioUnitario($precio->getPrecio())
+                        ->setCantidad($cantidad);
+
+                    $em->persist($detalleOrden);
+                    $em->flush();
+
+
+                }
                 $indice += 2;
             }
 
