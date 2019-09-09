@@ -6,12 +6,14 @@
         <link rel="stylesheet" href="{{ asset('css/zerogrid.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/lightbox.css') }}" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/jquery.dataTables.css') }}" />
         <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}" />
 
         <!-- Custom Fonts -->
-        <link href="{{ asset('font-awesome/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('fonts/css/font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 
         <link rel="stylesheet" href="{{ asset('css/menu.css') }}" />
 
@@ -25,7 +27,17 @@
     </head>
     <body>
     {{ include('::navpublica.html.twig') }}
-        {% block body %}{% endblock %}
+    {% if app.request.get('_route') != 'homepage' %}
+        <div class="container">
+    {% endif %}
+
+    {% block body %}{% endblock %}
+
+    {% if app.request.get('_route') != 'homepage' %}
+        </div>
+    {% endif %}
+
+
         {% block javascripts %}
 
         {% endblock %}

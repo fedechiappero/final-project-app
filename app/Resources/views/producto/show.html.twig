@@ -6,6 +6,10 @@
     <table>
         <tbody>
             <tr>
+                <th>Id</th>
+                <td>{{ producto.id }}</td>
+            </tr>
+            <tr>
                 <th>Nombre</th>
                 <td>{{ producto.nombre }}</td>
             </tr>
@@ -17,10 +21,25 @@
                 <th>Stock</th>
                 <td>{{ producto.stock }}</td>
             </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
             <tr>
-                <th>Id</th>
-                <td>{{ producto.id }}</td>
+                <th>Precio</th>
+                <th>Proveedor</th>
+                <th>Ultima actualizacion</th>
             </tr>
+        </thead>
+        <tbody>
+        {% for precio in precios %}
+            <tr>
+                <td>{{ precio.precio }}</td>
+                <td>{{ precio.idProveedor.razonSocial }}</td>
+                <td>{{ precio.fechaUltimaActualizacion.date }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
 
@@ -30,11 +49,6 @@
         </li>
         <li>
             <a href="{{ path('producto_edit', { 'id': producto.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
         </li>
     </ul>
 {% endblock %}

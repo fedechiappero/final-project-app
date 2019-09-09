@@ -1,0 +1,272 @@
+<script>
+    var actions = "<td>" +
+                    "<a class='save' title='Save' data-toggle='tooltip'><i class='material-icons save'>&#xe161;</i></a>" +
+                    "<a class='edit' title='Edit' data-toggle='tooltip'><i class='material-icons'>&#xE254;</i></a>" +
+                    "<a class='delete' title='Delete' data-toggle='tooltip'><i class='material-icons'>&#xE872;</i></a>" +
+                  "</td>";
+</script>
+
+<form id="frmproducto" method='POST' action=''>
+
+    <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input id="nombre" class="form-control" type="text" name="nombre"
+        {% if producto.nombre is defined %}
+            value="{{ producto.nombre }}"
+        {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="unidad">Unidad:</label>
+        <input id="unidad" class="form-control" type="text" name="unidad"
+        {% if producto.unidad is defined %}
+            value="{{ producto.unidad }}"
+        {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="stock">Stock:</label>
+        <input id="stock" class="form-control" type="number" min="0" name="stock"
+        {% if producto.stock is defined %}
+            value="{{ producto.stock }}"
+        {% endif %}
+        >
+    </div>
+
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalprecio">Agregar precio</button>
+
+    {{ include(':producto:modalprecioproveedor.html.twig') }}
+
+    {#<table class="table" id="tprecios">
+        <thead>
+        <tr>
+            <th>Precio</th>
+            <th>Proveedor</th>
+            {% if precio.fechaUltimaActualizacion is defined %}<th>Ultima actualizacion</th>{% endif %}
+        </tr>
+        </thead>
+        <tbody id="tablaprecios">
+        {% if precio.fechaUltimaActualizacion is defined %}
+            {% for precio in precios %}
+                <tr class="clickable-row">
+                    <td>{{ precio.precio }}</td>
+                    <td>{{ precio.idProveedor.razonSocial }}</td>
+                    <td>{{ precio.fechaUltimaActualizacion.date }}</td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+        </tbody>
+    </table>#}
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-8"><h2>Precios</h2></div>
+                <div class="col-sm-4">
+                    <button type="button" class="btn btn-info add-new" data-toggle="modal" data-target="#modalprecio"> <i class="fa fa-plus"></i> Agregar nuevo</button>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered" id="tprecios">
+            <thead>
+            <tr>
+                <th>Precio</th>
+                <th>Proveedor</th>
+                {% if precios is defined %}<th>Ultima actualizacion</th>{% endif %}
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody id="tablaprecios">
+            {% if precios is defined %}
+                {% for precio in precios %}
+                    <tr class="clickable-row">
+                        <td>{{ precio.precio }}</td>
+                        <td>{{ precio.idProveedor.razonSocial }}</td>
+                        <td>{{ precio.fechaUltimaActualizacion.date }}</td>
+                        <script>document.write(actions)</script>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <input id="arrprecios" type="hidden" name="arrprecios">
+
+    <div class="form-group">
+        <button class="btn btn-success" type="submit">Guardar producto</button>
+    </div>
+</form>
+
+<script>
+
+    $(document).keydown(function(event) {
+        if (event.keyCode == 27) {
+            $('#modalprecio').modal('hide');
+        }
+    });
+
+    /*$('#btnaceptar').on('click', function(){
+        var precio = $('#txtprecio').val();
+        var id = $('#proveedor').val();
+        var proveedor = $('#proveedor option:selected').text();
+        var e = $('<tr class="clickable-row"><td id="precio"></td><td id="proveedor"></td></tr>');
+        $('#precio', e).html(precio);
+        $('#proveedor', e).html(proveedor);
+        $('#tablaprecios').append(e);
+    });*/
+
+    $('#modalprecio').on('hidden.bs.modal', function(){
+        resetModal();
+    });
+
+    function resetModal() {
+        $('#proveedor').val(0);
+        $('#txtprecio').val('');
+    }
+
+    $('#tprecios').on('click', '.clickable-row', function(event) {
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        } else {
+            $(this).addClass('active').siblings().removeClass('active');
+        }
+    });
+
+    $(document).ready(function(){
+        //$('[data-toggle="tooltip"]').tooltip();
+
+        // Add row on add button click
+        $(document).on("click", ".add", function(){
+            var precio = $('#txtprecio').val();
+            var id = $('#proveedor').val();
+            var proveedor = $('#proveedor option:selected').text();
+            var e = $('<tr><td id="precio"></td><td id="proveedor"></td>' + actions + '</tr>');
+            $('#precio', e).html(precio);
+            $('#proveedor', e).html(proveedor);
+            $('#tablaprecios').append(e);
+            //$(this).parents("tr").find(".save, .edit").toggle();
+            crearArregloPrecios();
+        });
+        // Edit row on edit button click
+        $(document).on("click", ".edit", function(){
+            $(this).parents("tr").find("td:first-child").each(function(){
+                $(this).html('<input type="number" step="0.01" class="form-control" value="' + $(this).text() + '">');
+            });
+            //$(this).parents("tr").find(".save, .edit").toggle();
+            $(".add-new").attr("disabled", "disabled");
+        });
+        $(document).on("click", ".save", function(){
+            var value = $(this).parents("tr").find('input[type="number"]').val();
+            $(this).parents("tr").find("td:first-child").html(value);
+            $(".add-new").removeAttr("disabled");
+            crearArregloPrecios();
+        });
+        // Delete row on delete button click
+        $(document).on("click", ".delete", function(){
+            $(this).parents("tr").remove();
+            $(".add-new").removeAttr("disabled");
+            crearArregloPrecios();
+        });
+    });
+
+    function crearArregloPrecios(){
+        var array = [];
+        var array2 = [];
+
+        $('#tprecios > tbody > tr').each(function(){
+            let proveedor = this.cells[1].innerHTML;
+            let precio = this.cells[0].innerHTML;
+            array2 = [proveedor, precio];
+            array.push(array2);
+        });
+        $("#arrprecios").val(array);
+    }
+
+</script>
+
+<style type="text/css">
+    /*body {
+        color: #404E67;
+        background: #F5F7FA;
+        font-family: 'Open Sans', sans-serif;
+    }*/
+    .table-wrapper {
+        margin: 30px auto;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 1px 1px rgba(0,0,0,.05);
+    }
+    .table-title {
+        padding-bottom: 10px;
+        margin: 0 0 10px;
+    }
+    .table-title h2 {
+        margin: 6px 0 0;
+        font-size: 22px;
+    }
+    .table-title .add-new {
+        float: right;
+        height: 30px;
+        font-weight: bold;
+        font-size: 12px;
+        text-shadow: none;
+        min-width: 100px;
+        border-radius: 50px;
+        line-height: 13px;
+    }
+    .table-title .add-new i {
+        margin-right: 4px;
+    }
+    table.table {
+        table-layout: fixed;
+    }
+    table.table tr th, table.table tr td {
+        border-color: #e9e9e9;
+    }
+    table.table th i {
+        font-size: 13px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    table.table th:last-child {
+        width: 120px;
+    }
+    table.table td a {
+        cursor: pointer;
+        display: inline-block;
+        margin: 0 5px;
+        min-width: 24px;
+    }
+    table.table td a.add {
+        color: #27C46B;
+    }
+    table.table td a.edit {
+        color: #FFC107;
+    }
+    table.table td a.delete {
+        color: #E34724;
+    }
+    table.table td i {
+        font-size: 19px;
+    }
+    table.table td a.add i {
+        font-size: 24px;
+        margin-right: -1px;
+        position: relative;
+        top: 3px;
+    }
+    table.table .form-control {
+        height: 32px;
+        line-height: 32px;
+        box-shadow: none;
+        border-radius: 2px;
+    }
+    table.table .form-control.error {
+        border-color: #f50000;
+    }
+    table.table td .add {
+        display: none;
+    }
+</style>

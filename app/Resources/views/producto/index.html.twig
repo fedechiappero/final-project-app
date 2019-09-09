@@ -3,30 +3,27 @@
 {% block body %}
     <h1>Productos list</h1>
 
-    <table>
+    <table id="productos" class="table table-striped">
         <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Unidad</th>
-                <th>Stock</th>
-                <th>Id</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Unidad</th>
+            <th>Stock</th>
+            <th>Actions</th>
+        </tr>
         </thead>
-        <tbody>
+        <tbody id="tproductos">
         {% for producto in productos %}
             <tr>
+                <td>{{ producto.id }}</td>
                 <td><a href="{{ path('producto_show', { 'id': producto.id }) }}">{{ producto.nombre }}</a></td>
                 <td>{{ producto.unidad }}</td>
                 <td>{{ producto.stock }}</td>
-                <td>{{ producto.id }}</td>
                 <td>
                     <ul>
                         <li>
                             <a href="{{ path('producto_show', { 'id': producto.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('producto_edit', { 'id': producto.id }) }}">edit</a>
                         </li>
                     </ul>
                 </td>
@@ -40,4 +37,10 @@
             <a href="{{ path('producto_new') }}">Create a new producto</a>
         </li>
     </ul>
+
+    <script>
+        var tablaproductos = $('#productos').DataTable({
+            paging: false//true when we have more products
+        });
+    </script>
 {% endblock %}

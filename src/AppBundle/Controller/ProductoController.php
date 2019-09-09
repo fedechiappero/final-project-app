@@ -3,6 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Producto;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
+use Proxies\__CG__\AppBundle\Entity\Precio;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -40,21 +43,52 @@ class ProductoController extends Controller
      */
     public function newAction(Request $request)
     {
-        $producto = new Producto();
-        $form = $this->createForm('AppBundle\Form\ProductoType', $producto);
-        $form->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
+        
+        if ($request->isMethod('POST')) {
+            
+            $nombre = $request->request->get('nombre');
+            $unidad = $request->request->get('unidad');
+            $stock = $request->request->get('stock');
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $producto = new Producto();
+            $producto
+                ->setNombre($nombre)
+                ->setUnidad($unidad)
+                ->setStock($stock);
+
             $em->persist($producto);
             $em->flush();
 
+            $arrprecios = $request->request->get('arrprecios');
+            $indice = 0;
+            $arrpre = explode(',', $arrprecios);//paso a arreglo
+            $longitud = count($arrpre);
+            while($indice < $longitud){
+                $precioval = $arrpre[$indice+1];
+
+                $proveedor = $em->getRepository('AppBundle:Proveedor')->findOneBy(array('razonSocial' => $arrpre[$indice]));
+
+                $precio = new Precio();
+                $precio
+                    ->setIdProveedor($proveedor)
+                    ->setFechaUltimaActualizacion(new \DateTime('now'))
+                    ->setIdProducto($producto)
+                    ->setPrecio($precioval);
+
+                $em->persist($precio);
+                $em->flush();
+
+                $indice += 2;
+            }
+            
             return $this->redirectToRoute('producto_show', array('id' => $producto->getId()));
         }
 
+        $proveedores = $em->getRepository('AppBundle:Proveedor')->findAll();
+
         return $this->render('producto/new.html.twig', array(
-            'producto' => $producto,
-            'form' => $form->createView(),
+            'proveedores' => $proveedores
         ));
     }
 
@@ -66,11 +100,56 @@ class ProductoController extends Controller
      */
     public function showAction(Producto $producto)
     {
-        $deleteForm = $this->createDeleteForm($producto);
+        $em = $this->getDoctrine()->getManager();
+
+        /*$sql = "
+            SELECT p.id, p.precio, DATE_FORMAT(p.fecha_ultima_actualizacion, '%Y-%m-%d-%H-%i') AS ultimaActualizacion, pr.razon_social AS razonSocial FROM precio p
+            INNER JOIN (
+                SELECT id_proveedor, MAX(fecha_ultima_actualizacion) AS ultimaActualizacion_2 FROM precio
+                WHERE id_producto = ? 
+                GROUP BY id_proveedor 
+            ) precioagrupado
+            ON p.id_proveedor = precioagrupado.id_proveedor AND p.fecha_ultima_actualizacion = precioagrupado.ultimaActualizacion_2
+            INNER JOIN proveedor pr ON p.id_proveedor = pr.id
+        ";*/
+
+        /*$rsm = new ResultSetMapping();
+
+        $rsm->addEntityResult('AppBundle:Precio', 'p');
+        $rsm->addFieldResult('p', 'id', 'id');
+        $rsm->addFieldResult('p', 'precio', 'precio');
+        $rsm->addFieldResult('p', 'fecha_ultima_actualizacion', 'fechaUltimaActualizacion');
+        $rsm->addMetaResult('p', 'id_proveedor', 'id_proveedor');*/
+
+        /*$rsm->addJoinedEntityResult('AppBundle:Proveedor', 'pr', 'p', 'proveedores');
+        $rsm->addFieldResult('pr', 'id_proveedor', 'idProveedor');
+        $rsm->addFieldResult('pr', 'razon_social', 'razonSocial');*/
+
+
+        $rsm = new ResultSetMappingBuilder($em);
+
+        $rsm->addRootEntityFromClassMetadata('AppBundle\Entity\Precio', 'p');
+        //$rsm->addJoinedEntityFromClassMetadata('AppBundle\Entity\Proveedor', 'pr', 'p', 'id_proveedor'/*, array('id' => 'idProveedor')*/);
+
+
+        $query = $em->createNativeQuery('SELECT p.id, p.precio, p.fecha_ultima_actualizacion, p.id_proveedor, pr.razon_social FROM precio p
+            INNER JOIN (
+                SELECT id_proveedor, MAX(fecha_ultima_actualizacion) AS ultimaActualizacion_2 FROM precio
+                WHERE id_producto = ? 
+                GROUP BY id_proveedor 
+            ) precioagrupado
+            ON p.id_proveedor = precioagrupado.id_proveedor AND p.fecha_ultima_actualizacion = precioagrupado.ultimaActualizacion_2
+            INNER JOIN proveedor pr ON p.id_proveedor = pr.id', $rsm);
+
+        $query->setParameter(1, $producto->getId());
+
+        $precios = $query->getResult();
+
+        //dump($precios);
 
         return $this->render('producto/show.html.twig', array(
             'producto' => $producto,
-            'delete_form' => $deleteForm->createView(),
+            'precios' => $precios
         ));
     }
 
@@ -82,20 +161,69 @@ class ProductoController extends Controller
      */
     public function editAction(Request $request, Producto $producto)
     {
-        $deleteForm = $this->createDeleteForm($producto);
-        $editForm = $this->createForm('AppBundle\Form\ProductoType', $producto);
-        $editForm->handleRequest($request);
+        $em = $this->getDoctrine()->getManager();
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+        if ($request->isMethod('POST')) {
 
-            return $this->redirectToRoute('producto_edit', array('id' => $producto->getId()));
+            $nombre = $request->request->get('nombre');
+            $unidad = $request->request->get('unidad');
+            $stock = $request->request->get('stock');
+
+            $producto
+                ->setNombre($nombre)
+                ->setUnidad($unidad)
+                ->setStock($stock);
+
+            $em->flush();
+
+            $arrprecios = $request->request->get('arrprecios');
+            $indice = 0;
+            $arrpre = explode(',', $arrprecios);//paso a arreglo
+            $longitud = count($arrpre);
+            while($indice < $longitud){
+                $precioval = $arrpre[$indice+1];
+
+                $proveedor = $em->getRepository('AppBundle:Proveedor')->findOneBy(array('razonSocial' => $arrpre[$indice]));
+
+                $precio = new Precio();
+                $precio
+                    ->setIdProveedor($proveedor)
+                    ->setFechaUltimaActualizacion(new \DateTime('now'))
+                    ->setIdProducto($producto)
+                    ->setPrecio($precioval);
+
+                $em->persist($precio);
+                $em->flush();
+
+                $indice += 2;
+            }
+
+            return $this->redirectToRoute('producto_show', array('id' => $producto->getId()));
         }
+
+        $proveedores = $em->getRepository('AppBundle:Proveedor')->findAll();
+
+        $rsm = new ResultSetMappingBuilder($em);
+        $rsm->addRootEntityFromClassMetadata('AppBundle\Entity\Precio', 'p');
+
+        $query = $em->createNativeQuery('SELECT p.id, p.precio, p.fecha_ultima_actualizacion, p.id_proveedor, pr.razon_social FROM precio p
+            INNER JOIN (
+                SELECT id_proveedor, MAX(fecha_ultima_actualizacion) AS ultimaActualizacion_2 FROM precio
+                WHERE id_producto = ? 
+                GROUP BY id_proveedor 
+            ) precioagrupado
+            ON p.id_proveedor = precioagrupado.id_proveedor AND p.fecha_ultima_actualizacion = precioagrupado.ultimaActualizacion_2
+            INNER JOIN proveedor pr ON p.id_proveedor = pr.id', $rsm);
+
+        $query->setParameter(1, $producto->getId());
+
+        $precios = $query->getResult();
+
 
         return $this->render('producto/edit.html.twig', array(
             'producto' => $producto,
-            'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+            'precios' => $precios,
+            'proveedores' => $proveedores
         ));
     }
 
