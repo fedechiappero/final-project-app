@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ComprobanteProveedor
  *
- * @ORM\Table(name="comprobante_proveedor", indexes={@ORM\Index(name="id_proveedor", columns={"id_proveedor"}), @ORM\Index(name="id_remito", columns={"id_remito"})})
+ * @ORM\Table(name="comprobante_proveedor", indexes={@ORM\Index(name="id_proveedor", columns={"id_proveedor"}), @ORM\Index(name="id_remito", columns={"id_remito"}), @ORM\Index(name="id_orden_compra", columns={"id_orden_compra"})})
  * @ORM\Entity
  */
 class ComprobanteProveedor
@@ -117,6 +117,16 @@ class ComprobanteProveedor
      * })
      */
     private $idProveedor;
+
+    /**
+     * @var \AppBundle\Entity\OrdenCompra
+     *
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\OrdenCompra")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_orden_compra", referencedColumnName="id")
+     * })
+     */
+    private $idOrdenCompra;
 
 
 
@@ -440,5 +450,29 @@ class ComprobanteProveedor
     public function getIdProveedor()
     {
         return $this->idProveedor;
+    }
+
+    /**
+     * Set idOrdenCompra
+     *
+     * @param \AppBundle\Entity\OrdenCompra $idOrdenCompra
+     *
+     * @return ComprobanteProveedor
+     */
+    public function setIdOrdenCompra(\AppBundle\Entity\OrdenCompra $idOrdenCompra = null)
+    {
+        $this->idOrdenCompra = $idOrdenCompra;
+
+        return $this;
+    }
+
+    /**
+     * Get idOrdenCompra
+     *
+     * @return \AppBundle\Entity\OrdenCompra
+     */
+    public function getIdOrdenCompra()
+    {
+        return $this->idOrdenCompra;
     }
 }
