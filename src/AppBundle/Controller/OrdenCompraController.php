@@ -9,8 +9,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Bundle\SnappyBundle\Snappy\Response\PdfResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Ordencompra controller.
@@ -321,5 +323,42 @@ class OrdenCompraController extends Controller
             $this->get('knp_snappy.pdf')->getOutputFromHtml($twigoutput),
             $nombreArchivo
         );
+    }
+
+    /**
+     * Busca ordenes de compra
+     *
+     * @Route("/ajax", name="buscar_ordenes_compra")
+     * @return JsonResponse|Response
+     */
+    public function buscarOrdenesCompra(Request $request){
+        if ($request->isXmlHttpRequest()) {
+            if ($request->request->get('desde')) {
+                $fechadesde = $request->request->get('desde');
+                $idProveedor = $request->request->get('idProveedor');
+                $em = $this->getDoctrine()->getManager();
+
+                $dql = "          
+                    SELECT oc.id, oc.numero, DATE_FORMAT(oc.fechaEmision, '%Y-%m-%d') AS fechaEmision, p.razonSocial, o.nombre FROM AppBundle:OrdenCompra oc
+                    INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id 
+                    INNER JOIN AppBundle:Obra o WITH oc.idObra = o.id
+                    WHERE p.id = :idproveedor AND oc.fechaEmision BETWEEN :desde AND :hasta
+                ";
+
+                $fechahasta = new \DateTime('now');
+
+                $query = $em->createQuery($dql)
+                    ->setParameter('idproveedor', $idProveedor)
+                    ->setParameter('desde', $fechadesde)
+                    ->setParameter('hasta', $fechahasta)
+                ;
+
+                $ordenes = $query->getResult();
+
+                dump($ordenes);
+                return new JsonResponse($ordenes);
+            }
+        }
+        return $this->redirectToRoute('pedido_new');
     }
 }

@@ -20,13 +20,6 @@ class DetalleComprobante
     private $cantidad;
 
     /**
-     * @var float
-     *
-     * @ORM\Column(name="precio_unitario", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $precioUnitario;
-
-    /**
      * @var integer
      *
      * @ORM\Column(name="cantidad_recibida", type="integer", nullable=false)

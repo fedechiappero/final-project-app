@@ -3,19 +3,18 @@
 {% block body %}
     <h1>Comprobanteproveedor edit</h1>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+    {{ include(':comprobanteproveedor:form.html.twig') }}
 
     <ul>
         <li>
             <a href="{{ path('comprobanteproveedor_index') }}">Back to the list</a>
         </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
     </ul>
+
+    <script>
+        $(document).ready(function() {
+            var comprobanteproveedor = {{ comprobanteproveedor.id }};
+            $('#frmcomprobante').attr('action', "{{ path('comprobanteproveedor_edit', {'id': comprobanteproveedor.id}) }}");
+        });
+    </script>
 {% endblock %}

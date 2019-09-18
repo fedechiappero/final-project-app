@@ -140,7 +140,7 @@ class DetalleOrdenController extends Controller
     /**
      * busca detalle para una orden a partir de un pedido
      *
-     * @Route("/ajax", name="buscar_detalle_orden")
+     * @Route("/ajax1", name="buscar_detalle_orden")
      * @return JsonResponse|Response
      */
     public function buscarDetalleOrden(Request $request){
@@ -167,6 +167,37 @@ class DetalleOrdenController extends Controller
                 $detalle = $queryDetalle->getResult();
 
                 return new JsonResponse($detalle);
+            }
+        }
+        return $this->redirectToRoute('ordencompra_new');
+    }
+
+    /**
+     * busca todos los detalles para una orden
+     *
+     * @Route("/ajax2", name="buscar_detalles_orden")
+     * @return JsonResponse|Response
+     */
+    public function buscarDetallesOrden(Request $request){
+        if ($request->isXmlHttpRequest()) {
+            if ($request->request->get('idOrden')) {
+                $idorden = $request->request->get('idOrden');
+                $em = $this->getDoctrine()->getManager();
+
+                //that may not be the updated price product.. check new orden compra procedure
+                $dqlDetalle = "
+                    SELECT p.id, p.nombre, do.cantidad, do.precioUnitario FROM AppBundle:DetalleOrden do
+                    INNER JOIN AppBundle:Producto p WITH do.idProducto = p.id
+                    WHERE do.idOrden = :idOrden
+                ";
+
+                $queryDetalle = $em->createQuery($dqlDetalle)
+                    ->setParameter('idOrden', $idorden)
+                ;
+
+                $detalles = $queryDetalle->getResult();
+
+                return new JsonResponse($detalles);
             }
         }
         return $this->redirectToRoute('ordencompra_new');

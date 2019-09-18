@@ -1,0 +1,408 @@
+<form id="frmcomprobante" method='POST' action=''>
+
+    <div class="form-group">
+        <label for="proveedor">Proveedor</label>
+        <select id="proveedor">
+            <option value="0"></option>
+            {% for proveedor in proveedores %}
+                <option value="{{ proveedor.id.id }}">{{ proveedor.razonSocial }}</option>
+            {% endfor %}
+        </select>
+        <input id="proveedorselected" type="hidden" name="proveedorselected">
+        <input id="convenio" type="text" class="form-control" readonly>
+        <input id="descuentoconvenio" type="hidden" value="0">
+    </div>
+
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalordencompra">Seleccionar orden de compra</button>
+
+    {{ include(':comprobanteproveedor:modalordencompra.html.twig') }}
+
+    <div class="form-group">
+        <input id="idordencompra" type="hidden" name="idordencompra"
+            {% if ordencompra is defined %}
+                value="{{ ordencompra.id }}"
+            {% endif %}
+        >
+        <label for="ordencompra">Orden de compra:</label>
+        <input id="ordencompra" readonly class="form-control" type="text" name="ordencompra"
+            {% if ordencompra is defined %}
+                value="{{ ordencompra.numero }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="fechaemision">Fecha de emision:</label>
+        <input type="datetime-local" name="fechaemision"
+            {% if comprobanteproveedor.fechaEmision is defined %}
+                value="{{ comprobanteproveedor.fechaEmision | date('Y-m-d H:i') }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="letra">Letra:</label>
+        <select id="letra">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+        </select>
+        <input id="letraselected" type="hidden" name="letraselected"
+            {% if comprobanteproveedor.letra is defined %}
+                value="{{ comprobanteproveedor.letra }}"
+            {% else %}
+               value="A"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="numero">Numero:</label>
+        <input class="form-control" type="number" name="numero"
+            {% if comprobanteproveedor.numero is defined %}
+                value="{{ comprobanteproveedor.numero }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="puntoventa">Punto de venta:</label>
+        <input class="form-control" type="number" name="puntoventa"
+            {% if comprobanteproveedor.puntoVenta is defined %}
+                value="{{ comprobanteproveedor.puntoVenta }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="vencimiento">Vencimiento:</label>
+        <input type="date" name="vencimiento"
+            {% if comprobanteproveedor.vencimiento is defined %}
+                value="{{ comprobanteproveedor.vencimiento | date('Y-m-d') }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="cuentacorriente">CtaCte:</label>
+        <input type="checkbox" class="custom-control-input" name="cuentacorriente"
+            {% if comprobanteproveedor.cuentaCorriente is defined %}
+                {{  'checked' | raw }}
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="remitofecha">Remito Fecha de emision:</label>
+        <input type="datetime-local" name="remitofecha"
+            {% if remito.fecha is defined %}
+                value="{{ remito.fecha | date('Y-m-d H:i') }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="remitonumero">Remito numero:</label>
+        <input class="form-control" type="number" name="remitonumero"
+            {% if remito.numero is defined %}
+                value="{{ remito.numero }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <table id="tablalistado" class="table table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Cantidad recibida</th>
+                <th>Precio unitario</th>
+            </tr>
+            </thead>
+            <tbody id="tlistado">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group">
+        <label for="subtotal">Subtotal:</label>
+        <input id="subtotal" class="form-control" type="number" step="0.01" name="subtotal"
+            {% if comprobanteproveedor.subtotal is defined %}
+                value="{{ comprobanteproveedor.subtotal }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="descuento">Descuento:</label>
+        <input class="form-control" type="number" name="descuento"
+            {% if comprobanteproveedor.descuentoPorcentaje is defined %}
+                value="total - comprobante.descuentoPorcentaje"
+            {% else %}
+                value="0"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="netogravado">Neto gravado:</label>
+        <input id="netogravado" class="form-control" type="number" step="0.01" name="netogravado"
+            {% if comprobanteproveedor.netoGravado is defined %}
+                value="{{ comprobanteproveedor.netoGravado }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="totaliva">Total IVA:</label>
+        <input class="form-control" type="number" name="totaliva"
+            {% if comprobanteproveedor.totalIva is defined %}
+                value="{{ comprobanteproveedor.totalIva }}"
+            {% endif %}
+        >
+    </div>
+
+    <div class="form-group">
+        <label for="total">Total:</label>
+        <input class="form-control" type="number" step="0.01" name="total"
+            {% if comprobanteproveedor.total is defined %}
+                value="{{ comprobanteproveedor.total }}"
+            {% endif %}
+        >
+    </div>
+
+    {{ include(':comprobanteproveedor:modalcantidad.html.twig') }}
+
+    <input id="arrproductos" type="hidden" name="arrproductos">
+
+    <div class="form-group">
+        <button id="nuevocomprobante" class="btn btn-success" type="submit">Guardar comprobante</button>
+    </div>
+
+</form>
+
+<script>
+    $(document).ready(function(){
+
+        var tabla = $('#tablaordenes').DataTable({
+            paging: false
+        });
+
+        var tablalistado = $('#tablalistado').DataTable({
+            paging: false
+        });
+
+        resetModal();
+
+        buscarOrdenes = function(){
+            var fechadesde = $('#fechadesde').val();
+            var idProveedor = $("#proveedorselected").val();
+            $.ajax({
+                url:'{{ (path('buscar_ordenes_compra')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "desde": fechadesde,
+                    "idProveedor": idProveedor
+                },
+                async: true,
+                success: function (data)
+                {
+                    tabla.clear().draw();
+                    $.each(data, function (index, value) {
+                        let id = value.id;
+                        let numero = value.numero;
+                        let fecha = value.fechaEmision;
+                        let proveedor = value.razonSocial;
+                        let obra = value.nombre;
+                        tabla.row.add([id,numero,fecha,proveedor,obra]).draw(false);
+                    });
+                },
+                error : function() {
+                    alert('Ajax request failed.');
+                }
+            });
+            return false;
+        };
+
+        $(document).on('click', '#tablaordenes tr', function () {
+            var id = $(this).find('td:first-child').text();
+            var numero = $(this).find('td:nth-of-type(2)').text();
+            $('#ordencompra').val(numero);
+            $('#modalordencompra').modal('hide');
+            buscarDetalle(id);
+        });
+
+        buscarDetalle = function(id){
+            $.ajax({
+                url: '{{ (path('buscar_detalles_orden')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    'idOrden': id
+                },
+                async: true,
+                success: function(data){
+                    var tlistado = $('#tlistado');
+                    tlistado.html('');
+                    $.each(data, function (index, value){
+                        let idProducto = value.id;
+                        let nombre = value.nombre;
+                        let cantidad = value.cantidad;
+                        let precio = value.precioUnitario;
+                        tablalistado.row.add([idProducto, nombre, cantidad, cantidad, precio]).draw(false);
+                    });
+                    crearArregloProductos();
+
+                },
+                error: function(){
+                    alert('Ajax request failed');
+                }
+            })
+        };
+
+        $('#proveedor').on('change', function () {
+            var valor = $('#proveedor').val();
+            $("#proveedorselected").val(valor);
+            resetModal();
+
+            var convenio = $('#convenio');
+            convenio.val('');
+            var descuentoconvenio = $('#descuentoconvenio');
+            descuentoconvenio.val('0');
+
+            if(valor != 0){
+                $.ajax({
+                    url:'{{ (path('buscar_convenio_proveedor')) }}',
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        "idproveedor": valor
+                    },
+                    async: true,
+                    success: function (data)
+                    {
+                        $.each(data, function (index, value) {
+                            var descripcion = value.descripcion;
+                            var descuento = value.descuentoPorcentaje;
+
+                            var mensaje = `Convenio: ${descripcion}, descuento ${descuento}%`;
+                            convenio.val(mensaje);
+                            descuentoconvenio.val(descuento);
+                        });
+                    },
+                    error : function() {
+                        alert('Ajax request failed.');
+                    }
+                });
+                return false;
+            }
+        });
+
+        function resetModal() {
+            tabla.clear().draw();
+            $('#fechadesde').val(new Date().toISOString().substr(0, 10));
+        }
+
+        tablalistado.on('dblclick', 'td', function(){
+            console.log('clickeo dos veces la tabla');
+            if (tablalistado.data().any()) {
+                console.log('tabla con datos');
+                if(parseInt(tablalistado.cell(this).index().column) == 3){//click on amount to include
+                    console.log('columna cantidad recibida');
+                    var index = parseInt(tablalistado.cell(this).index().row);
+                    $('#indexeditar').val(index);
+                    var cantidad = parseInt(tablalistado.cell(this).data());
+                    $('#quantity').val(cantidad);
+                    $('#modalcantidad').modal('show');
+                }
+            }
+        });
+
+        $('.quantity-right-plus').click(function(e){
+            var button = $(this);
+            var oldValue = button.parent().parent().find("input").val();
+            // Stop acting like a button
+            e.preventDefault();
+            button.parent().parent().find("input").val(parseInt(oldValue)+1);
+        });
+
+        $('.quantity-left-minus').click(function(e){
+            var button = $(this);
+            var oldValue = button.parent().parent().find("input").val();
+            // Stop acting like a button
+            e.preventDefault();
+            if(parseInt(oldValue)>=1){
+                button.parent().parent().find("input").val(parseInt(oldValue)-1);
+            }
+        });
+
+        $('#btnaceptar').on('click', function(){
+            var cantidad = $('#quantity').val();
+            var index = $('#indexeditar').val();
+            tablalistado.cell(index, 3).data(cantidad);
+            crearArregloProductos();
+        });
+
+        $(document).keydown(function(event) {
+            if (event.keyCode == 27) {
+                $('#modalordencompra').modal('hide');
+                $('#modalcantidad').modal('hide');
+            }
+        });
+
+        $('#letra').on('change', function () {
+            var valor = $('#letra').val();
+            $("#letraselected").val(valor);
+        });
+
+        function crearArregloProductos(){
+            var producto = "";
+            var cantidad = "";
+            var cantrecibida = "";
+            var array = [];
+            var array2 = [];
+
+            if(tablalistado.data().any()) {
+                tablalistado.rows().every( function() {
+                    var data = this.data();
+                    producto = data[0];
+                    cantidad = data[2];
+                    cantrecibida = data[3];
+                    array2 = [producto, cantidad, cantrecibida];
+                    array.push(array2);
+                });
+            }
+            $("#arrproductos").val(array);
+        }
+
+        calcularSubTotal = function(){
+            var subtotal = 0;
+            tablalistado.rows().every(function () {
+                var data = this.data();
+                subtotal += parseInt(data[2]) * parseFloat(data[4]);
+            });
+            var valorsubtotal = $('#subtotal');
+            valorsubtotal.val(subtotal);
+        };
+
+        calcularDescuento = function(){
+            var valorsubtotal = $('#subtotal');
+            var descuentoconvenio = $('#descuentoconvenio');
+            var descuento = parseFloat(valorsubtotal.val())*parseFloat(descuentoconvenio.val())*100;
+            $('#descuentoporcentaje').val(descuento);
+        };
+
+        calcularNetoGravado = function(){
+            var valorsubtotal = $('#subtotal');
+            var valorneto = $('#netogravado');
+            valorneto.val(parseFloat(valorsubtotal)*21/100);
+        };
+
+        calcularIVA = function(){
+            var valorsubtotal = $('#subtotal');
+        };
+    });
+</script>

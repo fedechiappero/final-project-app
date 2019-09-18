@@ -6,8 +6,12 @@
     <table>
         <tbody>
             <tr>
-                <th>Fechaemision</th>
-                <td>{% if comprobanteProveedor.fechaEmision %}{{ comprobanteProveedor.fechaEmision|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <th>Proveedor</th>
+                <td>{{ comprobanteProveedor.idProveedor.razonSocial }}</td>
+            </tr>
+            <tr>
+                <th>Fecha emision</th>
+                <td>{% if comprobanteProveedor.fechaEmision %}{{ comprobanteProveedor.fechaEmision|date('Y-m-d H:i') }}{% endif %}</td>
             </tr>
             <tr>
                 <th>Letra</th>
@@ -18,31 +22,39 @@
                 <td>{{ comprobanteProveedor.numero }}</td>
             </tr>
             <tr>
-                <th>Puntoventa</th>
+                <th>Punto de venta</th>
                 <td>{{ comprobanteProveedor.puntoVenta }}</td>
             </tr>
             <tr>
-                <th>Fechavencimiento</th>
+                <th>Fecha vencimiento</th>
                 <td>{% if comprobanteProveedor.fechaVencimiento %}{{ comprobanteProveedor.fechaVencimiento|date('Y-m-d') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Cuentacorriente</th>
+                <th>CtaCte</th>
                 <td>{% if comprobanteProveedor.cuentaCorriente %}Yes{% else %}No{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Remito fecha emision</th>
+                <td>{{ comprobanteProveedor.idRemito.fecha|date('Y-m-d H:i') }}</td>
+            </tr>
+            <tr>
+                <th>Remito numero</th>
+                <td>{{ comprobanteProveedor.idRemito.numero }}</td>
             </tr>
             <tr>
                 <th>Subtotal</th>
                 <td>{{ comprobanteProveedor.subtotal }}</td>
             </tr>
             <tr>
-                <th>Descuentoporcentaje</th>
+                <th>Descuento porcentaje</th>
                 <td>{{ comprobanteProveedor.descuentoPorcentaje }}</td>
             </tr>
             <tr>
-                <th>Netogravado</th>
+                <th>Neto gravado</th>
                 <td>{{ comprobanteProveedor.netoGravado }}</td>
             </tr>
             <tr>
-                <th>Totaliva</th>
+                <th>Total iva</th>
                 <td>{{ comprobanteProveedor.totalIva }}</td>
             </tr>
             <tr>
@@ -56,17 +68,33 @@
         </tbody>
     </table>
 
+    <table class="table table-striped">
+        <thead class="panel-primary">
+        <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Cantidad recibida</th>
+            <th>Precio unitario</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for detalle in detalles %}
+            <tr>
+                <td>{{ detalle.nombre }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.cantidadRecibida }}</td>
+                <td>{{ detalle.precio }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
     <ul>
         <li>
             <a href="{{ path('comprobanteproveedor_index') }}">Back to the list</a>
         </li>
         <li>
             <a href="{{ path('comprobanteproveedor_edit', { 'id': comprobanteProveedor.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
         </li>
     </ul>
 {% endblock %}
