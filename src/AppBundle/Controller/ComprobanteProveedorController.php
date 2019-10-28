@@ -229,7 +229,7 @@ class ComprobanteProveedorController extends Controller
                       JOIN AppBundle:Precio pr WITH pr.idProducto = p.id'
         );*/
 
-        $detalle = $em->createQueryBuilder('d');
+        /*$detalle = $em->createQueryBuilder('d');
         $precio = $em->createQueryBuilder()
             ->select('pr.idProducto, MAX(pr.fechaUltimaActualizacion) AS fecha')
             ->from('AppBundle:Precio', 'pr')
@@ -246,7 +246,41 @@ class ComprobanteProveedorController extends Controller
 
         $detalles = $detalle->getResult();
 
-        dump($detalles);
+        dump($detalles);*/
+
+        $detalle = $em->getRepository('AppBundle:DetalleComprobante')->findBy(array('idComprobante' => $comprobanteProveedor->getId()));
+
+        $detalles = array();
+
+        foreach($detalle as $deta){
+
+            $dqlPrecio = "
+                SELECT p.id FROM AppBundle:Precio p
+                    WHERE p.idProducto = :idProducto AND 
+                    p.fechaUltimaActualizacion IN (SELECT MAX(p2.fechaUltimaActualizacion) FROM AppBundle:Precio p2
+                                                        WHERE p2.fechaUltimaActualizacion < :fechaComprobante
+                                                       GROUP BY p2.idProducto)";
+
+            $query = $em->createQuery($dqlPrecio)
+                ->setParameter('idProducto', $deta->getIdProducto())
+                ->setParameter('fechaComprobante', $comprobanteProveedor->getFechaEmision());
+
+            $idprecio = $query->getResult();
+
+            $dqlDetalle = "
+                SELECT p.nombre, d.cantidad, d.cantidadRecibida, pr.precio FROM AppBundle:Producto p
+                INNER JOIN AppBundle:DetalleComprobante d WITH d.idProducto = p.id
+                INNER JOIN AppBundle:Precio pr WITH pr.idProducto = p.id
+                WHERE d.idComprobante = :idComprobante AND pr.id = :idPrecio";
+
+            $query = $em->createQuery($dqlDetalle)
+                ->setParameter('idComprobante', $comprobanteProveedor->getId())
+                ->setParameter('idPrecio', $idprecio);
+
+            $res = $query->getSingleResult();
+            $detalles[] = $res;
+            dump($detalles);
+        }
 
         return $this->render('comprobanteproveedor/show.html.twig', array(
             'comprobanteProveedor' => $comprobanteProveedor,
