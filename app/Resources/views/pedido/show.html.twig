@@ -35,7 +35,6 @@
     <table id="myTable" class="table table-striped">
         <thead class="panel-primary">
         <tr>
-            <th>Id</th>
             <th>Producto</th>
             <th>Cantidad</th>
         </tr>
@@ -43,7 +42,6 @@
         <tbody>
         {% for detalle in detalles %}
             <tr>
-                <td id="prodid">{{ detalle.id }}</td>
                 <td id="prodnombre">{{ detalle.nombre }}</td>
                 <td id="prodcantidad">{{ detalle.cantidad }}</td>
             </tr>

@@ -39,6 +39,7 @@ class PedidoController extends Controller
                 INNER JOIN AppBundle:Estado e WITH ep.idEstado = e.id
                 WHERE ep.fecha IN (SELECT MAX(ep2.fecha) FROM AppBundle:EstadoPedido ep2
                                     GROUP BY ep2.idPedido)
+                ORDER BY p.fecha DESC
             ");
         }else{//isn't admin, show only request owned by the user who requested it
 
@@ -53,6 +54,7 @@ class PedidoController extends Controller
                 WHERE ep.fecha IN (SELECT MAX(ep2.fecha) FROM AppBundle:EstadoPedido ep2
                                     GROUP BY ep2.idPedido)
                 AND cr.idContratista = :id
+                ORDER BY p.fecha DESC
             ";
 
             $user = $this->getUser()->getId();
@@ -141,10 +143,20 @@ class PedidoController extends Controller
         //select all the products
         $productos = $em->getRepository('AppBundle:Producto')->findAll();
 
-        //select "obras"
-        //next update, filter contractor "obras" or find all if user logged is admin
-        //inner join obra_finalizacion WITH (bla bla) where obra.fecha_inicio >= hoy-30
-        $obras = $em->getRepository('AppBundle:Obra')->findAll();
+        $user = $this->getUser()->getId();
+
+        $dqlObra = "
+            SELECT o.id, o.nombre FROM AppBundle:Obra o
+            INNER JOIN AppBundle:ContratistaObra co WITH co.idObra = o.id
+            INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
+            WHERE cr.idContratista = :idUsuario AND (:fechaHoy BETWEEN co.fechaDesde AND co.fechaHasta)
+        ";
+
+        $queryObra = $em->createQuery($dqlObra)
+            ->setParameter('idUsuario', $user)
+            ->setParameter('fechaHoy', new \DateTime('now'));
+
+        $obras = $queryObra->getResult();
 
         //select last request number
         $query = $em->createQuery("SELECT MAX(p.numero) AS numero FROM AppBundle:Pedido p");
@@ -184,7 +196,7 @@ class PedidoController extends Controller
         $resPedido = $queryPedido->getResult();
 
         $dqlDetalles = "
-            SELECT d.id, d.cantidad, p.nombre FROM AppBundle:DetallePedido d
+            SELECT d.cantidad, p.nombre FROM AppBundle:DetallePedido d
             INNER JOIN AppBundle:Producto p WITH d.idProducto = p.id
             WHERE d.idPedido = :id
         ";
@@ -285,10 +297,20 @@ class PedidoController extends Controller
         //select all the products
         $productos = $em->getRepository('AppBundle:Producto')->findAll();
 
-        //select "obras"
-        //next update, filter contractor "obras" or find all if user logged is admin
-        //inner join obra_finalizacion WITH (bla bla) where obra.fecha_inicio >= hoy-30
-        $obras = $em->getRepository('AppBundle:Obra')->findAll();
+        $user = $this->getUser()->getId();
+
+        $dqlObra = "
+            SELECT o.id, o.nombre FROM AppBundle:Obra o
+            INNER JOIN AppBundle:ContratistaObra co WITH co.idObra = o.id
+            INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
+            WHERE cr.idContratista = :idUsuario AND (:fechaHoy BETWEEN co.fechaDesde AND co.fechaHasta)
+        ";
+
+        $queryObra = $em->createQuery($dqlObra)
+            ->setParameter('idUsuario', $user)
+            ->setParameter('fechaHoy', new \DateTime('now'));
+
+        $obras = $queryObra->getResult();
 
         $dql = "
             SELECT o.id AS id, o.nombre AS nombre FROM AppBundle:Obra o

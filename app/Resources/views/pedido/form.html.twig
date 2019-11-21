@@ -1,78 +1,93 @@
 <form id="frmpedido" method='POST' action=''>
-    <div class="form-group">
-        <label>Fecha:</label>
-        <input type="text" readonly required="required" class="form-control" name="fecha"
-        {% if pedido.fecha is defined %}
-            value="{{ pedido.fecha | date("d/m/Y") }}"
-        {% else %}
-            value="{{ "now" | date("d/m/Y") }}"
-        {% endif %}
-        >
+
+    <div class="row">
+        <div class="form-group col-sm-2">
+            <label>Fecha:</label>
+            <input type="text" readonly required="required" class="form-control text-center" name="fecha"
+                {% if pedido.fecha is defined %}
+                    value="{{ pedido.fecha | date("d/m/Y") }}"
+                {% else %}
+                    value="{{ "now" | date("d/m/Y") }}"
+                {% endif %}
+            >
+        </div>
+
+        <div class="form-group col-sm-2">
+            <label>Numero:</label>
+            <input type="text" readonly required="required" class="form-control text-center" name="numero"
+                {% if pedido.numero is null %}
+                    value="1"
+                {% elseif detalles is defined %}
+                    value="{{ pedido.numero }}"
+                {% else %}
+                    value="{{ pedido.numero + 1 }}"
+                {% endif %}
+            >
+        </div>
+
+        <div class="form-group col-sm-2">
+            <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modalobra" style="margin-top: 24px">Seleccionar Obra</button>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <input id="idobra" type="hidden" name="idobra"
+                {% if obra is defined %}
+                    value="{{ obra.id }}"
+                {% endif %}
+            >
+            <label for="nombreobra">Obra:</label>
+            <input id="nombreobra" readonly class="form-control" type="text" name="nombreobra"
+                {% if obra is defined %}
+                    value="{{ obra.nombre }}"
+                {% endif %}
+            >
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Numero:</label>
-        <input type="text" readonly required="required" class="form-control" name="numero"
-        {% if pedido.numero is null %}
-            value="1"
-        {% elseif detalles is defined %}
-            value="{{ pedido.numero }}"
-        {% else %}
-            value="{{ pedido.numero + 1 }}"
-        {% endif %}
-        >
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="form-group col-sm-4" id="divrubro">
+            <label for="contratistaobra">Rubro</label>
+            <select id="contratistaobra" class="form-control">
+            </select>
+            <input id="contratistaobraselected" type="hidden" name="contratistaobraselected"
+                {% if pedido.idContratistaObra is defined %}
+                    value="{{ pedido.idContratistaObra.id }}"
+                {% endif %}
+            >
+        </div>
+
+        <div class="form-group col-sm-4">
+            <label>Nesario para:</label>
+            <input class="form-control" type="date" id="necesarioparafecha" name="necesarioparafecha" style="max-width: 160px"
+                {% if pedido.necesarioParaFecha is defined %}
+                    value="{{ pedido.necesarioParaFecha | date('Y-m-d') }}"
+                {% endif %}
+            >
+        </div>
     </div>
 
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalobra">Seleccionar Obra</button>
-    <div class="form-group">
-        <input id="idobra" type="hidden" name="idobra"
-        {% if obra is defined %}
-            value="{{ obra.id }}"
-        {% endif %}
-        >
-        <label for="nombreobra">Obra:</label>
-        <input id="nombreobra" readonly class="form-control" type="text" name="nombreobra"
-        {% if obra is defined %}
-            value="{{ obra.nombre }}"
-        {% endif %}
-        >
+    <div class="form-group panel panel-default" style="padding: 5px">
+        <div class="panel-heading" style="margin: 5px">
+            Productos
+        </div>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalproducto">Seleccionar</button>
+
+        <table id="tablapedido" class="table table-striped">
+            <thead>
+            <tr>
+                <th>id</th>
+                <th class="col-md-8">Producto</th>
+                <th class="col-md-2 text-center">Cantidad</th>
+                <th class="col-md-2 text-center">Eliminar</th>
+            </tr>
+            </thead>
+            <tbody id="tpedidobody">
+            </tbody>
+        </table>
     </div>
 
-    <div class="form-group">
-        <label for="contratistaobra">Asignado con Rubro</label>
-        <select id="contratistaobra">
-            <option value="0"></option>
-        </select>
-        <input id="contratistaobraselected" type="hidden" name="contratistaobraselected"
-        {% if pedido.idContratistaObra is defined %}
-            value="{{ pedido.idContratistaObra.id }}"
-        {% endif %}
-        >
-    </div>
 
-    <div class="form-group">
-        <label>Nesario para fecha:</label>
-        <input type="date" name="necesarioparafecha"
-        {% if pedido.necesarioParaFecha is defined %}
-            value="{{ pedido.necesarioParaFecha | date('Y-m-d') }}"
-        {% endif %}
-        >
-    </div>
-
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalproducto">Seleccionar Productos</button>
-
-    <table id="tablapedido" class="table table-striped">
-        <thead>
-        <tr>
-            <th>id</th>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Eliminar</th>
-        </tr>
-        </thead>
-        <tbody id="tpedidobody">
-        </tbody>
-    </table>
 
     {{ include(':pedido:modalobra.html.twig') }}
 
@@ -81,7 +96,7 @@
     <input id="arrproductos" type="hidden" name="arrproductos">
 
     <div class="form-group">
-        <button id="nuevopedido" class="btn btn-success" type="submit">Enviar pedido</button>
+        <button id="nuevopedido" class="btn btn-success pull-right" type="submit" >Enviar pedido</button>
     </div>
 </form>
 
@@ -109,6 +124,7 @@
                 success: function (data)
                 {
                     var contratistaObraSelect = $('#contratistaobra');
+                    contratistaObraSelect.empty();
                     $.each(data, function (index, value) {
                         var option = document.createElement("option");
                         option.value = value.id;
@@ -127,11 +143,49 @@
         }
     };
 
+    var estadoRubro = function () {//unused so far
+        console.log('in estadorubro');
+        if($('#nombreobra').val() == ""){
+            console.log('bloqueando');
+            $('#contratistaobra').attr('disabled', true)
+        } else {
+            console.log('habilitando');
+            $('#contratistaobra').removeAttr('disabled');
+        }
+    };
+
+    var validarForm = function(){
+        var obra = $('#nombreobra').val();
+        var fechanecesario = new Date($('#necesarioparafecha').val());
+        var fechaValida = fechanecesario.isValid();
+        var rubro = $('#contratistaobra').val();
+        var productos = $("#arrproductos").val().length;
+        if(obra != '' && fechaValida && rubro != null && productos > 0){
+            $('#nuevopedido').attr('disabled', false);
+        }else{
+            $('#nuevopedido').attr('disabled', true);
+        }
+    };
+
+    Date.prototype.isValid = function () {
+        return this.getTime() === this.getTime();
+    };
+
     $(document).ready(function(){
 
         var tabla = $('#tablapedido').DataTable({
-            paging: false
+            paging: false,
+                "columnDefs":[{
+                    "targets": [0],
+                    "visible": false
+            },
+                {"className":
+                    "dt-center",
+                    "targets": [2,3]}
+            ]
         });
+
+        validarForm();
 
         var btneliminar = `<span class="input-group-btn"><button type="button" class="quantity-right-plus btn btn-danger btn-number btneliminar" data-type="plus" data-field=""><span class="glyphicon glyphicon-minus"></span></button></span>`;
 
@@ -147,6 +201,15 @@
                 tabla.row.add([id,nombre,cantidad,btneliminar]).draw(false);
             {% endfor %}
         {% endif %}
+
+        //set min date for datepicker
+        var dateObj = new Date();
+        var month = dateObj.getMonth() + 1; //months from 1-12
+        var day = dateObj.getDate();
+        var year = dateObj.getFullYear();
+        var today = year+"-"+month+"-"+day;
+        document.getElementById('necesarioparafecha').setAttribute('min', today);
+
 
         $('.quantity-right-plus').click(function(e){
             var button = $(this);
@@ -176,16 +239,16 @@
                 var existe = false;
                 var cantencontrada = 0;
                 if (tabla.data().any()) {
-                    var i=0;
+                    //var i=0;
                     var y=0;
-                    tabla.rows().every(function () {
+                    tabla.rows().every(function (i) {
                         var data = this.data();
                         if(id == data[0]){
                             existe = true;
                             cantencontrada = data[2];
                             y=i;
                         }
-                        i++;
+                        //i++;
                     });
                     if(existe){
                         var respuesta = confirm("Ya hay agregado " + cantencontrada + " " + nombre + ". ¿Desea agregar " + cantidad + " mas?");
@@ -202,12 +265,14 @@
                 }
                 crearArreglo();
             }
+            validarForm();
         });
 
         $('#tablapedido tbody').on('click', 'td', function(){
             if(parseInt(tabla.cell(this).index().column) == 3){//delete
                 tabla.row(this).remove().draw(false);
                 crearArreglo();
+                validarForm();
             }
         });
 
@@ -232,7 +297,19 @@
         $('#contratistaobra').on('change', function () {
             var valor = $('#contratistaobra').val();
             $("#contratistaobraselected").val(valor);
+            validarForm();
         });
+
+        $('#contratistaobra').on('mouseenter',function(){
+           if($('#nombreobra').val() == ""){
+               console.log('selecciona obra primero');
+               //$('#contratistaobra').css('cursor', 'not-allowed');
+           }
+        });
+
+        $('#necesarioparafecha').on('change', function(){
+            validarForm();
+        })
     });
 
 </script>

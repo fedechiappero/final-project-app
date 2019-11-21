@@ -6,12 +6,7 @@
                 <h4 class="modal-title">Seleccione una Obra</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="busqueda">Busqueda</label>
-                    <input id="busqueda" class="form-control" type="text" name="busqueda">
-                </div>
-
-                <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                <div class="table-wrapper-scroll-y">
                     <table id="tobra" class="table table-bordered table-striped mb-0">
                         <thead>
                         <tr>
@@ -36,15 +31,8 @@
         </div>
     </div>
 </div>
-
-
-<style>
-    .my-custom-scrollbar {
-        position: relative;
-        height: 300px;
-        overflow: auto;
-    }
-    .table-wrapper-scroll-y {
-        display: block;
-    }
-</style>
+<script>
+    var tabla = $('#tobra').DataTable({
+        paging: false
+    });
+</script>

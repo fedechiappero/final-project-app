@@ -1,15 +1,15 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Pedido creation</h1>
+    <h1>Nuevo Pedido</h1>
 
     {{ include(':pedido:form.html.twig') }}
 
-    <ul>
-        <li>
-            <a href="{{ path('pedido_index') }}">Back to the list</a>
-        </li>
-    </ul>
+    <div class="form-group">
+        <button class="btn btn-warning" onclick="location.href='{{ path('pedido_index') }}';">Volver al listado</button>
+
+
+    </div>
 
     <script>
         $(document).ready(function() {
