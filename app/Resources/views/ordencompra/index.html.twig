@@ -1,54 +1,49 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Ordencompras list</h1>
+    <h1>Ordenes de compra</h1>
 
-    <table>
+    <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Usuario</th>
                 <th>Numero</th>
+                <th>Usuario</th>
                 <th>Obra</th>
                 <th>Proveedor</th>
                 <th>Fechaemision</th>
                 <th>Total</th>
-                <th>Actions</th>
-                <th>Imprimir</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
         {% for ordenCompra in ordenCompras %}
             <tr>
-                <td><a href="{{ path('ordencompra_show', { 'id': ordenCompra.id }) }}">{{ ordenCompra.id }}</a></td>
-                <td>{{ ordenCompra.username }}</td>
                 <td>{{ ordenCompra.numero }}</td>
+                <td>{{ ordenCompra.username }}</td>
                 <td>{{ ordenCompra.obraNombre }}</td>
                 <td>{{ ordenCompra.proveedorRazonSocial }}</td>
-                <td>{% if ordenCompra.fechaEmision %}{{ ordenCompra.fechaEmision|date('Y-m-d') }}{% endif %}</td>
-                <td>{{ ordenCompra.total }}</td>
+                <td>{% if ordenCompra.fechaEmision %}{{ ordenCompra.fechaEmision|date('d-m-Y') }}{% endif %}</td>
+                <td>${{ ordenCompra.total }}</td>
 
                 <td>
                     <ul>
                         <li>
-                            <a href="{{ path('ordencompra_show', { 'id': ordenCompra.id }) }}">show</a>
+                            <a href="{{ path('ordencompra_show', { 'id': ordenCompra.id }) }}">Ver</a>
                         </li>
                         <li>
-                            <a href="{{ path('ordencompra_edit', { 'id': ordenCompra.id }) }}">edit</a>
+                            <a href="{{ path('ordencompra_edit', { 'id': ordenCompra.id }) }}">Editar</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('ordencompra_pdf', { 'id': ordenCompra.id }) }}" download>Generar pdf</a>
                         </li>
                     </ul>
-                </td>
-                <td>
-                    <a href="{{ path('ordencompra_pdf', { 'id': ordenCompra.id }) }}" download><button class="btnimprimir">Pdf</button></a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('ordencompra_new') }}">Create a new ordenCompra</a>
-        </li>
-    </ul>
+    <div class="row">
+        <button class="btn btn-success pull-right" onclick="location.href='{{ path('ordencompra_new') }}'">Generar nueva orden de compra</button>
+    </div>
 {% endblock %}

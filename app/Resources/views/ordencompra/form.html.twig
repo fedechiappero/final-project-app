@@ -1,47 +1,59 @@
 <form id="frmordencompra" method='POST' action=''>
 
-    <div class="form-group">
-        <label>Fecha:</label>
-        <input type="text" readonly required="required" class="form-control" name="fecha"
-            {% if ordencompra.fecha is defined %}
-                value="{{ ordencompra.fecha | date("d/m/Y") }}"
-            {% else %}
-                value="{{ "now" | date("d/m/Y") }}"
-            {% endif %}
-        >
+    <div class="row">
+        <div class="form-group col-sm-2">
+            <label>Fecha:</label>
+            <input type="text" readonly required="required" class="form-control text-center" name="fecha"
+                {% if ordencompra.fecha is defined %}
+                    value="{{ ordencompra.fecha | date("d/m/Y") }}"
+                {% else %}
+                    value="{{ "now" | date("d/m/Y") }}"
+                {% endif %}
+            >
+        </div>
+
+        <div class="form-group col-sm-2">
+            <label>Numero:</label>
+            <input type="text" readonly required="required" class="form-control text-center" name="numero"
+                {% if ordencompra.numero is null %}
+                    value="1"
+                {% elseif detalles is defined %}
+                    value="{{ ordencompra.numero }}"
+                {% else %}
+                    value="{{ ordencompra.numero + 1 }}"
+                {% endif %}
+            >
+        </div>
+        <div class="form-group col-sm-2">
+            <button type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modalobra" style="margin-top: 24px">Seleccionar Obra</button>
+        </div>
+
+
+        <div class="form-group col-sm-6">
+            <input id="idobra" type="hidden" name="idobra">
+            <label for="nombreobra">Obra:</label>
+            <input id="nombreobra" readonly class="form-control" type="text" name="nombreobra">
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Numero:</label>
-        <input type="text" readonly required="required" class="form-control" name="numero"
-            {% if ordencompra.numero is null %}
-                value="1"
-            {% elseif detalles is defined %}
-                value="{{ ordencompra.numero }}"
-            {% else %}
-                value="{{ ordencompra.numero + 1 }}"
-            {% endif %}
-        >
-    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="form-group col-sm-4">
+            <label for="proveedor">Proveedor</label>
+            <select id="proveedor" class="form-control">
+                <option value="0"></option>
+                {% for proveedor in proveedores %}
+                    <option value="{{ proveedor.id.id }}">{{ proveedor.razonSocial }}</option>
+                {% endfor %}
+            </select>
+        </div>
 
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalobra">Seleccionar Obra</button>
-    <div class="form-group">
-        <input id="idobra" type="hidden" name="idobra">
-        <label for="nombreobra">Obra:</label>
-        <input id="nombreobra" readonly class="form-control" type="text" name="nombreobra">
-    </div>
+        <div class="form-group col-sm-4">
+            <input id="proveedorselected" type="hidden" name="proveedorselected">
+            <input id="convenio" type="text" class="form-control" style="max-width: 300px" readonly>
+            <input id="descuentoconvenio" type="hidden" value="0">
+        </div>
 
-    <div class="form-group">
-        <label for="proveedor">Proveedor</label>
-        <select id="proveedor">
-            <option value="0"></option>
-            {% for proveedor in proveedores %}
-                <option value="{{ proveedor.id.id }}">{{ proveedor.razonSocial }}</option>
-            {% endfor %}
-        </select>
-        <input id="proveedorselected" type="hidden" name="proveedorselected">
-        <input id="convenio" type="text" class="form-control" readonly>
-        <input id="descuentoconvenio" type="hidden" value="0">
     </div>
 
     <table id="tablapedidos" class="table table-striped">

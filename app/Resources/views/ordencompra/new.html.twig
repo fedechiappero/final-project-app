@@ -1,15 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Ordencompra creation</h1>
+    <h1>Nueva Orden de compra</h1>
+    <br>
 
     {{ include(':ordencompra:form.html.twig') }}
 
-    <ul>
-        <li>
-            <a href="{{ path('ordencompra_index') }}">Back to the list</a>
-        </li>
-    </ul>
+    <div class="form-group">
+        <button class="btn btn-warning" onclick="location.href={{ path('ordencompra_index') }}">Volver al listado</button>
+    </div>
 
     <script>
         $(document).ready(function() {

@@ -2,13 +2,12 @@
 
 {% block body %}
     <h1>Nuevo Pedido</h1>
+    <br>
 
     {{ include(':pedido:form.html.twig') }}
 
     <div class="form-group">
         <button class="btn btn-warning" onclick="location.href='{{ path('pedido_index') }}';">Volver al listado</button>
-
-
     </div>
 
     <script>

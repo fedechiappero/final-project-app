@@ -36,6 +36,7 @@ class OrdenCompraController extends Controller
             INNER JOIN AppBundle:User u WITH oc.idUsuario = u.id
             INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id
             INNER JOIN AppBundle:Obra o WITH oc.idObra = o.id
+            ORDER BY oc.fechaEmision DESC
         ");
 
         $ordenCompras = $query->getResult();

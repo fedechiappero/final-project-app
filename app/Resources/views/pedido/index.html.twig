@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Pedidos list</h1>
+    <h1>Pedidos</h1>
 
     <table class="table table-striped">
         <thead>
@@ -19,10 +19,10 @@
         {% for pedido in pedidos %}
             <tr>
                 <td><a href="{{ path('pedido_show', { 'id': pedido.id }) }}">{{ pedido.numero }}</a></td>
-                <td>{% if pedido.fecha %}{{ pedido.fecha|date('Y-m-d H:i') }}{% endif %}</td>
+                <td>{% if pedido.fecha %}{{ pedido.fecha|date('d-m-Y H:i') }}{% endif %}</td>
                 <td>{{ pedido.obraNombre }}</td>
                 <td>{{ pedido.razonSocial }}</td>
-                <td>{% if pedido.necesarioParaFecha %}{{ pedido.necesarioParaFecha|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if pedido.necesarioParaFecha %}{{ pedido.necesarioParaFecha|date('d-m-Y') }}{% endif %}</td>
                 <td>{{ pedido.estadoNombre }}</td>
                 <td>
                     <ul>
