@@ -435,4 +435,17 @@
         crearArregloProductos();
         calcularTotales();
     });
+
+    var validarForm = function(){
+        var obra = $('#nombreobra').val();
+        var fechanecesario = new Date($('#necesarioparafecha').val());
+        var fechaValida = fechanecesario.isValid();
+        var rubro = $('#contratistaobra').val();
+        var productos = $("#arrproductos").val().length;
+        if(obra != '' && fechaValida && rubro != null && productos > 0){
+            $('#nuevopedido').attr('disabled', false);
+        }else{
+            $('#nuevopedido').attr('disabled', true);
+        }
+    };
 </script>
