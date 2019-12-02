@@ -63,5 +63,134 @@ class DetalleComprobante
     private $idComprobante;
 
 
-}
 
+    /**
+     * Set cantidad
+     *
+     * @param integer $cantidad
+     *
+     * @return DetalleComprobante
+     */
+    public function setCantidad($cantidad)
+    {
+        $this->cantidad = $cantidad;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidad
+     *
+     * @return integer
+     */
+    public function getCantidad()
+    {
+        return $this->cantidad;
+    }
+
+    /**
+     * Set cantidadRecibida
+     *
+     * @param integer $cantidadRecibida
+     *
+     * @return DetalleComprobante
+     */
+    public function setCantidadRecibida($cantidadRecibida)
+    {
+        $this->cantidadRecibida = $cantidadRecibida;
+
+        return $this;
+    }
+
+    /**
+     * Get cantidadRecibida
+     *
+     * @return integer
+     */
+    public function getCantidadRecibida()
+    {
+        return $this->cantidadRecibida;
+    }
+
+    /**
+     * Set iva
+     *
+     * @param float $iva
+     *
+     * @return DetalleComprobante
+     */
+    public function setIva($iva)
+    {
+        $this->iva = $iva;
+
+        return $this;
+    }
+
+    /**
+     * Get iva
+     *
+     * @return float
+     */
+    public function getIva()
+    {
+        return $this->iva;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProducto
+     *
+     * @param \AppBundle\Entity\Producto $idProducto
+     *
+     * @return DetalleComprobante
+     */
+    public function setIdProducto(\AppBundle\Entity\Producto $idProducto = null)
+    {
+        $this->idProducto = $idProducto;
+
+        return $this;
+    }
+
+    /**
+     * Get idProducto
+     *
+     * @return \AppBundle\Entity\Producto
+     */
+    public function getIdProducto()
+    {
+        return $this->idProducto;
+    }
+
+    /**
+     * Set idComprobante
+     *
+     * @param \AppBundle\Entity\ComprobanteProveedor $idComprobante
+     *
+     * @return DetalleComprobante
+     */
+    public function setIdComprobante(\AppBundle\Entity\ComprobanteProveedor $idComprobante = null)
+    {
+        $this->idComprobante = $idComprobante;
+
+        return $this;
+    }
+
+    /**
+     * Get idComprobante
+     *
+     * @return \AppBundle\Entity\ComprobanteProveedor
+     */
+    public function getIdComprobante()
+    {
+        return $this->idComprobante;
+    }
+}

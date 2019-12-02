@@ -39,5 +39,62 @@ class ProyectoArquitectoFin
     private $idProyectoAquitecto;
 
 
-}
 
+    /**
+     * Set fechaHasta
+     *
+     * @param \DateTime $fechaHasta
+     *
+     * @return ProyectoArquitectoFin
+     */
+    public function setFechaHasta($fechaHasta)
+    {
+        $this->fechaHasta = $fechaHasta;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaHasta
+     *
+     * @return \DateTime
+     */
+    public function getFechaHasta()
+    {
+        return $this->fechaHasta;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProyectoAquitecto
+     *
+     * @param \AppBundle\Entity\ProyectoArquitecto $idProyectoAquitecto
+     *
+     * @return ProyectoArquitectoFin
+     */
+    public function setIdProyectoAquitecto(\AppBundle\Entity\ProyectoArquitecto $idProyectoAquitecto = null)
+    {
+        $this->idProyectoAquitecto = $idProyectoAquitecto;
+
+        return $this;
+    }
+
+    /**
+     * Get idProyectoAquitecto
+     *
+     * @return \AppBundle\Entity\ProyectoArquitecto
+     */
+    public function getIdProyectoAquitecto()
+    {
+        return $this->idProyectoAquitecto;
+    }
+}

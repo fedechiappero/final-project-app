@@ -70,5 +70,158 @@ class Transferencia
     private $idBanco;
 
 
-}
 
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return Transferencia
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set titular
+     *
+     * @param string $titular
+     *
+     * @return Transferencia
+     */
+    public function setTitular($titular)
+    {
+        $this->titular = $titular;
+
+        return $this;
+    }
+
+    /**
+     * Get titular
+     *
+     * @return string
+     */
+    public function getTitular()
+    {
+        return $this->titular;
+    }
+
+    /**
+     * Set cuit
+     *
+     * @param string $cuit
+     *
+     * @return Transferencia
+     */
+    public function setCuit($cuit)
+    {
+        $this->cuit = $cuit;
+
+        return $this;
+    }
+
+    /**
+     * Get cuit
+     *
+     * @return string
+     */
+    public function getCuit()
+    {
+        return $this->cuit;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return Transferencia
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idPago
+     *
+     * @param \AppBundle\Entity\PagoMedioPago $idPago
+     *
+     * @return Transferencia
+     */
+    public function setIdPago(\AppBundle\Entity\PagoMedioPago $idPago = null)
+    {
+        $this->idPago = $idPago;
+
+        return $this;
+    }
+
+    /**
+     * Get idPago
+     *
+     * @return \AppBundle\Entity\PagoMedioPago
+     */
+    public function getIdPago()
+    {
+        return $this->idPago;
+    }
+
+    /**
+     * Set idBanco
+     *
+     * @param \AppBundle\Entity\Banco $idBanco
+     *
+     * @return Transferencia
+     */
+    public function setIdBanco(\AppBundle\Entity\Banco $idBanco = null)
+    {
+        $this->idBanco = $idBanco;
+
+        return $this;
+    }
+
+    /**
+     * Get idBanco
+     *
+     * @return \AppBundle\Entity\Banco
+     */
+    public function getIdBanco()
+    {
+        return $this->idBanco;
+    }
+}

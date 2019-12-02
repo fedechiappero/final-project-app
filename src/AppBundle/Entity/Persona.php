@@ -53,5 +53,110 @@ class Persona
     private $idLocalidad;
 
 
-}
 
+    /**
+     * Set direccion
+     *
+     * @param string $direccion
+     *
+     * @return Persona
+     */
+    public function setDireccion($direccion)
+    {
+        $this->direccion = $direccion;
+
+        return $this;
+    }
+
+    /**
+     * Get direccion
+     *
+     * @return string
+     */
+    public function getDireccion()
+    {
+        return $this->direccion;
+    }
+
+    /**
+     * Set celular
+     *
+     * @param string $celular
+     *
+     * @return Persona
+     */
+    public function setCelular($celular)
+    {
+        $this->celular = $celular;
+
+        return $this;
+    }
+
+    /**
+     * Get celular
+     *
+     * @return string
+     */
+    public function getCelular()
+    {
+        return $this->celular;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Persona
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idLocalidad
+     *
+     * @param \AppBundle\Entity\Localidad $idLocalidad
+     *
+     * @return Persona
+     */
+    public function setIdLocalidad(\AppBundle\Entity\Localidad $idLocalidad = null)
+    {
+        $this->idLocalidad = $idLocalidad;
+
+        return $this;
+    }
+
+    /**
+     * Get idLocalidad
+     *
+     * @return \AppBundle\Entity\Localidad
+     */
+    public function getIdLocalidad()
+    {
+        return $this->idLocalidad;
+    }
+}

@@ -42,4 +42,62 @@ class Contacto
     private $idPersona;
 
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idContacto
+     *
+     * @param \AppBundle\Entity\PersonaFisica $idContacto
+     *
+     * @return Contacto
+     */
+    public function setIdContacto(\AppBundle\Entity\PersonaFisica $idContacto = null)
+    {
+        $this->idContacto = $idContacto;
+
+        return $this;
+    }
+
+    /**
+     * Get idContacto
+     *
+     * @return \AppBundle\Entity\PersonaFisica
+     */
+    public function getIdContacto()
+    {
+        return $this->idContacto;
+    }
+
+    /**
+     * Set idPersona
+     *
+     * @param \AppBundle\Entity\Persona $idPersona
+     *
+     * @return Contacto
+     */
+    public function setIdPersona(\AppBundle\Entity\Persona $idPersona = null)
+    {
+        $this->idPersona = $idPersona;
+
+        return $this;
+    }
+
+    /**
+     * Get idPersona
+     *
+     * @return \AppBundle\Entity\Persona
+     */
+    public function getIdPersona()
+    {
+        return $this->idPersona;
+    }
 }

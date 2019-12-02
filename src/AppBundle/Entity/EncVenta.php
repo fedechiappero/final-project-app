@@ -35,5 +35,52 @@ class EncVenta
     private $idUsuario;
 
 
-}
 
+    /**
+     * Set id
+     *
+     * @param \AppBundle\Entity\Personal $id
+     *
+     * @return EncVenta
+     */
+    public function setId(\AppBundle\Entity\Personal $id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return \AppBundle\Entity\Personal
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idUsuario
+     *
+     * @param \AppBundle\Entity\FosUser $idUsuario
+     *
+     * @return EncVenta
+     */
+    public function setIdUsuario(\AppBundle\Entity\FosUser $idUsuario = null)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuario
+     *
+     * @return \AppBundle\Entity\FosUser
+     */
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
+}

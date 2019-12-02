@@ -49,5 +49,86 @@ class ProyectoArquitecto
     private $idProyecto;
 
 
-}
 
+    /**
+     * Set fechaDesde
+     *
+     * @param \DateTime $fechaDesde
+     *
+     * @return ProyectoArquitecto
+     */
+    public function setFechaDesde($fechaDesde)
+    {
+        $this->fechaDesde = $fechaDesde;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaDesde
+     *
+     * @return \DateTime
+     */
+    public function getFechaDesde()
+    {
+        return $this->fechaDesde;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idArquitecto
+     *
+     * @param \AppBundle\Entity\Arquitecto $idArquitecto
+     *
+     * @return ProyectoArquitecto
+     */
+    public function setIdArquitecto(\AppBundle\Entity\Arquitecto $idArquitecto = null)
+    {
+        $this->idArquitecto = $idArquitecto;
+
+        return $this;
+    }
+
+    /**
+     * Get idArquitecto
+     *
+     * @return \AppBundle\Entity\Arquitecto
+     */
+    public function getIdArquitecto()
+    {
+        return $this->idArquitecto;
+    }
+
+    /**
+     * Set idProyecto
+     *
+     * @param \AppBundle\Entity\Proyecto $idProyecto
+     *
+     * @return ProyectoArquitecto
+     */
+    public function setIdProyecto(\AppBundle\Entity\Proyecto $idProyecto = null)
+    {
+        $this->idProyecto = $idProyecto;
+
+        return $this;
+    }
+
+    /**
+     * Get idProyecto
+     *
+     * @return \AppBundle\Entity\Proyecto
+     */
+    public function getIdProyecto()
+    {
+        return $this->idProyecto;
+    }
+}

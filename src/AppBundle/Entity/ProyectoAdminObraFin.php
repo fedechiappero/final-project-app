@@ -39,5 +39,62 @@ class ProyectoAdminObraFin
     private $idProyectoAdminObra;
 
 
-}
 
+    /**
+     * Set fechaHasta
+     *
+     * @param \DateTime $fechaHasta
+     *
+     * @return ProyectoAdminObraFin
+     */
+    public function setFechaHasta($fechaHasta)
+    {
+        $this->fechaHasta = $fechaHasta;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaHasta
+     *
+     * @return \DateTime
+     */
+    public function getFechaHasta()
+    {
+        return $this->fechaHasta;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProyectoAdminObra
+     *
+     * @param \AppBundle\Entity\ProyectoAdminObra $idProyectoAdminObra
+     *
+     * @return ProyectoAdminObraFin
+     */
+    public function setIdProyectoAdminObra(\AppBundle\Entity\ProyectoAdminObra $idProyectoAdminObra = null)
+    {
+        $this->idProyectoAdminObra = $idProyectoAdminObra;
+
+        return $this;
+    }
+
+    /**
+     * Get idProyectoAdminObra
+     *
+     * @return \AppBundle\Entity\ProyectoAdminObra
+     */
+    public function getIdProyectoAdminObra()
+    {
+        return $this->idProyectoAdminObra;
+    }
+}

@@ -25,5 +25,28 @@ class Personal
     private $id;
 
 
-}
 
+    /**
+     * Set id
+     *
+     * @param \AppBundle\Entity\PersonaFisica $id
+     *
+     * @return Personal
+     */
+    public function setId(\AppBundle\Entity\PersonaFisica $id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return \AppBundle\Entity\PersonaFisica
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

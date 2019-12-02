@@ -46,5 +46,86 @@ class Proyecto
     private $idPresupuesto;
 
 
-}
 
+    /**
+     * Set legajoMunicipalNro
+     *
+     * @param integer $legajoMunicipalNro
+     *
+     * @return Proyecto
+     */
+    public function setLegajoMunicipalNro($legajoMunicipalNro)
+    {
+        $this->legajoMunicipalNro = $legajoMunicipalNro;
+
+        return $this;
+    }
+
+    /**
+     * Get legajoMunicipalNro
+     *
+     * @return integer
+     */
+    public function getLegajoMunicipalNro()
+    {
+        return $this->legajoMunicipalNro;
+    }
+
+    /**
+     * Set colegioArquitectoNro
+     *
+     * @param integer $colegioArquitectoNro
+     *
+     * @return Proyecto
+     */
+    public function setColegioArquitectoNro($colegioArquitectoNro)
+    {
+        $this->colegioArquitectoNro = $colegioArquitectoNro;
+
+        return $this;
+    }
+
+    /**
+     * Get colegioArquitectoNro
+     *
+     * @return integer
+     */
+    public function getColegioArquitectoNro()
+    {
+        return $this->colegioArquitectoNro;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idPresupuesto
+     *
+     * @param \AppBundle\Entity\Presupuesto $idPresupuesto
+     *
+     * @return Proyecto
+     */
+    public function setIdPresupuesto(\AppBundle\Entity\Presupuesto $idPresupuesto = null)
+    {
+        $this->idPresupuesto = $idPresupuesto;
+
+        return $this;
+    }
+
+    /**
+     * Get idPresupuesto
+     *
+     * @return \AppBundle\Entity\Presupuesto
+     */
+    public function getIdPresupuesto()
+    {
+        return $this->idPresupuesto;
+    }
+}

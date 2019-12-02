@@ -39,5 +39,76 @@ class PersonaFisica
     private $id;
 
 
-}
 
+    /**
+     * Set nombre
+     *
+     * @param string $nombre
+     *
+     * @return PersonaFisica
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set documento
+     *
+     * @param integer $documento
+     *
+     * @return PersonaFisica
+     */
+    public function setDocumento($documento)
+    {
+        $this->documento = $documento;
+
+        return $this;
+    }
+
+    /**
+     * Get documento
+     *
+     * @return integer
+     */
+    public function getDocumento()
+    {
+        return $this->documento;
+    }
+
+    /**
+     * Set id
+     *
+     * @param \AppBundle\Entity\Persona $id
+     *
+     * @return PersonaFisica
+     */
+    public function setId(\AppBundle\Entity\Persona $id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return \AppBundle\Entity\Persona
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}

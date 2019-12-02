@@ -49,5 +49,86 @@ class EstadoPedido
     private $idEstado;
 
 
-}
 
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return EstadoPedido
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idPedido
+     *
+     * @param \AppBundle\Entity\Pedido $idPedido
+     *
+     * @return EstadoPedido
+     */
+    public function setIdPedido(\AppBundle\Entity\Pedido $idPedido = null)
+    {
+        $this->idPedido = $idPedido;
+
+        return $this;
+    }
+
+    /**
+     * Get idPedido
+     *
+     * @return \AppBundle\Entity\Pedido
+     */
+    public function getIdPedido()
+    {
+        return $this->idPedido;
+    }
+
+    /**
+     * Set idEstado
+     *
+     * @param \AppBundle\Entity\Estado $idEstado
+     *
+     * @return EstadoPedido
+     */
+    public function setIdEstado(\AppBundle\Entity\Estado $idEstado = null)
+    {
+        $this->idEstado = $idEstado;
+
+        return $this;
+    }
+
+    /**
+     * Get idEstado
+     *
+     * @return \AppBundle\Entity\Estado
+     */
+    public function getIdEstado()
+    {
+        return $this->idEstado;
+    }
+}

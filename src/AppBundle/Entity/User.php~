@@ -24,9 +24,24 @@ class User extends BaseUser
      */
     protected $id;
 
+
     public function __construct()
     {
         parent::__construct();
         // your own logic
+    }
+
+    /**
+     * Set id
+     *
+     * @param \AppBundle\Entity\Persona $id
+     *
+     * @return User
+     */
+    public function setId(\AppBundle\Entity\Persona $id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
 }

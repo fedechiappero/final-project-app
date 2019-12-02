@@ -7,81 +7,33 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Contratista
  *
- * @ORM\Table(name="contratista")
+ * @ORM\Table(name="contratista", indexes={@ORM\Index(name="id_usuario", columns={"id_usuario"})})
  * @ORM\Entity
  */
 class Contratista
 {
     /**
-     * @var string
-     *
-     * @ORM\Column(name="razon_social", type="string", length=255, nullable=false)
-     */
-    private $razonSocial;
-
-    /**
-     * @var \AppBundle\Entity\Persona
+     * @var \AppBundle\Entity\PersonaJuridica
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Persona")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\PersonaJuridica")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="id")
      * })
      */
     private $id;
 
-
-
     /**
-     * Set razonSocial
+     * @var \AppBundle\Entity\FosUser
      *
-     * @param string $razonSocial
-     *
-     * @return Contratista
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\FosUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
+     * })
      */
-    public function setRazonSocial($razonSocial)
-    {
-        $this->razonSocial = $razonSocial;
+    private $idUsuario;
 
-        return $this;
-    }
 
-    /**
-     * Get razonSocial
-     *
-     * @return string
-     */
-    public function getRazonSocial()
-    {
-        return $this->razonSocial;
-    }
-
-    /**
-     * Set id
-     *
-     * @param \AppBundle\Entity\Persona $id
-     *
-     * @return Contratista
-     */
-    public function setId(\AppBundle\Entity\Persona $id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return \AppBundle\Entity\Persona
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function __toString() {
-        return $this->razonSocial;
-    }
 }
+

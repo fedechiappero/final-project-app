@@ -36,16 +36,6 @@ class Precio
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Producto
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Producto")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
-     * })
-     */
-    private $idProducto;
-
-    /**
      * @var \AppBundle\Entity\Proveedor
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Proveedor")
@@ -55,111 +45,16 @@ class Precio
      */
     private $idProveedor;
 
-
-
     /**
-     * Set precio
+     * @var \AppBundle\Entity\Producto
      *
-     * @param float $precio
-     *
-     * @return Precio
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Producto")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_producto", referencedColumnName="id")
+     * })
      */
-    public function setPrecio($precio)
-    {
-        $this->precio = $precio;
+    private $idProducto;
 
-        return $this;
-    }
 
-    /**
-     * Get precio
-     *
-     * @return float
-     */
-    public function getPrecio()
-    {
-        return $this->precio;
-    }
-
-    /**
-     * Set fechaUltimaActualizacion
-     *
-     * @param \DateTime $fechaUltimaActualizacion
-     *
-     * @return Precio
-     */
-    public function setFechaUltimaActualizacion($fechaUltimaActualizacion)
-    {
-        $this->fechaUltimaActualizacion = $fechaUltimaActualizacion;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaUltimaActualizacion
-     *
-     * @return \DateTime
-     */
-    public function getFechaUltimaActualizacion()
-    {
-        return $this->fechaUltimaActualizacion;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set idProducto
-     *
-     * @param \AppBundle\Entity\Producto $idProducto
-     *
-     * @return Precio
-     */
-    public function setIdProducto(\AppBundle\Entity\Producto $idProducto = null)
-    {
-        $this->idProducto = $idProducto;
-
-        return $this;
-    }
-
-    /**
-     * Get idProducto
-     *
-     * @return \AppBundle\Entity\Producto
-     */
-    public function getIdProducto()
-    {
-        return $this->idProducto;
-    }
-
-    /**
-     * Set idProveedor
-     *
-     * @param \AppBundle\Entity\Proveedor $idProveedor
-     *
-     * @return Precio
-     */
-    public function setIdProveedor(\AppBundle\Entity\Proveedor $idProveedor = null)
-    {
-        $this->idProveedor = $idProveedor;
-
-        return $this;
-    }
-
-    /**
-     * Get idProveedor
-     *
-     * @return \AppBundle\Entity\Proveedor
-     */
-    public function getIdProveedor()
-    {
-        return $this->idProveedor;
-    }
 }
+

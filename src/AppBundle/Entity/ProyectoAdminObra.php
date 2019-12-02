@@ -49,5 +49,86 @@ class ProyectoAdminObra
     private $idProyecto;
 
 
-}
 
+    /**
+     * Set fechaDesde
+     *
+     * @param \DateTime $fechaDesde
+     *
+     * @return ProyectoAdminObra
+     */
+    public function setFechaDesde($fechaDesde)
+    {
+        $this->fechaDesde = $fechaDesde;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaDesde
+     *
+     * @return \DateTime
+     */
+    public function getFechaDesde()
+    {
+        return $this->fechaDesde;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idAdminObra
+     *
+     * @param \AppBundle\Entity\AdminObra $idAdminObra
+     *
+     * @return ProyectoAdminObra
+     */
+    public function setIdAdminObra(\AppBundle\Entity\AdminObra $idAdminObra = null)
+    {
+        $this->idAdminObra = $idAdminObra;
+
+        return $this;
+    }
+
+    /**
+     * Get idAdminObra
+     *
+     * @return \AppBundle\Entity\AdminObra
+     */
+    public function getIdAdminObra()
+    {
+        return $this->idAdminObra;
+    }
+
+    /**
+     * Set idProyecto
+     *
+     * @param \AppBundle\Entity\Proyecto $idProyecto
+     *
+     * @return ProyectoAdminObra
+     */
+    public function setIdProyecto(\AppBundle\Entity\Proyecto $idProyecto = null)
+    {
+        $this->idProyecto = $idProyecto;
+
+        return $this;
+    }
+
+    /**
+     * Get idProyecto
+     *
+     * @return \AppBundle\Entity\Proyecto
+     */
+    public function getIdProyecto()
+    {
+        return $this->idProyecto;
+    }
+}

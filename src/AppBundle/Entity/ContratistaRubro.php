@@ -42,5 +42,62 @@ class ContratistaRubro
     private $idRubro;
 
 
-}
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idContratista
+     *
+     * @param \AppBundle\Entity\Contratista $idContratista
+     *
+     * @return ContratistaRubro
+     */
+    public function setIdContratista(\AppBundle\Entity\Contratista $idContratista = null)
+    {
+        $this->idContratista = $idContratista;
+
+        return $this;
+    }
+
+    /**
+     * Get idContratista
+     *
+     * @return \AppBundle\Entity\Contratista
+     */
+    public function getIdContratista()
+    {
+        return $this->idContratista;
+    }
+
+    /**
+     * Set idRubro
+     *
+     * @param \AppBundle\Entity\Rubro $idRubro
+     *
+     * @return ContratistaRubro
+     */
+    public function setIdRubro(\AppBundle\Entity\Rubro $idRubro = null)
+    {
+        $this->idRubro = $idRubro;
+
+        return $this;
+    }
+
+    /**
+     * Get idRubro
+     *
+     * @return \AppBundle\Entity\Rubro
+     */
+    public function getIdRubro()
+    {
+        return $this->idRubro;
+    }
+}

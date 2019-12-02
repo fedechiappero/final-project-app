@@ -22,16 +22,6 @@ class DetalleTransferencia
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Transferencia
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Transferencia")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_transferencia", referencedColumnName="id")
-     * })
-     */
-    private $idTransferencia;
-
-    /**
      * @var \AppBundle\Entity\Pago
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Pago")
@@ -41,63 +31,16 @@ class DetalleTransferencia
      */
     private $idPago;
 
-
-
     /**
-     * Get id
+     * @var \AppBundle\Entity\Transferencia
      *
-     * @return integer
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Transferencia")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_transferencia", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idTransferencia;
 
-    /**
-     * Set idTransferencia
-     *
-     * @param \AppBundle\Entity\Transferencia $idTransferencia
-     *
-     * @return DetalleTransferencia
-     */
-    public function setIdTransferencia(\AppBundle\Entity\Transferencia $idTransferencia = null)
-    {
-        $this->idTransferencia = $idTransferencia;
 
-        return $this;
-    }
-
-    /**
-     * Get idTransferencia
-     *
-     * @return \AppBundle\Entity\Transferencia
-     */
-    public function getIdTransferencia()
-    {
-        return $this->idTransferencia;
-    }
-
-    /**
-     * Set idPago
-     *
-     * @param \AppBundle\Entity\Pago $idPago
-     *
-     * @return DetalleTransferencia
-     */
-    public function setIdPago(\AppBundle\Entity\Pago $idPago = null)
-    {
-        $this->idPago = $idPago;
-
-        return $this;
-    }
-
-    /**
-     * Get idPago
-     *
-     * @return \AppBundle\Entity\Pago
-     */
-    public function getIdPago()
-    {
-        return $this->idPago;
-    }
 }
+

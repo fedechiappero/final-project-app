@@ -56,5 +56,110 @@ class Precio
     private $idProducto;
 
 
-}
 
+    /**
+     * Set precio
+     *
+     * @param float $precio
+     *
+     * @return Precio
+     */
+    public function setPrecio($precio)
+    {
+        $this->precio = $precio;
+
+        return $this;
+    }
+
+    /**
+     * Get precio
+     *
+     * @return float
+     */
+    public function getPrecio()
+    {
+        return $this->precio;
+    }
+
+    /**
+     * Set fechaUltimaActualizacion
+     *
+     * @param \DateTime $fechaUltimaActualizacion
+     *
+     * @return Precio
+     */
+    public function setFechaUltimaActualizacion($fechaUltimaActualizacion)
+    {
+        $this->fechaUltimaActualizacion = $fechaUltimaActualizacion;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaUltimaActualizacion
+     *
+     * @return \DateTime
+     */
+    public function getFechaUltimaActualizacion()
+    {
+        return $this->fechaUltimaActualizacion;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProveedor
+     *
+     * @param \AppBundle\Entity\Proveedor $idProveedor
+     *
+     * @return Precio
+     */
+    public function setIdProveedor(\AppBundle\Entity\Proveedor $idProveedor = null)
+    {
+        $this->idProveedor = $idProveedor;
+
+        return $this;
+    }
+
+    /**
+     * Get idProveedor
+     *
+     * @return \AppBundle\Entity\Proveedor
+     */
+    public function getIdProveedor()
+    {
+        return $this->idProveedor;
+    }
+
+    /**
+     * Set idProducto
+     *
+     * @param \AppBundle\Entity\Producto $idProducto
+     *
+     * @return Precio
+     */
+    public function setIdProducto(\AppBundle\Entity\Producto $idProducto = null)
+    {
+        $this->idProducto = $idProducto;
+
+        return $this;
+    }
+
+    /**
+     * Get idProducto
+     *
+     * @return \AppBundle\Entity\Producto
+     */
+    public function getIdProducto()
+    {
+        return $this->idProducto;
+    }
+}

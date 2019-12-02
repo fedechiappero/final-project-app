@@ -25,7 +25,7 @@ class AdminObra
     private $id;
 
     /**
-     * @var \AppBundle\Entity\FosUser
+     * @var \AppBundle\Entity\User
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\FosUser")
      * @ORM\JoinColumns({
@@ -35,5 +35,52 @@ class AdminObra
     private $idUsuario;
 
 
-}
 
+    /**
+     * Set id
+     *
+     * @param \AppBundle\Entity\Personal $id
+     *
+     * @return AdminObra
+     */
+    public function setId(\AppBundle\Entity\Personal $id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return \AppBundle\Entity\Personal
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idUsuario
+     *
+     * @param \AppBundle\Entity\User $idUsuario
+     *
+     * @return AdminObra
+     */
+    public function setIdUsuario(\AppBundle\Entity\User $idUsuario = null)
+    {
+        $this->idUsuario = $idUsuario;
+
+        return $this;
+    }
+
+    /**
+     * Get idUsuario
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getIdUsuario()
+    {
+        return $this->idUsuario;
+    }
+}

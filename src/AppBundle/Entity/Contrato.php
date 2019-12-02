@@ -63,5 +63,134 @@ class Contrato
     private $idCliente;
 
 
-}
 
+    /**
+     * Set fechaEmision
+     *
+     * @param \DateTime $fechaEmision
+     *
+     * @return Contrato
+     */
+    public function setFechaEmision($fechaEmision)
+    {
+        $this->fechaEmision = $fechaEmision;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEmision
+     *
+     * @return \DateTime
+     */
+    public function getFechaEmision()
+    {
+        return $this->fechaEmision;
+    }
+
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return Contrato
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set fechaEstimadaInicio
+     *
+     * @param \DateTime $fechaEstimadaInicio
+     *
+     * @return Contrato
+     */
+    public function setFechaEstimadaInicio($fechaEstimadaInicio)
+    {
+        $this->fechaEstimadaInicio = $fechaEstimadaInicio;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEstimadaInicio
+     *
+     * @return \DateTime
+     */
+    public function getFechaEstimadaInicio()
+    {
+        return $this->fechaEstimadaInicio;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProyecto
+     *
+     * @param \AppBundle\Entity\Proyecto $idProyecto
+     *
+     * @return Contrato
+     */
+    public function setIdProyecto(\AppBundle\Entity\Proyecto $idProyecto = null)
+    {
+        $this->idProyecto = $idProyecto;
+
+        return $this;
+    }
+
+    /**
+     * Get idProyecto
+     *
+     * @return \AppBundle\Entity\Proyecto
+     */
+    public function getIdProyecto()
+    {
+        return $this->idProyecto;
+    }
+
+    /**
+     * Set idCliente
+     *
+     * @param \AppBundle\Entity\Cliente $idCliente
+     *
+     * @return Contrato
+     */
+    public function setIdCliente(\AppBundle\Entity\Cliente $idCliente = null)
+    {
+        $this->idCliente = $idCliente;
+
+        return $this;
+    }
+
+    /**
+     * Get idCliente
+     *
+     * @return \AppBundle\Entity\Cliente
+     */
+    public function getIdCliente()
+    {
+        return $this->idCliente;
+    }
+}

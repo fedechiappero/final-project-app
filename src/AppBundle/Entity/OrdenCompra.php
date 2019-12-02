@@ -73,5 +73,158 @@ class OrdenCompra
     private $idObra;
 
 
-}
 
+    /**
+     * Set numero
+     *
+     * @param integer $numero
+     *
+     * @return OrdenCompra
+     */
+    public function setNumero($numero)
+    {
+        $this->numero = $numero;
+
+        return $this;
+    }
+
+    /**
+     * Get numero
+     *
+     * @return integer
+     */
+    public function getNumero()
+    {
+        return $this->numero;
+    }
+
+    /**
+     * Set fechaEmision
+     *
+     * @param \DateTime $fechaEmision
+     *
+     * @return OrdenCompra
+     */
+    public function setFechaEmision($fechaEmision)
+    {
+        $this->fechaEmision = $fechaEmision;
+
+        return $this;
+    }
+
+    /**
+     * Get fechaEmision
+     *
+     * @return \DateTime
+     */
+    public function getFechaEmision()
+    {
+        return $this->fechaEmision;
+    }
+
+    /**
+     * Set total
+     *
+     * @param float $total
+     *
+     * @return OrdenCompra
+     */
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
+
+    /**
+     * Get total
+     *
+     * @return float
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idProveedor
+     *
+     * @param \AppBundle\Entity\Proveedor $idProveedor
+     *
+     * @return OrdenCompra
+     */
+    public function setIdProveedor(\AppBundle\Entity\Proveedor $idProveedor = null)
+    {
+        $this->idProveedor = $idProveedor;
+
+        return $this;
+    }
+
+    /**
+     * Get idProveedor
+     *
+     * @return \AppBundle\Entity\Proveedor
+     */
+    public function getIdProveedor()
+    {
+        return $this->idProveedor;
+    }
+
+    /**
+     * Set idEncComp
+     *
+     * @param \AppBundle\Entity\EncCompMatCons $idEncComp
+     *
+     * @return OrdenCompra
+     */
+    public function setIdEncComp(\AppBundle\Entity\EncCompMatCons $idEncComp = null)
+    {
+        $this->idEncComp = $idEncComp;
+
+        return $this;
+    }
+
+    /**
+     * Get idEncComp
+     *
+     * @return \AppBundle\Entity\EncCompMatCons
+     */
+    public function getIdEncComp()
+    {
+        return $this->idEncComp;
+    }
+
+    /**
+     * Set idObra
+     *
+     * @param \AppBundle\Entity\Obra $idObra
+     *
+     * @return OrdenCompra
+     */
+    public function setIdObra(\AppBundle\Entity\Obra $idObra = null)
+    {
+        $this->idObra = $idObra;
+
+        return $this;
+    }
+
+    /**
+     * Get idObra
+     *
+     * @return \AppBundle\Entity\Obra
+     */
+    public function getIdObra()
+    {
+        return $this->idObra;
+    }
+}

@@ -49,5 +49,86 @@ class PagoMedioPago
     private $idPago;
 
 
-}
 
+    /**
+     * Set importe
+     *
+     * @param float $importe
+     *
+     * @return PagoMedioPago
+     */
+    public function setImporte($importe)
+    {
+        $this->importe = $importe;
+
+        return $this;
+    }
+
+    /**
+     * Get importe
+     *
+     * @return float
+     */
+    public function getImporte()
+    {
+        return $this->importe;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set idMedioPago
+     *
+     * @param \AppBundle\Entity\MedioPago $idMedioPago
+     *
+     * @return PagoMedioPago
+     */
+    public function setIdMedioPago(\AppBundle\Entity\MedioPago $idMedioPago = null)
+    {
+        $this->idMedioPago = $idMedioPago;
+
+        return $this;
+    }
+
+    /**
+     * Get idMedioPago
+     *
+     * @return \AppBundle\Entity\MedioPago
+     */
+    public function getIdMedioPago()
+    {
+        return $this->idMedioPago;
+    }
+
+    /**
+     * Set idPago
+     *
+     * @param \AppBundle\Entity\Pago $idPago
+     *
+     * @return PagoMedioPago
+     */
+    public function setIdPago(\AppBundle\Entity\Pago $idPago = null)
+    {
+        $this->idPago = $idPago;
+
+        return $this;
+    }
+
+    /**
+     * Get idPago
+     *
+     * @return \AppBundle\Entity\Pago
+     */
+    public function getIdPago()
+    {
+        return $this->idPago;
+    }
+}

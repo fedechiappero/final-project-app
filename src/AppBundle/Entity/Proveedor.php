@@ -25,5 +25,28 @@ class Proveedor
     private $id;
 
 
-}
 
+    /**
+     * Set id
+     *
+     * @param \AppBundle\Entity\PersonaJuridica $id
+     *
+     * @return Proveedor
+     */
+    public function setId(\AppBundle\Entity\PersonaJuridica $id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return \AppBundle\Entity\PersonaJuridica
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+}
