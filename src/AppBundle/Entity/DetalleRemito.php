@@ -22,16 +22,6 @@ class DetalleRemito
     private $id;
 
     /**
-     * @var \AppBundle\Entity\Remito
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Remito")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_remito", referencedColumnName="id")
-     * })
-     */
-    private $idRemito;
-
-    /**
      * @var \AppBundle\Entity\Producto
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Producto")
@@ -41,63 +31,16 @@ class DetalleRemito
      */
     private $idProducto;
 
-
-
     /**
-     * Get id
+     * @var \AppBundle\Entity\Remito
      *
-     * @return integer
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Remito")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_remito", referencedColumnName="id")
+     * })
      */
-    public function getId()
-    {
-        return $this->id;
-    }
+    private $idRemito;
 
-    /**
-     * Set idRemito
-     *
-     * @param \AppBundle\Entity\Remito $idRemito
-     *
-     * @return DetalleRemito
-     */
-    public function setIdRemito(\AppBundle\Entity\Remito $idRemito = null)
-    {
-        $this->idRemito = $idRemito;
 
-        return $this;
-    }
-
-    /**
-     * Get idRemito
-     *
-     * @return \AppBundle\Entity\Remito
-     */
-    public function getIdRemito()
-    {
-        return $this->idRemito;
-    }
-
-    /**
-     * Set idProducto
-     *
-     * @param \AppBundle\Entity\Producto $idProducto
-     *
-     * @return DetalleRemito
-     */
-    public function setIdProducto(\AppBundle\Entity\Producto $idProducto = null)
-    {
-        $this->idProducto = $idProducto;
-
-        return $this;
-    }
-
-    /**
-     * Get idProducto
-     *
-     * @return \AppBundle\Entity\Producto
-     */
-    public function getIdProducto()
-    {
-        return $this->idProducto;
-    }
 }
+

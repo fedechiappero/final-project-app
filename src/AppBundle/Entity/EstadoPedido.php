@@ -7,17 +7,24 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * EstadoPedido
  *
- * @ORM\Table(name="estado_pedido")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\EstadoPedidoRepository")
+ * @ORM\Table(name="estado_pedido", indexes={@ORM\Index(name="IDX_97557E78E2DBA323", columns={"id_pedido"}), @ORM\Index(name="IDX_97557E786A540E", columns={"id_estado"})})
+ * @ORM\Entity
  */
 class EstadoPedido
 {
     /**
-     * @var int
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="datetime", nullable=false)
+     */
+    private $fecha;
+
+    /**
+     * @var integer
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
 
@@ -41,94 +48,6 @@ class EstadoPedido
      */
     private $idEstado;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="fecha", type="datetime")
-     */
-    private $fecha;
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set idPedido
-     *
-     * @param integer $idPedido
-     *
-     * @return EstadoPedido
-     */
-    public function setIdPedido($idPedido)
-    {
-        $this->idPedido = $idPedido;
-
-        return $this;
-    }
-
-    /**
-     * Get idPedido
-     *
-     * @return int
-     */
-    public function getIdPedido()
-    {
-        return $this->idPedido;
-    }
-
-    /**
-     * Set idEstado
-     *
-     * @param integer $idEstado
-     *
-     * @return EstadoPedido
-     */
-    public function setIdEstado($idEstado)
-    {
-        $this->idEstado = $idEstado;
-
-        return $this;
-    }
-
-    /**
-     * Get idEstado
-     *
-     * @return int
-     */
-    public function getIdEstado()
-    {
-        return $this->idEstado;
-    }
-
-    /**
-     * Set fecha
-     *
-     * @param \DateTime $fecha
-     *
-     * @return EstadoPedido
-     */
-    public function setFecha($fecha)
-    {
-        $this->fecha = $fecha;
-
-        return $this;
-    }
-
-    /**
-     * Get fecha
-     *
-     * @return \DateTime
-     */
-    public function getFecha()
-    {
-        return $this->fecha;
-    }
 }
 

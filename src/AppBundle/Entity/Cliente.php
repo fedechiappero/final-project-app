@@ -5,19 +5,19 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Proveedor
+ * Cliente
  *
- * @ORM\Table(name="proveedor")
+ * @ORM\Table(name="cliente")
  * @ORM\Entity
  */
-class Proveedor
+class Cliente
 {
     /**
-     * @var \AppBundle\Entity\PersonaJuridica
+     * @var \AppBundle\Entity\PersonaFisica
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\PersonaJuridica")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\PersonaFisica")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="id")
      * })

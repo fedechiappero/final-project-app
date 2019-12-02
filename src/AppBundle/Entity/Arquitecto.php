@@ -5,26 +5,26 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Caducidad
+ * Arquitecto
  *
- * @ORM\Table(name="caducidad")
+ * @ORM\Table(name="arquitecto")
  * @ORM\Entity
  */
-class Caducidad
+class Arquitecto
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="cantidad_meses", type="integer", nullable=false)
+     * @ORM\Column(name="matricula_numero", type="integer", nullable=false)
      */
-    private $cantidadMeses;
+    private $matriculaNumero;
 
     /**
-     * @var \AppBundle\Entity\Producto
+     * @var \AppBundle\Entity\Personal
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Producto")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Personal")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="id")
      * })

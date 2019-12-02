@@ -5,19 +5,19 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Contratista
+ * EncVenta
  *
- * @ORM\Table(name="contratista", indexes={@ORM\Index(name="id_usuario", columns={"id_usuario"})})
+ * @ORM\Table(name="enc_venta", indexes={@ORM\Index(name="id_usuario", columns={"id_usuario"})})
  * @ORM\Entity
  */
-class Contratista
+class EncVenta
 {
     /**
-     * @var \AppBundle\Entity\PersonaJuridica
+     * @var \AppBundle\Entity\Personal
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\PersonaJuridica")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Personal")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="id")
      * })

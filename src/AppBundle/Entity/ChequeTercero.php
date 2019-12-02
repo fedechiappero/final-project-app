@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ChequeTercero
  *
- * @ORM\Table(name="cheque_tercero", indexes={@ORM\Index(name="id_banco", columns={"id_banco"})})
+ * @ORM\Table(name="cheque_tercero", indexes={@ORM\Index(name="id_banco", columns={"id_banco"}), @ORM\Index(name="id_pago", columns={"id_pago"})})
  * @ORM\Entity
  */
 class ChequeTercero
@@ -64,6 +64,16 @@ class ChequeTercero
     private $id;
 
     /**
+     * @var \AppBundle\Entity\PagoMedioPago
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\PagoMedioPago")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_pago", referencedColumnName="id")
+     * })
+     */
+    private $idPago;
+
+    /**
      * @var \AppBundle\Entity\Banco
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Banco")
@@ -74,182 +84,5 @@ class ChequeTercero
     private $idBanco;
 
 
-
-    /**
-     * Set numero
-     *
-     * @param integer $numero
-     *
-     * @return ChequeTercero
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return integer
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
-     * Set cuitTitular
-     *
-     * @param string $cuitTitular
-     *
-     * @return ChequeTercero
-     */
-    public function setCuitTitular($cuitTitular)
-    {
-        $this->cuitTitular = $cuitTitular;
-
-        return $this;
-    }
-
-    /**
-     * Get cuitTitular
-     *
-     * @return string
-     */
-    public function getCuitTitular()
-    {
-        return $this->cuitTitular;
-    }
-
-    /**
-     * Set nombreTitular
-     *
-     * @param string $nombreTitular
-     *
-     * @return ChequeTercero
-     */
-    public function setNombreTitular($nombreTitular)
-    {
-        $this->nombreTitular = $nombreTitular;
-
-        return $this;
-    }
-
-    /**
-     * Get nombreTitular
-     *
-     * @return string
-     */
-    public function getNombreTitular()
-    {
-        return $this->nombreTitular;
-    }
-
-    /**
-     * Set fechaCobro
-     *
-     * @param \DateTime $fechaCobro
-     *
-     * @return ChequeTercero
-     */
-    public function setFechaCobro($fechaCobro)
-    {
-        $this->fechaCobro = $fechaCobro;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaCobro
-     *
-     * @return \DateTime
-     */
-    public function getFechaCobro()
-    {
-        return $this->fechaCobro;
-    }
-
-    /**
-     * Set fechaEmision
-     *
-     * @param \DateTime $fechaEmision
-     *
-     * @return ChequeTercero
-     */
-    public function setFechaEmision($fechaEmision)
-    {
-        $this->fechaEmision = $fechaEmision;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaEmision
-     *
-     * @return \DateTime
-     */
-    public function getFechaEmision()
-    {
-        return $this->fechaEmision;
-    }
-
-    /**
-     * Set fechaRecibido
-     *
-     * @param \DateTime $fechaRecibido
-     *
-     * @return ChequeTercero
-     */
-    public function setFechaRecibido($fechaRecibido)
-    {
-        $this->fechaRecibido = $fechaRecibido;
-
-        return $this;
-    }
-
-    /**
-     * Get fechaRecibido
-     *
-     * @return \DateTime
-     */
-    public function getFechaRecibido()
-    {
-        return $this->fechaRecibido;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set idBanco
-     *
-     * @param \AppBundle\Entity\Banco $idBanco
-     *
-     * @return ChequeTercero
-     */
-    public function setIdBanco(\AppBundle\Entity\Banco $idBanco = null)
-    {
-        $this->idBanco = $idBanco;
-
-        return $this;
-    }
-
-    /**
-     * Get idBanco
-     *
-     * @return \AppBundle\Entity\Banco
-     */
-    public function getIdBanco()
-    {
-        return $this->idBanco;
-    }
 }
+
