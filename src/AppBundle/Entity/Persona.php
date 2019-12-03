@@ -159,4 +159,8 @@ class Persona
     {
         return $this->idLocalidad;
     }
+
+    public function __toString() {
+        return $this->email;
+    }
 }

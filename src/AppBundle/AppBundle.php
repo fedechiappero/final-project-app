@@ -6,6 +6,12 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class AppBundle extends Bundle
 {
+    public function boot()
+    {
+        parent::boot();
+        date_default_timezone_set("America/Argentina/Cordoba");
+    }
+    
     public function getParent()
     {
         return 'FOSUserBundle';

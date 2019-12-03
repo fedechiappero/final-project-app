@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Pedido
@@ -51,6 +52,28 @@ class Pedido
      * })
      */
     private $idContratistaObra;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\DetallePedido", mappedBy="idPedido", cascade={"persist", "remove"}, orphanRemoval=TRUE)
+     */
+    private $detallepedido;
+    
+    public function __construct()
+    {
+        $this->detallepedido = new ArrayCollection();
+    }
+    public function getDetallePedido()
+    {
+        return $this->detallepedido->toArray();
+    }
+    public function addDetallePedido(DetallePedido $detallepedido)
+    {
+        if (!$this->detallepedido->contains($detallepedido)) {
+            $this->detallepedido->add($detallepedido);
+            $detallepedido->setIdPedido($this);
+        }
+        return $this;
+    }
 
 
 

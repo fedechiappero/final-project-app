@@ -59,7 +59,7 @@
 
         <div class="form-group col-sm-4">
             <label>Nesario para:</label>
-            <input class="form-control" type="date" id="necesarioparafecha" name="necesarioparafecha" style="max-width: 160px"
+            <input class="form-control" type="date" id="necesarioparafecha" name="necesarioparafecha" min="{{ hoy | date('Y-m-d') }}" style="max-width: 160px"
                 {% if pedido.necesarioParaFecha is defined %}
                     value="{{ pedido.necesarioParaFecha | date('Y-m-d') }}"
                 {% endif %}
@@ -171,6 +171,17 @@
         return this.getTime() === this.getTime();
     };
 
+    /*window.onload = function(){
+        //set min date for datepicker
+        var dateObj = new Date();
+        var month = dateObj.getMonth() + 1; //months from 1-12
+        var day = dateObj.getDate();
+        var year = dateObj.getFullYear();
+        var today = year+"-"+month+"-"+day;
+        document.getElementById('necesarioparafecha').min = today;
+        console.log(today);
+    };*/
+
     $(document).ready(function(){
 
         var tabla = $('#tablapedido').DataTable({
@@ -201,15 +212,6 @@
                 tabla.row.add([id,nombre,cantidad,btneliminar]).draw(false);
             {% endfor %}
         {% endif %}
-
-        //set min date for datepicker
-        var dateObj = new Date();
-        var month = dateObj.getMonth() + 1; //months from 1-12
-        var day = dateObj.getDate();
-        var year = dateObj.getFullYear();
-        var today = year+"-"+month+"-"+day;
-        document.getElementById('necesarioparafecha').setAttribute('min', today);
-
 
         $('.quantity-right-plus').click(function(e){
             var button = $(this);

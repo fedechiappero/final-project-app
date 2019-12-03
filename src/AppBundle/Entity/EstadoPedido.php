@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * EstadoPedido
  *
  * @ORM\Table(name="estado_pedido", indexes={@ORM\Index(name="IDX_97557E78E2DBA323", columns={"id_pedido"}), @ORM\Index(name="IDX_97557E786A540E", columns={"id_estado"})})
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\EstadoPedidoRepository")
  */
 class EstadoPedido
 {

@@ -30,11 +30,12 @@ class PedidoController extends Controller
 
         if(($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN'))){//is admin, show every request
             $query = $em->createQuery("
-                SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.nombre AS obraNombre, c.razonSocial, e.id AS estadoId, e.nombre AS estadoNombre FROM AppBundle:Pedido p
+                SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.nombre AS obraNombre, pj.razonSocial, e.id AS estadoId, e.nombre AS estadoNombre FROM AppBundle:Pedido p
                 INNER JOIN AppBundle:ContratistaObra co WITH p.idContratistaObra = co.id
                 INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
                 INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
                 INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+                INNER JOIN AppBundle:PersonaJuridica pj WITH c.id = pj.id
                 INNER JOIN AppBundle:EstadoPedido ep WITH ep.idPedido = p.id
                 INNER JOIN AppBundle:Estado e WITH ep.idEstado = e.id
                 WHERE ep.fecha IN (SELECT MAX(ep2.fecha) FROM AppBundle:EstadoPedido ep2
@@ -44,11 +45,12 @@ class PedidoController extends Controller
         }else{//isn't admin, show only request owned by the user who requested it
 
             $dql = "
-                SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.nombre AS obraNombre, c.razonSocial, e.id AS estadoId, e.nombre AS estadoNombre FROM AppBundle:Pedido p
+                SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.nombre AS obraNombre, pj.razonSocial, e.id AS estadoId, e.nombre AS estadoNombre FROM AppBundle:Pedido p
                 INNER JOIN AppBundle:ContratistaObra co WITH p.idContratistaObra = co.id
                 INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
                 INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
                 INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+                INNER JOIN AppBundle:PersonaJuridica pj WITH c.id = pj.id
                 INNER JOIN AppBundle:EstadoPedido ep WITH ep.idPedido = p.id
                 INNER JOIN AppBundle:Estado e WITH ep.idEstado = e.id
                 WHERE ep.fecha IN (SELECT MAX(ep2.fecha) FROM AppBundle:EstadoPedido ep2
@@ -162,10 +164,13 @@ class PedidoController extends Controller
         $query = $em->createQuery("SELECT MAX(p.numero) AS numero FROM AppBundle:Pedido p");
         $pedido = $query->getResult();
 
+        $hoy = new \Datetime('now');
+
         return $this->render('pedido/new.html.twig', array(
             'pedido' => $pedido[0],
             'productos' => $productos,
-            'obras' => $obras
+            'obras' => $obras,
+            'hoy' => $hoy
         ));
     }
 
@@ -182,11 +187,12 @@ class PedidoController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $dqlPedido = "
-            SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.id AS obraId, o.nombre AS obraNombre, c.razonSocial FROM AppBundle:Pedido p
+            SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, o.id AS obraId, o.nombre AS obraNombre, pj.razonSocial FROM AppBundle:Pedido p
             INNER JOIN AppBundle:ContratistaObra co WITH p.idContratistaObra = co.id
             INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
             INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
             INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+            INNER JOIN AppBundle:PersonaJuridica pj WITH c.id = pj.id
             WHERE p.id = :id
         ";
 
@@ -334,6 +340,8 @@ class PedidoController extends Controller
 
         $detalles = $queryDetalles->getResult();
 
+        $hoy = new \Datetime('now');
+
         return $this->render('pedido/edit.html.twig', array(
             'pedido' => $pedido,
             'productos' => $productos,
@@ -341,6 +349,7 @@ class PedidoController extends Controller
             'obras' => $obras,
             'detalles' => $detalles,
             'delete_form' => $deleteForm->createView(),
+            'hoy' => $hoy
         ));
     }
 
@@ -393,11 +402,12 @@ class PedidoController extends Controller
                 $em = $this->getDoctrine()->getManager();
 
                 $dql = "          
-                    SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, c.razonSocial FROM AppBundle:Pedido p
+                    SELECT p.id, p.numero, p.fecha, p.necesarioParaFecha, pj.razonSocial FROM AppBundle:Pedido p
                     INNER JOIN AppBundle:ContratistaObra co WITH p.idContratistaObra = co.id
                     INNER JOIN AppBundle:Obra o WITH co.idObra = o.id
                     INNER JOIN AppBundle:ContratistaRubro cr WITH co.idContratistaRubro = cr.id
                     INNER JOIN AppBundle:Contratista c WITH cr.idContratista = c.id
+                    INNER JOIN AppBundle:PersonaJuridica pj WITH c.id = pj.id
                     INNER JOIN AppBundle:EstadoPedido ep WITH ep.idPedido = p.id
                     WHERE o.id = :id AND ep.idEstado <=2 AND ep.fecha IN 
                         (SELECT MAX(ep2.fecha) FROM AppBundle:EstadoPedido ep2
