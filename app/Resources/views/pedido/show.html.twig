@@ -54,6 +54,7 @@
             <a href="{{ path('pedido_index') }}">Back to the list</a>
         </li>
         <li>
+            {#si el pedido esta cancelado no se puede editar#}
             <a href="{{ path('pedido_edit', { 'id': pedido.id }) }}">Edit</a>
         </li>
         <li>

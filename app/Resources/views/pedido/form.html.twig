@@ -96,7 +96,7 @@
     <input id="arrproductos" type="hidden" name="arrproductos">
 
     <div class="form-group">
-        <button id="nuevopedido" class="btn btn-success pull-right" type="submit" >Enviar pedido</button>
+        <button id="nuevopedido" class="btn btn-success pull-right" type="submit">Enviar pedido</button>
     </div>
 </form>
 
@@ -170,17 +170,6 @@
     Date.prototype.isValid = function () {
         return this.getTime() === this.getTime();
     };
-
-    /*window.onload = function(){
-        //set min date for datepicker
-        var dateObj = new Date();
-        var month = dateObj.getMonth() + 1; //months from 1-12
-        var day = dateObj.getDate();
-        var year = dateObj.getFullYear();
-        var today = year+"-"+month+"-"+day;
-        document.getElementById('necesarioparafecha').min = today;
-        console.log(today);
-    };*/
 
     $(document).ready(function(){
 

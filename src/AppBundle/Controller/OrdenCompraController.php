@@ -32,9 +32,11 @@ class OrdenCompraController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $query = $em->createQuery("
-            SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, u.username AS username, p.razonSocial AS proveedorRazonSocial, o.nombre AS obraNombre FROM AppBundle:OrdenCompra oc
-            INNER JOIN AppBundle:User u WITH oc.idUsuario = u.id
+            SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, u.username AS username, pj.razonSocial AS proveedorRazonSocial, o.nombre AS obraNombre FROM AppBundle:OrdenCompra oc
+            INNER JOIN AppBundle:EncCompMatCons ec WITH oc.idEncComp = ec.id
+            INNER JOIN AppBundle:User u WITH ec.id = u.id
             INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id
+            INNER JOIN AppBundle:PersonaJuridica pj WITH p.id = pj.id
             INNER JOIN AppBundle:Obra o WITH oc.idObra = o.id
             ORDER BY oc.fechaEmision DESC
         ");
@@ -149,7 +151,15 @@ class OrdenCompraController extends Controller
         }
 
         $obras = $em->getRepository('AppBundle:Obra')->findAll();
-        $proveedores = $em->getRepository('AppBundle:Proveedor')->findAll();
+
+        $dql = "
+            SELECT IDENTITY(p.id) AS id, pj.razonSocial AS razonSocial FROM AppBundle:Proveedor p
+            INNER JOIN AppBundle:PersonaJuridica pj WITH pj.id = p.id
+        ";
+
+        $query = $em->createQuery($dql);
+
+        $proveedores = $query->getResult();
 
         //select last order number
         $query = $em->createQuery("SELECT MAX(op.numero) AS numero FROM AppBundle:OrdenCompra op");

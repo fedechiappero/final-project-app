@@ -25,9 +25,9 @@ class EncCompMatCons
     private $id;
 
     /**
-     * @var \AppBundle\Entity\FosUser
+     * @var \AppBundle\Entity\User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\FosUser")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id_usuario", referencedColumnName="id")
      * })
@@ -63,11 +63,11 @@ class EncCompMatCons
     /**
      * Set idUsuario
      *
-     * @param \AppBundle\Entity\FosUser $idUsuario
+     * @param \AppBundle\Entity\User $idUsuario
      *
      * @return EncCompMatCons
      */
-    public function setIdUsuario(\AppBundle\Entity\FosUser $idUsuario = null)
+    public function setIdUsuario(\AppBundle\Entity\User $idUsuario = null)
     {
         $this->idUsuario = $idUsuario;
 
@@ -77,7 +77,7 @@ class EncCompMatCons
     /**
      * Get idUsuario
      *
-     * @return \AppBundle\Entity\FosUser
+     * @return \AppBundle\Entity\User
      */
     public function getIdUsuario()
     {

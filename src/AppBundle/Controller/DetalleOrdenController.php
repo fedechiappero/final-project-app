@@ -147,21 +147,20 @@ class DetalleOrdenController extends Controller
         if ($request->isXmlHttpRequest()) {
             if ($request->request->get('idpedido')) {
                 $idpedido = $request->request->get('idpedido');
-                $idproveedor = $request->request->get('idproveedor');
+                //$idproveedor = $request->request->get('idproveedor');
                 $em = $this->getDoctrine()->getManager();
 
 
                 //that may not be the updated price product.. check new orden compra procedure
                 $dqlDetalle = "
-                    SELECT pe.id AS pedidoid, p.id AS productoid, p.nombre, dp.cantidad, p.stock, pr.precio FROM AppBundle:Producto p
-                    INNER JOIN AppBundle:Precio pr WITH pr.idProducto = p.id
+                    SELECT pe.id AS pedidoid, p.id AS productoid, p.nombre, dp.cantidad, p.stock FROM AppBundle:Producto p
                     INNER JOIN AppBundle:DetallePedido dp WITH dp.idProducto = p.id
                     INNER JOIN AppBundle:Pedido pe WITH dp.idPedido = pe.id
-                    WHERE pr.idProveedor = :proveedor AND dp.idPedido = :pedido
+                    WHERE dp.idPedido = :pedido
                 ";
 
                 $queryDetalle = $em->createQuery($dqlDetalle)
-                    ->setParameter('proveedor',$idproveedor)
+                    //->setParameter('proveedor',$idproveedor)
                     ->setParameter('pedido', $idpedido);
 
                 $detalle = $queryDetalle->getResult();
