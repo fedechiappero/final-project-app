@@ -7,6 +7,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Proveedor controller.
@@ -133,5 +135,76 @@ class ProveedorController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    /**
+     * busca todos los proveedores que vendan ciertos productos
+     *
+     * @Route("/ajax", name="buscar_proveedores")
+     * @return JsonResponse|Response
+     */
+    public function buscarProveedores(Request $request){
+        if ($request->isXmlHttpRequest()) {
+            if ($request->request->get('pedidos')) {
+
+                $pedidos = $request->request->get('pedidos');
+                $em = $this->getDoctrine()->getManager();
+
+                $proveedores = $em->getRepository('AppBundle:Proveedor')->findAll();
+
+                $arrayProductos = [];
+                $arrayProveedores = [];
+                $i = 0;
+                $j = 0;
+
+                foreach($pedidos as $pedido){
+                    $dqlProductos = "
+                    SELECT p.id FROM AppBundle:Producto p
+                        INNER JOIN AppBundle:DetallePedido dp WITH dp.idProducto = p.id
+                        WHERE dp.idPedido = :idPedido
+                    ";
+                    $query = $em->createQuery($dqlProductos)
+                        ->setParameter('idPedido', $pedido);
+                    $productos = $query->getResult();
+
+                    foreach($productos as $producto){
+                        if(!in_array($producto, $arrayProductos, true)){
+                            $arrayProductos[$i] = $producto;
+                            $i++;
+                        }
+                    }
+                }
+
+                foreach($proveedores as $proveedor){
+                    $index = 0;
+                    $vende = true;
+                    while($index < count($arrayProductos) AND $vende){
+                        $dqlPrecio = "
+                        SELECT p.precio FROM AppBundle:Precio p
+                        WHERE p.idProveedor = :proveedor AND
+                        p.fechaUltimaActualizacion IN (SELECT MAX(p2.fechaUltimaActualizacion) FROM AppBundle:Precio p2
+                        WHERE p2.idProducto = :producto GROUP BY p2.idProducto)
+                        ";
+
+                        $query = $em->createQuery($dqlPrecio)
+                            ->setParameter('producto', $arrayProductos[$index])
+                            ->setParameter('proveedor', $proveedor);
+
+                        $precio = $query->getResult();
+                        if(count($precio) == 0){
+                            $vende = false;
+                        }
+                        $index++;
+                    }
+                    if($vende){
+                        $arrayProveedores[$j] = $proveedor;
+                        $j++;
+                    }
+                }
+
+                return new JsonResponse($arrayProveedores);
+            }
+        }
+        return $this->redirectToRoute('ordencompra_new');
     }
 }

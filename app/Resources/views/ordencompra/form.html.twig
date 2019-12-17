@@ -390,7 +390,7 @@
                     "idpedido": valor/*,
                      "idproveedor": proveedor*/
                 },
-                async: true,
+                async: false,
                 success: function (data)
                 {
                     $.each(data, function (index, value) {
@@ -408,12 +408,45 @@
                     alert('Ajax request failed.');
                 }
             });
-            return false;
+            //return false;
             //}
         }else{
             eliminarDetalleJson(valor);
             actualiarTablaDetalle();
         }
+        buscarProveedores();
+    };
+
+    var buscarProveedores = function (){
+        var pedidos = [];
+        var i = 0;
+        $.each(detalleOrden, function (index, value) {
+            console.log(value.idpedido);
+            if(!pedidos.includes(value.idpedido)) {
+                pedidos[i] = value.idpedido;
+                i++;
+            }
+        });
+        $.ajax({
+            url:'{{ (path('buscar_proveedores')) }}',
+            type: "POST",
+            dataType: "json",
+            data: {
+                "pedidos": pedidos
+            },
+            async: true,
+            success: function (data)
+            {
+                console.log(data.length);
+                $.each(data, function (index, value) {
+
+                });
+            },
+            error : function() {
+                alert('Ajax request failed.');
+            }
+        });
+        return false;
     };
 
     var buscarPrecios = function (){

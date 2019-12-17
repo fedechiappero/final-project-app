@@ -10,7 +10,7 @@
                 <th>Usuario</th>
                 <th>Obra</th>
                 <th>Proveedor</th>
-                <th>Fechaemision</th>
+                <th>Fecha emisión</th>
                 <th>Total</th>
                 <th>Acciones</th>
             </tr>
@@ -30,9 +30,9 @@
                         <li>
                             <a href="{{ path('ordencompra_show', { 'id': ordenCompra.id }) }}">Ver</a>
                         </li>
-                        <li>
+                        {#<li>
                             <a href="{{ path('ordencompra_edit', { 'id': ordenCompra.id }) }}">Editar</a>
-                        </li>
+                        </li>#}
                         <li>
                             <a href="{{ path('ordencompra_pdf', { 'id': ordenCompra.id }) }}" download>Generar pdf</a>
                         </li>
