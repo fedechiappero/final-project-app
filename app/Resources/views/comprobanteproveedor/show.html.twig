@@ -7,7 +7,7 @@
         <tbody>
             <tr>
                 <th>Proveedor</th>
-                <td>{{ comprobanteProveedor.idProveedor.razonSocial }}</td>
+                <td>{{ comprobanteProveedor.idProveedor.id.razonSocial }}</td>
             </tr>
             <tr>
                 <th>Fecha emision</th>
@@ -31,7 +31,7 @@
             </tr>
             <tr>
                 <th>CtaCte</th>
-                <td>{% if comprobanteProveedor.cuentaCorriente %}Yes{% else %}No{% endif %}</td>
+                <td>{% if comprobanteProveedor.cuentaCorriente %}Si{% else %}No{% endif %}</td>
             </tr>
             <tr>
                 <th>Remito fecha emision</th>

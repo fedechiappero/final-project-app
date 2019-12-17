@@ -1,124 +1,115 @@
 <form id="frmcomprobante" method='POST' action=''>
 
-    <div class="form-group">
-        <label for="proveedor">Proveedor</label>
-        <select id="proveedor">
-            <option value="0"></option>
-            {% for proveedor in proveedores %}
-                <option value="{{ proveedor.id.id }}">{{ proveedor.razonSocial }}</option>
-            {% endfor %}
-        </select>
-        <input id="proveedorselected" type="hidden" name="proveedorselected">
-        <input id="convenio" type="text" class="form-control" readonly>
-        <input id="descuentoconvenio" type="hidden" value="0">
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="form-group col-md-2">
+            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalproveedor" style="margin-top: 25px;">Seleccionar proveedor</button>
+        </div>
+        <div class="col-md-2">
+            <input id="proveedorselected" type="hidden" name="proveedorselected">
+            <input id="proveedorRazonSocial" readonly class="form-control" type="text" style="margin-top: 25px;">
+        </div>
+        <div class="form-group col-md-2">
+            <button id="btnOrdenCompra" type="button" class="btn btn-info pull-right" data-toggle="modal" data-target="#modalordencompra" style="margin-top: 25px;">Orden de compra</button>
+        </div>
+        <div class="form-group col-md-2">
+            <div class="form-group">
+                <input id="idordencompra" type="hidden" name="idordencompra"
+                    {% if ordencompra is defined %}
+                        value="{{ ordencompra.id }}"
+                    {% endif %}
+                >
+                <input id="ordencompra" readonly class="form-control" type="text" name="ordencompra" style="margin-top: 25px;"
+                    {% if ordencompra is defined %}
+                        value="{{ ordencompra.numero }}"
+                    {% endif %}
+                >
+            </div>
+        </div>
+        <div class="col-md-2"></div>
     </div>
 
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalordencompra">Seleccionar orden de compra</button>
+    <div class="row">
 
-    {{ include(':comprobanteproveedor:modalordencompra.html.twig') }}
+        <div class="form-group col-md-2">
+            <label for="numero">Numero:</label>
+            <input id="numeroFactura" class="form-control" type="number" name="numero"
+                {% if comprobanteproveedor.numero is defined %}
+                    value="{{ comprobanteproveedor.numero }}"
+                {% endif %}
+            >
+        </div>
 
-    <div class="form-group">
-        <input id="idordencompra" type="hidden" name="idordencompra"
-            {% if ordencompra is defined %}
-                value="{{ ordencompra.id }}"
-            {% endif %}
-        >
-        <label for="ordencompra">Orden de compra:</label>
-        <input id="ordencompra" readonly class="form-control" type="text" name="ordencompra"
-            {% if ordencompra is defined %}
-                value="{{ ordencompra.numero }}"
-            {% endif %}
-        >
+        <div class="form-group col-md-2">
+            <label for="puntoventa">Punto de venta:</label>
+            <input id="puntoVenta" class="form-control" type="number" name="puntoventa" style="width: 70%"
+                {% if comprobanteproveedor.puntoVenta is defined %}
+                    value="{{ comprobanteproveedor.puntoVenta }}"
+                {% endif %}
+            >
+        </div>
+
+        <div class="col-md-3">
+            <div class="row center-block">
+                <div class="form-group col-md-6">
+                    <label for="letra">Letra:</label>
+                    <select id="letra" class="form-control" style="width: 55%">
+                        <option value="A">A</option>
+                        <option value="C">C</option>
+                    </select>
+                    <input id="letraselected" type="hidden" name="letraselected"
+                        {% if comprobanteproveedor.letra is defined %}
+                            value="{{ comprobanteproveedor.letra }}"
+                        {% else %}
+                            value="A"
+                        {% endif %}
+                    >
+                </div>
+
+                <div class="form-group col-md-6" style="margin-top: 30px;">
+                    <label for="cuentacorriente">CtaCte:</label>
+                    <input type="checkbox" class="custom-control-input" name="cuentacorriente"
+                        {% if comprobanteproveedor.cuentaCorriente is defined %}
+                            {{  'checked' | raw }}
+                        {% endif %}
+                    >
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group pull-right">
+                <label for="fechaemision">Fecha de emision:</label>
+                <input id="fechaemision" class="form-control" type="datetime-local" name="fechaemision" style="width: 95%"
+                    {% if comprobanteproveedor.fechaEmision is defined %}
+                        value="{{ comprobanteproveedor.fechaEmision | date('d-m-Y H:i') }}"
+                    {% endif %}
+                >
+            </div>
+        </div>
+
+        <div class="form-group col-md-2">
+            <label for="vencimiento">Vencimiento:</label>
+            <input class="form-control" type="date" name="vencimiento"
+                {% if comprobanteproveedor.vencimiento is defined %}
+                    value="{{ comprobanteproveedor.vencimiento | date('d-m-Y') }}"
+                {% endif %}
+            >
+        </div>
     </div>
 
-    <div class="form-group">
-        <label for="fechaemision">Fecha de emision:</label>
-        <input type="datetime-local" name="fechaemision"
-            {% if comprobanteproveedor.fechaEmision is defined %}
-                value="{{ comprobanteproveedor.fechaEmision | date('Y-m-d H:i') }}"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="letra">Letra:</label>
-        <select id="letra">
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-        </select>
-        <input id="letraselected" type="hidden" name="letraselected"
-            {% if comprobanteproveedor.letra is defined %}
-                value="{{ comprobanteproveedor.letra }}"
-            {% else %}
-               value="A"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="numero">Numero:</label>
-        <input class="form-control" type="number" name="numero"
-            {% if comprobanteproveedor.numero is defined %}
-                value="{{ comprobanteproveedor.numero }}"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="puntoventa">Punto de venta:</label>
-        <input class="form-control" type="number" name="puntoventa"
-            {% if comprobanteproveedor.puntoVenta is defined %}
-                value="{{ comprobanteproveedor.puntoVenta }}"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="vencimiento">Vencimiento:</label>
-        <input type="date" name="vencimiento"
-            {% if comprobanteproveedor.vencimiento is defined %}
-                value="{{ comprobanteproveedor.vencimiento | date('Y-m-d') }}"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="cuentacorriente">CtaCte:</label>
-        <input type="checkbox" class="custom-control-input" name="cuentacorriente"
-            {% if comprobanteproveedor.cuentaCorriente is defined %}
-                {{  'checked' | raw }}
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="remitofecha">Remito Fecha de emision:</label>
-        <input type="datetime-local" name="remitofecha"
-            {% if remito.fecha is defined %}
-                value="{{ remito.fecha | date('Y-m-d H:i') }}"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="remitonumero">Remito numero:</label>
-        <input class="form-control" type="number" name="remitonumero"
-            {% if remito.numero is defined %}
-                value="{{ remito.numero }}"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
+    <div class="form-group panel panel-default" style="padding: 5px">
+        <div class="panel-heading" style="margin: 5px">
+            Detalle
+        </div>
         <table id="tablalistado" class="table table-striped">
             <thead>
             <tr>
                 <th>Id</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Cantidad recibida</th>
-                <th>Precio unitario</th>
+                <th class="col-md-8">Producto</th>
+                <th class="col-md-2">Cantidad</th>
+                <th class="col-md-2">Precio unitario</th>
             </tr>
             </thead>
             <tbody id="tlistado">
@@ -126,73 +117,156 @@
         </table>
     </div>
 
-    <div class="form-group">
-        <label for="subtotal">Subtotal:</label>
-        <input id="subtotal" class="form-control" type="number" step="0.01" name="subtotal"
-            {% if comprobanteproveedor.subtotal is defined %}
-                value="{{ comprobanteproveedor.subtotal }}"
-            {% endif %}
-        >
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group panel panel-default" style="padding: 5px;">
+                <div class="panel-heading" style="margin: 5px">
+                    Remito
+                </div>
+                <div class="row" style="padding: 5px">
+                    <div class="form-group col-md-5">
+                        <label for="remitofecha">Fecha de emision:</label>
+                        <input id="remitofecha" class="form-control" type="datetime-local" name="remitofecha" {#style="width: 75%"#}
+                            {% if remito.fecha is defined %}
+                                value="{{ remito.fecha | date('d-m-Y') }}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="remitonumero">Número:</label>
+                        <input class="form-control" type="number" name="remitonumero"
+                            {% if remito.numero is defined %}
+                                value="{{ remito.numero }}"
+                            {% endif %}
+                        >
+                    </div>
+
+                    <div class="form-group col-md-2">
+                        <button id="btnDetalleRemito" type="button" class="btn btn-info" data-toggle="modal" data-target="#modalremito" style="margin-top: 25px;">Detalle</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="pull-right">
+                <div class="form-group col-md-2" style="padding-left:0px">
+                    <label for="descuento">Descuento:</label>
+                    <input id="convenio" type="text" class="form-control" readonly
+                        {% if comprobanteproveedor.descuentoPorcentaje is defined %}
+                            value="comprobante.descuentoPorcentaje"
+                        {% else %}
+                            value="0"
+                        {% endif %}
+                    >
+                    <input id="descuentoconvenio" type="hidden" value="0">
+                </div>
+
+                <div class="form-group col-md-2" style="padding:0px">
+                    <label for="totaliva">IVA:</label>
+                    <select id="iva" class="form-control">
+                        <option value="21">21%</option>
+                        <option value="10,5">10.5%</option>
+                    </select>
+                    <input id="ivaselected" type="hidden" name="ivaselected"
+                        {% if comprobanteproveedor.totalIva is defined %}
+                            value="{{ comprobanteproveedor.totalIva }}"
+                        {% else %}
+                            value="21"
+                        {% endif %}
+                    >
+                </div>
+
+                <div class="form-group col-md-4">
+                    <label for="netogravado">Neto gravado:</label>
+                    <input id="netogravado" class="form-control" type="number" step="0.01" name="netogravado"
+                        {% if comprobanteproveedor.netoGravado is defined %}
+                            value="{{ comprobanteproveedor.netoGravado }}"
+                        {% endif %}
+                    >
+                </div>
+
+                <div class="form-group col-md-4" style="padding-right:0px">
+                    <label for="subtotal">Subtotal:</label>
+                    <input id="subtotal" class="form-control" type="number" step="0.01" name="subtotal"
+                        {% if comprobanteproveedor.subtotal is defined %}
+                            value="{{ comprobanteproveedor.subtotal }}"
+                        {% endif %}
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group col-md-2 pull-right">
+            <label for="total">Total:</label>
+            <input class="form-control" type="number" step="0.01" name="total"
+                {% if comprobanteproveedor.total is defined %}
+                    value="{{ comprobanteproveedor.total }}"
+                {% endif %}
+            >
+        </div>
+
     </div>
 
-    <div class="form-group">
-        <label for="descuento">Descuento:</label>
-        <input class="form-control" type="number" name="descuento"
-            {% if comprobanteproveedor.descuentoPorcentaje is defined %}
-                value="total - comprobante.descuentoPorcentaje"
-            {% else %}
-                value="0"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="netogravado">Neto gravado:</label>
-        <input id="netogravado" class="form-control" type="number" step="0.01" name="netogravado"
-            {% if comprobanteproveedor.netoGravado is defined %}
-                value="{{ comprobanteproveedor.netoGravado }}"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="totaliva">Total IVA:</label>
-        <input class="form-control" type="number" name="totaliva"
-            {% if comprobanteproveedor.totalIva is defined %}
-                value="{{ comprobanteproveedor.totalIva }}"
-            {% endif %}
-        >
-    </div>
-
-    <div class="form-group">
-        <label for="total">Total:</label>
-        <input class="form-control" type="number" step="0.01" name="total"
-            {% if comprobanteproveedor.total is defined %}
-                value="{{ comprobanteproveedor.total }}"
-            {% endif %}
-        >
-    </div>
 
     {{ include(':comprobanteproveedor:modalcantidad.html.twig') }}
+
+    {{ include(':comprobanteproveedor:modalordencompra.html.twig') }}
+
+    {{ include(':comprobanteproveedor:modalproveedor.html.twig') }}
 
     <input id="arrproductos" type="hidden" name="arrproductos">
 
     <div class="form-group">
-        <button id="nuevocomprobante" class="btn btn-success" type="submit">Guardar comprobante</button>
+        <button id="nuevocomprobante" class="btn btn-success pull-right" type="submit" style="margin-top: 15px">Guardar comprobante</button>
     </div>
 
 </form>
 
 <script>
+
+    var validarForm = function(){
+        var proveedor = $('#proveedorRazonSocial').val();
+        if(proveedor != ''){
+            $('#btnOrdenCompra').attr('disabled', false)
+        } else{
+            $('#btnOrdenCompra').attr('disabled', true)
+        }
+        var fechaEmision = new Date($('#fechaemision').val());
+        var remitofecha = new Date($('#remitofecha').val());
+        var fechaEmisionValida = fechaEmision.isValid();
+        var remitoFechaValida = remitofecha.isValid();
+        //var productos = $("#arrproductos").val().length;
+        if(proveedor != '' && fechaEmisionValida && remitoFechaValida){
+            $('#nuevocomprobante').attr('disabled', false);
+        }else{
+            $('#nuevocomprobante').attr('disabled', true);
+        }
+    };
+
+    Date.prototype.isValid = function () {
+        return this.getTime() === this.getTime();
+    };
+
     $(document).ready(function(){
+
+        validarForm();
 
         var tabla = $('#tablaordenes').DataTable({
             paging: false
         });
 
         var tablalistado = $('#tablalistado').DataTable({
-            paging: false
+            paging: false,
+            "columnDefs":[{
+                "targets": [0],
+                "visible": false
+            }]
         });
+
+        $('#numeroFactura').mask('00000000'); //meh
+        $('#puntoVenta').mask('0000');
 
         resetModal();
 
@@ -235,6 +309,15 @@
             buscarDetalle(id);
         });
 
+        $(document).on('click', '#tproveedor tr', function () {
+            var id = $(this).find('#idproveedor').text();
+            var razonSocial = $(this).find('#razonSocial').text();
+            $('#proveedorselected').val(id);
+            $('#proveedorRazonSocial').val(razonSocial);
+            $('#modalproveedor').modal('hide');
+            validarForm();
+        });
+
         buscarDetalle = function(id){
             $.ajax({
                 url: '{{ (path('buscar_detalles_orden')) }}',
@@ -247,12 +330,13 @@
                 success: function(data){
                     var tlistado = $('#tlistado');
                     tlistado.html('');
+
                     $.each(data, function (index, value){
                         let idProducto = value.id;
                         let nombre = value.nombre;
                         let cantidad = value.cantidad;
-                        let precio = value.precioUnitario;
-                        tablalistado.row.add([idProducto, nombre, cantidad, cantidad, precio]).draw(false);
+                        let precio = value.precio;
+                        tablalistado.row.add([idProducto, nombre, cantidad, precio]).draw(false);
                     });
                     crearArregloProductos();
 
@@ -404,5 +488,14 @@
         calcularIVA = function(){
             var valorsubtotal = $('#subtotal');
         };
+
+
+    });
+    $(document).keydown(function(event) {
+        if (event.keyCode == 27) {
+            $('#modalproveedor').modal('hide');
+            $('#modalcantidad').modal('hide');
+            $('#modalordencompra').modal('hide');
+        }
     });
 </script>

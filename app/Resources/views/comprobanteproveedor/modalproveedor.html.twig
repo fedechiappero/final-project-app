@@ -1,0 +1,45 @@
+<div id="modalproveedor" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Seleccione un Proveedor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="table-wrapper-scroll-y">
+                    <table id="tproveedor" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th class="col-md-1">id</th>
+                            <th class="col-md-1">CUIT</th>
+                            <th class="col-md-10">Razon Social</th>
+                        </tr>
+                        </thead>
+                        <tbody id="tablaproveedores">
+                        {% for proveedor in proveedores %}
+                            <tr>
+                                <td id="idproveedor"><a>{{ proveedor.id.id.id }}</a></td>
+                                <td id="cuit"><a>{{ proveedor.id.cuit }}</a></td>
+                                <td id="razonSocial"><a>{{ proveedor.id.razonSocial }}</a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var tabla = $('#tproveedor').DataTable({
+        paging: false/*,
+            "columnDefs":[{
+                "targets": [0],
+                "visible": false
+        }]*/
+    });
+</script>

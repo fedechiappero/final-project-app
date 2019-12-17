@@ -12,3 +12,5 @@ thanks to:
 - sparksuite for the (invoice template)[https://github.com/sparksuite/simple-html-invoice-template]
 
 - [1000hz](https://twitter.com/1000hz) for the [form validator](https://github.com/1000hz/bootstrap-validator)
+
+- Igor Escobar for the [jQuery mask plugin](github.com/igorescobar/jQuery-Mask-Plugin)

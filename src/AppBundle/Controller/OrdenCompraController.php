@@ -350,8 +350,9 @@ class OrdenCompraController extends Controller
                 $em = $this->getDoctrine()->getManager();
 
                 $dql = "          
-                    SELECT oc.id, oc.numero, DATE_FORMAT(oc.fechaEmision, '%Y-%m-%d') AS fechaEmision, p.razonSocial, o.nombre FROM AppBundle:OrdenCompra oc
+                    SELECT oc.id, oc.numero, DATE_FORMAT(oc.fechaEmision, '%d-%m-%Y') AS fechaEmision, pj.razonSocial, o.nombre FROM AppBundle:OrdenCompra oc
                     INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id 
+                    INNER JOIN AppBundle:PersonaJuridica pj WITH pj.id = p.id
                     INNER JOIN AppBundle:Obra o WITH oc.idObra = o.id
                     WHERE p.id = :idproveedor AND oc.fechaEmision BETWEEN :desde AND :hasta
                 ";

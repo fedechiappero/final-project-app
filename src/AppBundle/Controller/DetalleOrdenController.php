@@ -183,8 +183,40 @@ class DetalleOrdenController extends Controller
                 $idorden = $request->request->get('idOrden');
                 $em = $this->getDoctrine()->getManager();
 
-                //that may not be the updated price product.. check new orden compra procedure
-                $dqlDetalle = "
+                $ordenCompra = $em->getRepository('AppBundle:OrdenCompra')->find($idorden);
+                $detalle = $em->getRepository('AppBundle:DetalleOrden')->findBy(array('idOrden' => $ordenCompra->getId()));
+
+                $detalles = array();
+
+                foreach($detalle as $deta){
+
+                    $dqlPrecio = "
+                    SELECT p.id FROM AppBundle:Precio p
+                        WHERE p.idProducto = :idProducto AND 
+                        p.fechaUltimaActualizacion IN (SELECT MAX(p2.fechaUltimaActualizacion) FROM AppBundle:Precio p2
+                                                            WHERE p2.fechaUltimaActualizacion < :fechaComprobante
+                                                           GROUP BY p2.idProducto)";
+
+                    $query = $em->createQuery($dqlPrecio)
+                        ->setParameter('idProducto', $deta->getIdPrecio()->getIdProducto())
+                        ->setParameter('fechaComprobante', $ordenCompra->getFechaEmision());
+
+                    $idprecio = $query->getResult();
+
+                    $dqlDetalle = "
+                        SELECT p.id, p.nombre, d.cantidad, pr.precio FROM AppBundle:Producto p
+                        INNER JOIN AppBundle:Precio pr WITH pr.idProducto = p.id
+                        INNER JOIN AppBundle:DetalleOrden d WITH d.idPrecio = p.id
+                        WHERE d.idOrden = :idOrden AND pr.id = :idPrecio";
+
+                    $query = $em->createQuery($dqlDetalle)
+                        ->setParameter('idOrden', $ordenCompra->getId())
+                        ->setParameter('idPrecio', $idprecio);
+
+                    $res = $query->getSingleResult();
+                    $detalles[] = $res;
+                }
+                /*$dqlDetalle = "
                     SELECT p.id, p.nombre, do.cantidad, do.precioUnitario FROM AppBundle:DetalleOrden do
                     INNER JOIN AppBundle:Producto p WITH do.idProducto = p.id
                     WHERE do.idOrden = :idOrden
@@ -194,7 +226,7 @@ class DetalleOrdenController extends Controller
                     ->setParameter('idOrden', $idorden)
                 ;
 
-                $detalles = $queryDetalle->getResult();
+                $detalles = $queryDetalle->getResult();*/
 
                 return new JsonResponse($detalles);
             }

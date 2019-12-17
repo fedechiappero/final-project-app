@@ -1,15 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Comprobanteproveedor creation</h1>
+    <h1>Nueva factura de proveedor</h1>
+    <br>
 
     {{ include(':comprobanteproveedor:form.html.twig') }}
 
-    <ul>
-        <li>
-            <a href="{{ path('comprobanteproveedor_index') }}">Back to the list</a>
-        </li>
-    </ul>
+    <div class="form-group">
+        <button class="btn btn-warning" onclick="location.href='{{ path('comprobanteproveedor_index') }}';">Volver al listado</button>
+    </div>
 
     <script>
         $(document).ready(function() {

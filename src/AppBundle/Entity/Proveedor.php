@@ -49,4 +49,6 @@ class Proveedor
     {
         return $this->id;
     }
+
+    
 }
