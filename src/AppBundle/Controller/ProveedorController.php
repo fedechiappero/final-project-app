@@ -154,6 +154,7 @@ class ProveedorController extends Controller
 
                 $arrayProductos = [];
                 $arrayProveedores = [];
+                $arrProveedores = new Proveedor();
                 $i = 0;
                 $j = 0;
 
@@ -181,9 +182,7 @@ class ProveedorController extends Controller
                     while($index < count($arrayProductos) AND $vende){
                         $dqlPrecio = "
                         SELECT p.precio FROM AppBundle:Precio p
-                        WHERE p.idProveedor = :proveedor AND
-                        p.fechaUltimaActualizacion IN (SELECT MAX(p2.fechaUltimaActualizacion) FROM AppBundle:Precio p2
-                        WHERE p2.idProducto = :producto GROUP BY p2.idProducto)
+                        WHERE p.idProveedor = :proveedor AND p.idProducto = :producto
                         ";
 
                         $query = $em->createQuery($dqlPrecio)
@@ -197,7 +196,19 @@ class ProveedorController extends Controller
                         $index++;
                     }
                     if($vende){
-                        $arrayProveedores[$j] = $proveedor;
+
+                        $dql = "
+                            SELECT IDENTITY(p.id) AS id, pj.razonSocial AS razonSocial FROM AppBundle:Proveedor p
+                            INNER JOIN AppBundle:PersonaJuridica pj WITH pj.id = p.id
+                            WHERE p.id = :proveedor
+                        ";
+
+                        $query = $em->createQuery($dql)
+                            ->setParameter('proveedor', $proveedor->getId());
+
+                        $res = $query->getResult();
+                        $arrayProveedores[] = $res[0];
+                        //$arrProveedores = $em->getRepository('AppBundle:Proveedor')->find($proveedor->getId());
                         $j++;
                     }
                 }

@@ -65,18 +65,18 @@ class OrdenCompraController extends Controller
             $obra = $request->request->get('idobra');
             $numero = $request->request->get('numero');
             $fecha = new \DateTime('now');
-            $total = $request->request->get('total');
+            $total = $request->request->get('subtotal');
 
             //values from db
             $proveedor = $em->getRepository('AppBundle:Proveedor')->find($proveedor);
             //future update, find user logged, this reflect who made the order
-            $usuario = $em->getRepository('AppBundle:User')->find(1);
+            $usuario = $em->getRepository('AppBundle:EncCompMatCons')->find(1);//se se.. una garcha
             $obra = $em->getRepository('AppBundle:Obra')->find($obra);
 
             $ordenCompra = new OrdenCompra();
             $ordenCompra->setIdProveedor($proveedor);
             $ordenCompra->setIdObra($obra);
-            $ordenCompra->setIdUsuario($usuario->getId()->getId());
+            $ordenCompra->setIdEncComp($usuario);
             $ordenCompra->setNumero($numero);
             $ordenCompra->setFechaEmision($fecha);
             $ordenCompra->setTotal($total);
@@ -97,13 +97,14 @@ class OrdenCompraController extends Controller
 
                     $dql = "
                     SELECT p.id FROM AppBundle:Precio p
-                        WHERE p.idProducto = :idproducto AND 
+                        WHERE p.idProducto = :idproducto AND p.idProveedor = :idproveedor AND
                         p.fechaUltimaActualizacion IN (SELECT MAX(p2.fechaUltimaActualizacion) FROM AppBundle:Precio p2
-                                                           GROUP BY p2.idProducto)
+                                                           GROUP BY p2.idProducto, p2.idProveedor)
                     ";
 
                     $query = $em->createQuery($dql)
-                        ->setParameter('idproducto', $producto->getId());
+                        ->setParameter('idproducto', $producto->getId())
+                        ->setParameter('idproveedor', $proveedor->getId());
 
                     //will throw an exception if more than one result are found, or if no result is found
                     $idprecio = $query->getSingleResult();
@@ -113,7 +114,7 @@ class OrdenCompraController extends Controller
                     $detalleOrden = new DetalleOrden();
                     $detalleOrden
                         ->setIdOrden($ordenCompra)
-                        ->setIdProducto($producto)
+                        ->setIdPrecio($precio)
                         ->setPrecioUnitario($precio->getPrecio())
                         ->setCantidad($cantidad);
 
@@ -185,9 +186,10 @@ class OrdenCompraController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $dqlOrden = "
-            SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, u.username AS username, p.razonSocial AS proveedorRazonSocial, o.nombre AS obraNombre FROM AppBundle:OrdenCompra oc
-            INNER JOIN AppBundle:User u WITH oc.idUsuario = u.id
+            SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, u.username AS username, pj.razonSocial AS proveedorRazonSocial, o.nombre AS obraNombre FROM AppBundle:OrdenCompra oc
+            INNER JOIN AppBundle:User u WITH oc.idEncComp = u.id
             INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id
+            INNER JOIN AppBundle:PersonaJuridica pj WITH p.id = pj.id
             INNER JOIN AppBundle:Obra o WITH oc.idObra = o.id
             WHERE oc.id = :id
         ";
@@ -196,8 +198,9 @@ class OrdenCompraController extends Controller
             ->setParameter('id',$ordenCompra->getId());
 
         $dqlDetalles = "
-            SELECT p.nombre, d.cantidad, d.precioUnitario FROM AppBundle:DetalleOrden d
-            INNER JOIN AppBundle:Producto p WITH d.idProducto = p.id
+            SELECT pro.nombre, d.cantidad, d.precioUnitario FROM AppBundle:DetalleOrden d
+            INNER JOIN AppBundle:Precio pre WITH pre.id = d.idPrecio
+            INNER JOIN AppBundle:Producto pro WITH pro.id = pre.idProducto
             WHERE d.idOrden = :id
         ";
 
@@ -206,6 +209,8 @@ class OrdenCompraController extends Controller
 
         $ordenCompra = $queryOrdenes->getResult();
         $detalles = $queryDetalles->getResult();
+
+        dump($detalles);
 
         return $this->render('ordencompra/show.html.twig', array(
             'ordenCompra' => $ordenCompra[0],
@@ -298,10 +303,10 @@ class OrdenCompraController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $dql = "
-            SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, u.email AS email, p.razonSocial AS proveedorRazonSocial, pe.direccion AS proveedorDireccion FROM AppBundle:OrdenCompra oc
-            INNER JOIN AppBundle:User u WITH oc.idUsuario = u.id
+            SELECT oc.id, oc.numero, oc.fechaEmision, oc.total, pj.razonSocial AS proveedorRazonSocial, pe.direccion AS proveedorDireccion FROM AppBundle:OrdenCompra oc
             INNER JOIN AppBundle:Proveedor p WITH oc.idProveedor = p.id
-            INNER JOIN AppBundle:Persona pe WITH p.id = pe.id
+            INNER JOIN AppBundle:PersonaJuridica pj WITH p.id = pj.id
+            INNER JOIN AppBundle:Persona pe WITH pj.id = pe.id
             WHERE oc.id = :id
         ";
 
@@ -309,8 +314,9 @@ class OrdenCompraController extends Controller
             ->setParameter('id',$ordenCompra->getId());
 
         $dqlDetalles = "
-            SELECT p.nombre, d.cantidad, d.precioUnitario FROM AppBundle:DetalleOrden d
-            INNER JOIN AppBundle:Producto p WITH d.idProducto = p.id
+            SELECT pro.nombre, d.cantidad, d.precioUnitario FROM AppBundle:DetalleOrden d
+            INNER JOIN AppBundle:Precio pre WITH pre.id = d.idPrecio
+            INNER JOIN AppBundle:Producto pro WITH pro.id = pre.idProducto
             WHERE d.idOrden = :id
         ";
 

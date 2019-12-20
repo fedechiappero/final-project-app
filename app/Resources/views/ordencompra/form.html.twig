@@ -80,10 +80,6 @@
         <div class="form-group col-sm-4">
             <label for="proveedor">Proveedor</label>
             <select id="proveedor" class="form-control">
-                <option value="0"></option>
-                {% for proveedor in proveedores %}
-                    <option value="{{ proveedor.id }}">{{ proveedor.razonSocial }}</option>
-                {% endfor %}
             </select>
         </div>
 
@@ -125,6 +121,12 @@
 <script>
 
     var detalleOrden = [];
+
+    var descuentoConvenio = 0;
+
+    var cargarDescuento = function(valor){
+        descuentoConvenio = valor;
+    };
 
     var cargarJson = function(idpedido, idproducto, nombreproducto, stock, cantidad, precio){
         var detalle = {
@@ -193,12 +195,16 @@
             var data = this.data();
             total += parseInt(data[4]) * parseFloat(data[5]);
         });
+        var valorsubtotal = $('#subtotal');
         var valortotal = $('#total');
         valortotal.val(total);
-        var descuento = $('#descuentoconvenio').val();
-        if(descuento != 0){
-            var totaldescuento = $('#totaldescuento');
-            totaldescuento.val(total - (total * parseFloat(descuento) / 100))
+        valorsubtotal.val(total);
+        var descuento = parseFloat($('#descuentoconvenio').val());
+        console.log("desc antes calcular"+descuentoConvenio);
+        if(descuentoConvenio > 0){
+            console.log("descuento > 0");
+
+            valortotal.val(total - (total * parseFloat(descuentoConvenio) / 100))
         }
     };
 
@@ -289,7 +295,9 @@
         var convenio = $('#convenio');
         convenio.val('');
         var descuentoconvenio = $('#descuentoconvenio');
-        descuentoconvenio.val('');
+        descuentoconvenio.val('0');
+        //descuentoConvenio = 0;
+        cargarDescuento(0);
         $('#convenio').css('visibility', 'hidden');
 
         var valor = $('#proveedor').val();
@@ -302,7 +310,7 @@
                 data: {
                     "idproveedor": valor
                 },
-                async: true,
+                async: false,
                 success: function (data)
                 {
                     $.each(data, function (index, value) {
@@ -311,6 +319,9 @@
                         var mensaje = `-${descuento}%`;
                         convenio.val(mensaje);
                         descuentoconvenio.val(descuento);
+                        //descuentoConvenio = descuento;
+                        cargarDescuento(descuento);
+                        console.log("desc en change proveedor "+descuentoConvenio);
                         $('#convenio').css('visibility', 'visible');
                     });
                 },
@@ -318,6 +329,7 @@
                     alert('Ajax request failed.');
                 }
             });
+            buscarPrecios();
             return false;
         }
     });
@@ -421,12 +433,13 @@
         var pedidos = [];
         var i = 0;
         $.each(detalleOrden, function (index, value) {
-            console.log(value.idpedido);
             if(!pedidos.includes(value.idpedido)) {
                 pedidos[i] = value.idpedido;
                 i++;
             }
         });
+        var proveedor = $('#proveedor');
+        proveedor.empty();
         $.ajax({
             url:'{{ (path('buscar_proveedores')) }}',
             type: "POST",
@@ -437,20 +450,66 @@
             async: true,
             success: function (data)
             {
-                console.log(data.length);
+                var option = document.createElement("option");
+                option.value = 0;
+                proveedor.append(option);
                 $.each(data, function (index, value) {
-
+                    var option = document.createElement("option");
+                    option.value = value.id;
+                    option.text = value.razonSocial;
+                    proveedor.append(option);
                 });
             },
             error : function() {
-                alert('Ajax request failed.');
+                /*alert('Ajax request failed.');*/
             }
         });
         return false;
     };
 
     var buscarPrecios = function (){
-
+        var valor = $('#proveedor').val();
+        if(valor > 0){
+            var pedidos = [];
+            var i = 0;
+            $.each(detalleOrden, function (index, value) {
+                if(!pedidos.includes(value.idpedido)) {
+                    pedidos[i] = value.idpedido;
+                    i++;
+                }
+            });
+            var precios = [];
+            $.ajax({
+                url: '{{ (path('buscar_precios')) }}',
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "pedidos": pedidos,
+                    "idProveedor": valor
+                },
+                async: false,
+                success: function (data) {
+                    $.each(data, function (index, value) {
+                        var precio = {
+                            'precio': value[0].precio,
+                            'idproducto':value[1]['1']
+                        };
+                        precios.push(precio);
+                    });
+                    $.each(precios, function (index, value){
+                        $.each(detalleOrden, function (index2, value2){
+                            if(value2.idproducto == value.idproducto){
+                                value2.precio = value.precio;
+                            }
+                        })
+                    })
+                },
+                error: function () {
+                    /*alert('Ajax request failed.');*/
+                }
+            });
+        }
+        actualiarTablaDetalle();
     };
 
     $(document).keydown(function(event) {
